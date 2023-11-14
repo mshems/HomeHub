@@ -16,53 +16,59 @@ const useTransactions = () => {
   }
 
   const credits = (transactions) => {
-    return unref(transactions).fiter(t => t.amount >= 0)
+    return unref(transactions).filter(t => t.amount >= 0)
   }
 
   const debits = (transactions) => {
-    return unref(transactions).fiter(t => t.amount <= 0)
+    return unref(transactions).filter(t => t.amount <= 0)
+  }
+
+  const byType = (transactions, type) => {
+    if (!unref(type)) return transactions
+    if (unref(type) === 'credit') return credits(transactions)
+    return debits(transactions)
   }
 
   const byCategory = (transactions, category) => {
-    if (!category) return transactions
-    return unref(transactions).filter(t => t.category === category)
+    if (!unref(category)) return transactions
+    return unref(transactions).filter(t => t.category === unref(category))
   }
 
   const byMonth = (transactions, month, year) => {
-    if (!month || !year) return transactions
+    if (!unref(month) || !unref(year)) return transactions
     return unref(transactions).filter(t => {
       const dt = DateTime.fromSeconds(t.timestamp)
-      return (dt.month === month) && (dt.year === year)
+      return (dt.month === unref(month)) && (dt.year === unref(year))
     })
   }
 
   const byYear = (transactions, year) => {
-    if (!year) return transactions
+    if (!unref(year)) return transactions
     return unref(transactions).filter(t => {
       const dt = DateTime.fromSeconds(t.timestamp)
-      return (dt.year === year)
+      return (dt.year === unref(year))
     })
   }
 
-  const after = (transactions, dateTime) => {
-    if (!dateTime) return transactions
+  const afterDate = (transactions, dateTime) => {
+    if (!unref(dateTime)) return transactions
     return unref(transactions).filter(t => {
       const dt = DateTime.fromSeconds(t.timestamp)
-      return dt >= dateTime
+      return dt >= unref(dateTime)
     })
   }
 
-  const before = (transactions, dateTime) => {
-    if (!dateTime) return transactions
+  const beforeDate = (transactions, dateTime) => {
+    if (!unref(dateTime)) return transactions
     return unref(transactions).filter(t => {
       const dt = DateTime.fromSeconds(t.timestamp)
-      return dt <= dateTime
+      return dt <= unref(dateTime)
     })
   }
 
   const byUser = (transactions, userId) => {
-    if (!userId) return transactions
-    return unref(transactions).filter(t => t.paid_by === userId)
+    if (!unref(userId)) return transactions
+    return unref(transactions).filter(t => t.paid_by === unref(userId))
   }
 
   const removeTx = (id) => {
@@ -74,14 +80,22 @@ const useTransactions = () => {
     return add('/data/finance/transactions', data)
   }
 
-  const filter = (transactions, userId, category, month, year) => {
-    return byMonth(
-      byUser(
-        byCategory(unref(transactions), category),
-        userId
-      ),
-      month, year
-    )
+  const filter = (transactions, { userId, category, month, year, type, before, after }) => {
+    return byYear(
+      byMonth(
+        byUser(
+          byCategory(
+            byType(
+              beforeDate(
+                afterDate(
+                  unref(transactions),
+                  after),
+                before),
+              type),
+            category),
+          userId),
+        month, year),
+      year)
   }
 
   const total = (transactions) => {
@@ -92,15 +106,9 @@ const useTransactions = () => {
     transactions,
     get,
     update,
-    credits,
-    debits,
-    byCategory,
-    byMonth,
-    byYear,
-    byUser,
-    before,
-    after,
+    delete: removeTx,
     removeTx,
+    create: addTx,
     addTx,
     total,
     filter

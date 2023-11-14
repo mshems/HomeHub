@@ -1,6 +1,7 @@
 <script setup>
+import NavChip from 'src/components/finance/NavChip.vue'
 import TransactionForm from 'src/components/finance/TransactionForm.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
 import { useTransactions } from 'src/composables/transactions'
@@ -27,28 +28,27 @@ const resetForm = () => {
   txForm.value.reset()
 }
 
-onMounted(() => {
-  const { data, promise } = get(props.id)
-  promise.value.then(() => {
-    const defaultValue = {
-      category: data.value.category,
-      name: data.value.name,
-      paid_by: data.value.paid_by,
-      amount: Math.abs(data.value.amount),
-      notes: data.value.notes,
-      timestamp: DateTime.fromSeconds(data.value.timestamp).toFormat('yyyy-MM-dd')
-    }
-    txForm.value.setDefault(defaultValue)
-    form.value = { ...defaultValue }
-  })
+const { data, promise } = get(props.id)
+promise.value.then(() => {
+  const defaultValue = {
+    category: data.value.category,
+    name: data.value.name,
+    paid_by: data.value.paid_by,
+    amount: Math.abs(data.value.amount),
+    notes: data.value.notes,
+    timestamp: DateTime.fromSeconds(data.value.timestamp).toFormat('yyyy-MM-dd')
+  }
+  txForm.value.setDefault(defaultValue)
+  form.value = { ...defaultValue }
 })
 </script>
 
 <template>
   <q-page padding>
     <q-card flat>
-      <q-card-section class="card-title row justify-center">
-        <q-icon name="mdi-piggy-bank" color="pink-4" size="xl"/>
+      <q-card-section class="card-title row justify-center items-center">
+        <q-icon name="mdi-pencil-box" color="warning" size="lg"/>
+        <span class="text-default">Edit Transaction</span>
       </q-card-section>
       <q-card-section>
         <q-form
@@ -57,14 +57,22 @@ onMounted(() => {
           @reset="resetForm"
         >
           <transaction-form ref="txForm" v-model:form="form"/>
-          <q-btn unelevated rounded type="submit" label="Submit" color="positive" class="q-mt-md"/>
-          <q-btn flat type="reset" label="Reset" color="negative"/>
-          <q-btn flat label="cancel" @click="router.push(`/finance/transactions/${id}`)"/>
+          <div class="lt-sm column items-center q-gutter-sm">
+            <q-btn unelevated rounded type="submit" label="Save" color="positive" icon-right="mdi-content-save"/>
+            <q-btn flat type="reset" label="Reset" color="negative"/>
+            <q-btn flat label="cancel" @click="router.push(`/finance/transactions/${id}`)"/>
+          </div>
+          <div class="gt-xs row items-center q-gutter-sm">
+            <q-btn flat label="cancel" @click="router.push(`/finance/transactions/${id}`)"/>
+            <q-btn unelevated rounded type="reset" label="Reset" color="negative"/>
+            <q-btn unelevated rounded type="submit" label="Save" color="positive" icon-right="mdi-content-save"/>
+          </div>
         </q-form>
       </q-card-section>
     </q-card>
   </q-page>
   <teleport to="#toolbar">
-    <q-chip clickable icon="mdi-chevron-left" color="green-10" text-color="on-color" class="q-ma-none q-ml-xs text-bold" label="Transactions" @click="router.push('/finance/transactions')"/>
+    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
+    <nav-chip :path="`/finance/transactions/${id}`" icon="mdi-cash" label="Transaction"/>
   </teleport>
 </template>

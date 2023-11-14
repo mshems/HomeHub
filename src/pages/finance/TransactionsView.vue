@@ -11,56 +11,56 @@ import { useUserStore } from 'src/stores/user'
 import { useTxStore } from 'src/stores/tx'
 
 const router = useRouter()
-
-const store = useTxStore()
-const {
-  transactions: { data: transactions, pending },
-  byMonth,
-  total,
-  filter
-} = useTransactions()
-
-const monthlyTx = computed(() => byMonth(transactions, store.date.month, store.date.year))
-const monthlyTotal = computed(() => (total(monthlyTx.value)))
-
 const user = useUserStore()
-const { users, currentUser } = useUsers(monthlyTx)
-const selectedUserId = ref(currentUser.id)
-const onSelectUser = (userId) => {
-  if (selectedUserId.value === userId) selectedUserId.value = null
-  else selectedUserId.value = userId
+const store = useTxStore()
+const { transactions: { data: transactions, pending }, total, filter } = useTransactions()
+
+const monthlyTx = computed(() => filter(transactions.value, { month: store.date.month, year: store.date.year }))
+const monthlyTotal = computed(() => (total(monthlyTx)))
+const monthlyTxByUser = computed(() => filter(monthlyTx.value, { userId: selectedUserId.value }))
+
+const { users } = useUsers(monthlyTx)
+const selectedUserId = ref(null)
+
+const onSelectUser = (user) => {
+  if (selectedUserId.value === user.id) selectedUserId.value = null
+  else selectedUserId.value = user.id
 }
 
 const selectedCategory = ref(null)
-const { categories } = useCategories(monthlyTx)
-const onSelectCategory = (category) => {
-  if (selectedCategory.value === category) selectedCategory.value = null
-  else selectedCategory.value = category
-}
+const { categories } = useCategories(monthlyTxByUser)
 
-const filteredTransactions = computed(() => {
-  return filter(transactions.value, selectedUserId.value, selectedCategory.value, store.date.month, store.date.year)
-})
+const onSelectCategory = (category) => {
+  if (selectedCategory.value === category.name) selectedCategory.value = null
+  else selectedCategory.value = category.name
+}
 
 const descending = ref(true)
 const sortedTransactions = (tx, descending = true) => {
   if (descending) return unref(tx).sort((a, b) => a.timestamp - b.timestamp)
   else return unref(tx).sort((a, b) => b.timestamp - a.timestamp)
 }
+const displayedTransactions = computed(() => {
+  return filter(
+    monthlyTx.value,
+    {
+      userId: selectedUserId.value,
+      category: selectedCategory.value
+    }
+  )
+})
 
-const isDeselected = (category) => {
-  return (selectedCategory.value !== null) && (selectedCategory.value !== category)
+const isSelectedCategory = (category) => {
+  return (selectedCategory.value === null) || (selectedCategory.value === category.name)
+}
+
+const isSelectedUser = (user) => {
+  return ((selectedUserId.value === null) || (selectedUserId.value === user.id))
 }
 
 const onSwipeMonth = ({ evt, ...info }) => {
   if (info.direction === 'left') store.nextMonth()
   else store.prevMonth()
-}
-
-const highlightColor = (amount) => {
-  if (amount === 0) return 'grey'
-  if (amount < 0) return 'credit'
-  return 'debit'
 }
 
 const expanded = ref(false)
@@ -112,6 +112,7 @@ const clearFilters = () => {
               <template v-if="(selectedCategory || selectedUserId)">
                 <q-space/>
                 <q-chip
+                  class="q-ma-none"
                   color="grey"
                   icon="mdi-filter"
                   removable
@@ -125,30 +126,32 @@ const clearFilters = () => {
           <template #default>
             <div class="row q-pt-sm q-px-sm">
               <template v-for="user, i in users" :key="i">
-                <div class="col-auto q-pl-xs q-pb-xs">
+                <div class="col-auto q-mr-xs">
                   <q-chip
-                    :class="`full-width q-ma-none ${selectedUserId === user.id ? '' : 'text-on-color'}`"
+                    :class="`full-width q-ma-none ${!isSelectedUser(user) ? '' : 'text-on-color'}`"
                     color="indigo-8"
                     style="font-size: 0.8rem;"
                     clickable
-                    :outline="selectedUserId === user.id"
-                    @click="(e) => { onSelectUser(user.id); e.stopPropagation() }"
+                    :outline="!isSelectedUser(user)"
+                    @click="onSelectUser(user)"
                   >
-                    <q-avatar :text-color="selectedUserId === user.id ? 'indigo-8' : 'white'">
+                    <q-avatar
+                      :text-color="!isSelectedUser(user) ? 'indigo-8' : 'text-on-color'"
+                    >
                       {{ user.name[0] }}
                     </q-avatar>
-                    <span>${{ Math.abs(user.total).toFixed(2) }}</span>
+                    <span>${{ (user.total).toFixed(2) }}</span>
                   </q-chip>
                 </div>
               </template>
             </div>
             <div class="row q-pt-sm q-px-sm">
               <template v-for="category, i in categories" :key="i">
-                <div class="col-auto q-pl-xs q-pb-xs">
+                <div class="col-auto q-mr-xs">
                   <category-chip
                     :category="category"
-                    :selected="!isDeselected(category.name)"
-                    @click="onSelectCategory(category.name)"
+                    :selected="isSelectedCategory(category)"
+                    @click="onSelectCategory(category)"
                     style="font-size: 0.8rem;"
                   />
                 </div>
@@ -176,8 +179,17 @@ const clearFilters = () => {
       </div>
 
       <q-linear-progress rounded indeterminate v-if="pending"/>
-
-      <template v-for="item in sortedTransactions(filteredTransactions, descending)" :key="item.id">
+      <div v-if="displayedTransactions.length === 0">
+        <q-item>
+          <q-item-section>
+            <q-item-label class="text-muted row items-center">
+              <q-icon class="q-mr-sm" name="mdi-alert-circle" color="warning" size="sm"/>
+              <span>No Matching Transactions</span>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </div>
+      <template v-else v-for="item in sortedTransactions(displayedTransactions, descending)" :key="item.id">
         <q-slide-item
           left-color="transparent"
           right-color="transparent"

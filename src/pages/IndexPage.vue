@@ -10,7 +10,7 @@ const router = useRouter()
         @click="router.push('/finance')"
       >
         <q-card-section class="row no-wrap items-center text-green-10" style="font-size: 1.25rem;">
-          <q-icon name="mdi-cash-multiple" class="q-mr-md"/>
+          <q-icon name="mdi-piggy-bank" class="q-mr-md" size="lg"/>
           <div>Finance</div>
         </q-card-section>
       </q-card>
@@ -22,7 +22,7 @@ const router = useRouter()
         class="recipe-card cursor-pointer bg-red-2"
       >
         <q-card-section class="row no-wrap items-center text-red-10" style="font-size: 1.25rem;">
-          <q-icon name="mdi-pot-steam" class="q-mr-md"/>
+          <q-icon name="mdi-pot-steam" size="lg" class="q-mr-md"/>
           <div>Recipes</div>
         </q-card-section>
       </q-card>

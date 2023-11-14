@@ -1,4 +1,5 @@
 <script setup>
+import NavChip from 'src/components/finance/NavChip.vue'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
@@ -78,7 +79,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
     </div>
   </q-page>
   <teleport to="#toolbar">
-    <q-chip clickable icon="mdi-chevron-left" color="green-10" text-color="on-color" class="q-ma-none q-ml-xs text-bold" label="Transactions" @click="router.push('/finance/transactions')"/>
+    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
   </teleport>
 </template>
 

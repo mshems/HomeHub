@@ -1,5 +1,5 @@
 <script setup>
-import BalanceChip from './BalanceChip.vue'
+import { color } from 'src/composables/balance'
 defineProps({
   category: Object,
   selected: Boolean
@@ -7,15 +7,14 @@ defineProps({
 </script>
 
 <template>
-  <balance-chip
-    :balance="category.total"
-    :class="`${!selected ? '' : 'text-on-color'}`"
+  <q-chip
+    :class="`q-ma-none ${!selected ? '' : 'text-on-color'}`"
     clickable
     :flat="selected"
     :outline="!selected"
+    :color="color(category.total)"
   >
-    <template #left>
-      <q-icon :name="category.icon" class="q-pr-xs"/>
-    </template>
-  </balance-chip>
+    <q-icon :name="category.icon" class="q-pr-xs"/>
+    <span>${{ Math.abs(category.total.toFixed(2)) }}</span>
+  </q-chip>
 </template>

@@ -10,13 +10,12 @@ const router = useRouter()
 const {
   transactions: { data: transactions },
   total,
-  after,
-  byMonth
+  filter
 } = useTransactions()
 
 const now = DateTime.local()
-const txYearToDate = computed(() => after(transactions.value, now.startOf('year')))
-const txThisMonth = computed(() => byMonth(transactions.value, now.month, now.year))
+const txYearToDate = computed(() => filter(transactions.value, { after: now.startOf('year') }))
+const txThisMonth = computed(() => filter(transactions.value, { month: now.month, year: now.year }))
 </script>
 
 <template>

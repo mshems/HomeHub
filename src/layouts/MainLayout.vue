@@ -1,26 +1,24 @@
 <script setup>
+import NavChip from 'src/components/finance/NavChip.vue'
 import SettingsDialog from 'src/components/SettingsDialog.vue'
 
-import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { useSettingsStore } from 'src/stores/settings'
 
-const router = useRouter()
+const $q = useQuasar()
 const settings = useSettingsStore()
 </script>
 
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-toolbar>
-      <q-toolbar-title class="title">
-        <div class="cursor-pointer" @click="router.push('/')">
-          <q-chip icon="mdi-home" color="primary" text-color="white" class="text-bold q-ma-none" label="Home"/>
-        </div>
+      <q-toolbar-title class="title row items-center">
+        <nav-chip path="/" icon="mdi-home" label="Home"/>
+        <div id="toolbar" class="row items-center"></div>
+
       </q-toolbar-title>
-      <div class="row items-center no-wrap q-gutter-xs">
-        <template v-if="!settings.user.authorized">
-          <q-btn class="gt-sm" size="md" dense flat color="primary" icon-right="mdi-login" @click="router.push('/login')" label="Log In"/>
-          <q-btn class="gt-xs lt-md" dense size="md" flat color="primary" icon-right="mdi-login" @click="router.push('/login')"/>
-        </template>
+      <div class="row items-center no-wrap">
+        <q-btn round size="md" dense flat color="primary" icon="mdi-compare" @click="$q.dark.toggle()"/>
         <q-btn round size="md" dense flat color="primary" icon="mdi-cog" @click="settings.showMenu = true"/>
       </div>
     </q-toolbar>

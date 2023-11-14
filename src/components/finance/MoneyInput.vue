@@ -10,8 +10,8 @@ defineProps({
 const rawValue = ref('')
 
 const set = (val) => {
-  rawValue.value = val
-  emit('update:money', Number.parseFloat(val).toFixed(2))
+  rawValue.value = val.toFixed(2)
+  emit('update:money', Number.parseFloat(val))
 }
 
 const reset = () => {

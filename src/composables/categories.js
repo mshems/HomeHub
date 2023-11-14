@@ -1,11 +1,12 @@
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import { useRtdb } from './rtdb'
 import { useTransactions } from './transactions'
 
 const { categories: dbCategories } = useRtdb()
-const { total, byCategory } = useTransactions()
+const { total, filter } = useTransactions()
 
 const useCategories = (txRef) => {
+  const tx = computed(() => unref(txRef))
   const categories = computed(() => {
     return Object.fromEntries(
       Object.keys(dbCategories.value || {}).map(c => [
@@ -13,7 +14,7 @@ const useCategories = (txRef) => {
         {
           ...dbCategories.value[c],
           name: c,
-          ...(txRef && txRef.value) ? { total: total(byCategory(txRef, c)) } : {}
+          ...(tx.value) ? { total: total(filter(tx, { category: c })) } : {}
         }
       ])
     )

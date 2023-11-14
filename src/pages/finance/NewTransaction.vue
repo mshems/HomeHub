@@ -1,21 +1,16 @@
 <script setup>
+import NavChip from 'src/components/finance/NavChip.vue'
 import TransactionForm from 'src/components/finance/TransactionForm.vue'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
-import { useUserStore } from 'src/stores/user'
-import { useRtdb } from 'src/composables/rtdb'
+import { useTransactions } from 'src/composables/transactions'
+import { useUsers } from 'src/composables/users'
 
 const router = useRouter()
 
-const { add, users } = useRtdb()
-const userStore = useUserStore()
-const currentUser = computed(() => {
-  for (const uid in users.value) {
-    if (users.value[uid].email === userStore.email) return users.value[uid]
-  }
-  return {}
-})
+const { currentUser } = useUsers()
+const { create } = useTransactions()
 
 const type = ref('debit')
 const form = ref({
@@ -47,7 +42,7 @@ const addTransaction = async () => {
     payload.amount = -payload.amount
   }
   console.log(payload)
-  add('/data/finance/transactions', payload)
+  create(payload)
     .then(() => router.push('/finance/transactions'))
     .catch(() => console.log('error'))
 }
@@ -77,20 +72,20 @@ const txForm = ref(null)
         >
           <transaction-form ref="txForm" v-model:form="form"/>
           <div class="lt-sm column items-center q-gutter-sm">
-            <q-btn unelevated rounded type="submit" label="Submit" color="positive"/>
+            <q-btn unelevated rounded type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
             <q-btn flat type="reset" label="Reset" color="negative"/>
             <q-btn flat label="cancel" @click="router.push('/finance/transactions')"/>
           </div>
           <div class="gt-xs row items-center q-gutter-sm">
             <q-btn flat rounded label="cancel" @click="router.push('/finance/transactions')"/>
             <q-btn unelevated rounded type="reset" label="Reset" color="negative"/>
-            <q-btn unelevated rounded type="submit" label="Submit" color="positive"/>
+            <q-btn unelevated rounded type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
           </div>
           </q-form>
       </q-card-section>
     </q-card>
   </q-page>
   <teleport to="#toolbar">
-    <q-chip clickable icon="mdi-chevron-left" color="green-10" text-color="on-color" class="q-ma-none q-ml-xs text-bold" label="Transactions" @click="router.push('/finance/transactions')"/>
+    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
   </teleport>
 </template>
