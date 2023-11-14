@@ -1,0 +1,154 @@
+// app global css in SCSS form
+$on-color-text: #ffffffdd;
+
+$light-mode-text: #1d1d1d;
+$light-mode-muted: #969696;
+
+$dark-mode-text: #cbcbcb;
+$dark-mode-muted: #8a8a8a;
+
+body {
+  background: #efefef;
+  color: $light-mode-text;
+}
+
+body.body--dark {
+  color: $dark-mode-text;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover:not(.q-btn):not(.q-item) {
+  text-decoration: underline;
+}
+
+.rounded {
+  border-radius: 4px !important;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 0px;
+}
+
+.card-subtitle {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-size: 1.125rem;
+  color: $light-mode-muted;
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.q-card--dark {
+  box-shadow: none;
+}
+
+.q-dark {
+  color: $dark-mode-text;
+}
+
+.q-list--dark, .q-item--dark {
+  color: $dark-mode-text;
+}
+
+.q-chip:focus {
+  box-shadow: none !important;
+}
+
+.q-field--filled .q-field__control {
+  border-radius: 4px 4px 4px 4px;
+}
+
+.q-field--filled .q-field__control:before {
+  border-bottom: none;
+}
+
+.title,
+.card-title {
+  font-family: 'Montserrat';
+}
+
+.subtitle,
+.card-subtitle {
+  font-family: 'Roboto Slab';
+}
+
+
+.body--light {
+
+  .text-on-color {
+    color: $on-color-text !important;
+  }
+
+  .text-muted {
+    color: $light-mode-muted !important;
+  }
+
+  .bg-muted {
+    background: $light-mode-muted;
+  }
+
+  .bordered {
+    border: 1px solid $separator-color;
+  }
+
+  .border-muted {
+    border-color: $light-mode-muted;
+  }
+
+  .border-default {
+    border-color: $separator-color;
+  }
+
+  .hoverable:hover {
+    background: $table-hover-background;
+  }
+}
+
+.body--dark {
+  .text-primary {
+    color: #4b5d6e !important;
+  }
+
+  .bg-primary {
+    background: #4b5d6e !important;
+  }
+
+  .text-on-color {
+    color: $on-color-text !important;
+  }
+
+  .text-muted {
+    color: $dark-mode-muted !important;
+  }
+
+  .bg-muted {
+    background: $dark-mode-muted;
+  }
+
+  .card-title {
+    color: $dark-mode-text;
+  }
+
+  .card-subtitle {
+    color: $dark-mode-muted;
+  }
+
+  .bordered {
+    border: 1px solid $separator-dark-color;
+  }
+
+  .border-default {
+    border-color: $separator-dark-color;
+  }
+
+  .hoverable:hover {
+    background: $table-dark-hover-background;
+  }
+}

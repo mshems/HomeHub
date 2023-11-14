@@ -1,0 +1,42 @@
+// Quasar SCSS (& Sass) Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
+
+// Check documentation for full list of Quasar variables
+
+// Your own variables (that are declared here) and Quasar's own
+// ones will be available out of the box in your .vue/.scss/.sass files
+
+// It's highly recommended to change the default colors
+// to match your app's branding.
+// Tip: Use the "Theme Builder" on Quasar's documentation website.
+@import url('https://fonts.googleapis.com/css2?family=Roboto Slab:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto Sans:wght@300;400;500;600;700&display=swap');
+
+$typography-font-family: 'Noto Sans', sans-serif !default;
+
+
+$primary   : #2b3d4e;
+$secondary : #3a6d4e;
+$accent    : #86b127;
+
+$dark      : #1D1D1D;
+$dark-page : #121212;
+
+$positive  : #21BA45;
+$negative  : #C10015;
+$info      : #31CCEC;
+$warning   : #F2C037;
+
+
+$h1:        (size: 4rem,     line-height: 4rem,     letter-spacing: -.01562em, weight: 300) !default;
+$h2:        (size: 3.75rem,  line-height: 3.75rem,  letter-spacing: -.00833em, weight: 300) !default;
+$h3:        (size: 3rem,     line-height: 3.125rem, letter-spacing: normal,    weight: 400) !default;
+$h4:        (size: 2.125rem, line-height: 2.5rem,   letter-spacing: .00735em,  weight: 400) !default;
+$h5:        (size: 1.5rem,   line-height: 2rem,     letter-spacing: normal,    weight: 400) !default;
+$h6:        (size: 1.25rem,  line-height: 2rem,     letter-spacing: .0125em,   weight: 500) !default;
+
+$shadow-2  : none !default;
+$dark-shadow-2  : none !default;
