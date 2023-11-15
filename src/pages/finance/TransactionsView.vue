@@ -147,7 +147,7 @@ const clearFilters = () => {
             </div>
             <div class="row q-pt-sm q-px-sm">
               <template v-for="category, i in categories" :key="i">
-                <div class="col-auto q-mr-xs">
+                <div class="col-auto q-mr-xs q-mb-sm">
                   <category-chip
                     :category="category"
                     :selected="isSelectedCategory(category)"
