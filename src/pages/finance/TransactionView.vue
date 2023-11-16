@@ -42,10 +42,36 @@ const onUpdate = (data) => {
     })
 }
 
-const onDelete = () => {
+const confirm = () => {
+  $q.dialog({
+    title: 'Delete Transaction',
+    icon: 'mdi-delete',
+    message: 'Are you sure? This cannot be undone.',
+    ok: {
+      'icon-right': 'mdi-delete',
+      unelevated: true,
+      label: 'delete',
+      color: 'negative'
+    },
+    cancel: {
+      flat: true,
+      color: 'muted'
+    }
+  }).onOk(() => {
+    onDelete()
+  })
+}
+
+const onDelete = async () => {
   transaction.value = {}
-  removeTx(props.id).then(
+  removeTx(props.id).then(() => {
+    $q.notify({
+      message: 'Transaction deleted',
+      color: 'negative',
+      icon: 'mdi-delete'
+    })
     router.push('/finance/transactions')
+  }
   )
 }
 const type = computed(() => transaction.value ? ((transaction.value.amount < 0) ? 'debit' : 'credit') : 'default')
@@ -68,7 +94,9 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
         <div class="col text-right ">
           <div style="font-size: 2.5rem;">
             <q-spinner v-if="loading"/>
-            <div v-else>${{ Math.abs(transaction?.amount).toFixed(2) }}</div>
+            <div v-else>
+              ${{ Math.abs(transaction?.amount).toFixed(2) }}
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -123,7 +151,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
                 <q-icon name="mdi-note" class="q-mr-sm"/>Notes
               </q-item-label>
               <q-item-label class="subtitle text-muted">
-                <pre class="q-my-xs" style="font-size: 0.8rem;">{{ transaction.notes || '--' }}</pre>
+                <div v-if="transaction.notes" class="q-my-xs" style="font-size: 0.8rem;">{{ transaction.notes }}</div>
               </q-item-label>
             </q-item-section>
             <q-popup-edit
@@ -142,7 +170,8 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
         </q-list>
       </q-card-section>
       <q-card-actions align="center">
-        <q-btn flat label="delete" color="negative" @click="onDelete"/>
+        <q-btn label="edit" color="warning" :to="`/finance/transactions/${id}/edit`"/>
+        <q-btn flat label="delete" color="negative" @click="confirm"/>
       </q-card-actions>
     </q-card>
   </q-page>

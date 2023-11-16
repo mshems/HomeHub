@@ -35,7 +35,6 @@ const onSelectCategory = (category) => {
   else selectedCategory.value = category.name
 }
 
-const descending = ref(true)
 const sortedTransactions = (tx, descending = true) => {
   if (descending) return unref(tx).sort((a, b) => a.timestamp - b.timestamp)
   else return unref(tx).sort((a, b) => b.timestamp - a.timestamp)
@@ -172,8 +171,8 @@ const clearFilters = () => {
             dense
             color="muted"
             flat
-            :icon="descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
-            @click="descending = !descending"
+            :icon="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
+            @click="store.descending = !store.descending"
           />
         </div>
       </div>
@@ -189,7 +188,7 @@ const clearFilters = () => {
           </q-item-section>
         </q-item>
       </div>
-      <template v-else v-for="item in sortedTransactions(displayedTransactions, descending)" :key="item.id">
+      <template v-else v-for="item in sortedTransactions(displayedTransactions, store.descending)" :key="item.id">
         <q-slide-item
           left-color="transparent"
           right-color="transparent"
