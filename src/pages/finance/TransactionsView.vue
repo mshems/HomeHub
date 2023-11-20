@@ -1,4 +1,5 @@
 <script setup>
+import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionItem from 'src/components/finance/TransactionItem.vue'
 import BalanceChip from 'src/components/finance/BalanceChip.vue'
 import CategoryChip from 'src/components/finance/CategoryChip.vue'
@@ -70,6 +71,7 @@ const clearFilters = () => {
 </script>
 
 <template>
+  <finance-header></finance-header>
   <q-page padding style="padding-bottom: 80px;">
     <q-banner avatar="mdi-alert" rounded class="bg-red-5" v-if="!user.authorized">
       <template v-slot:avatar>

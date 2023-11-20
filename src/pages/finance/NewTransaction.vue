@@ -1,4 +1,5 @@
 <script setup>
+import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import NavChip from 'src/components/finance/NavChip.vue'
 import TransactionForm from 'src/components/finance/TransactionForm.vue'
 import { ref } from 'vue'
@@ -14,7 +15,7 @@ const { create } = useTransactions()
 
 const type = ref('debit')
 const form = ref({
-  category: '',
+  category: 'other',
   name: '',
   paid_by: currentUser.value.id,
   amount: null,
@@ -38,10 +39,6 @@ const resetForm = () => {
 const addTransaction = async () => {
   const payload = { ...form.value }
   payload.timestamp = DateTime.fromFormat(payload.timestamp, 'yyyy-MM-dd').toSeconds()
-  if (type.value === 'debit') {
-    payload.amount = -payload.amount
-  }
-  console.log(payload)
   create(payload)
     .then(() => router.push('/finance/transactions'))
     .catch(() => console.log('error'))
@@ -52,6 +49,9 @@ const txForm = ref(null)
 </script>
 
 <template>
+  <finance-header>
+    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
+  </finance-header>
   <q-page padding>
     <q-card flat>
       <q-card-section class="lt-sm row items-center justify-between q-gutter-sm q-pb-none">
@@ -85,7 +85,4 @@ const txForm = ref(null)
       </q-card-section>
     </q-card>
   </q-page>
-  <teleport to="#toolbar">
-    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
-  </teleport>
 </template>

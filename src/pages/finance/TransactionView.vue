@@ -1,4 +1,5 @@
 <script setup>
+import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import CategorySelect from 'src/components/finance/CategorySelect.vue'
 import MoneyInput from 'src/components/finance/MoneyInput.vue'
 import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
@@ -89,6 +90,9 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
 </script>
 
 <template>
+  <finance-header>
+    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
+  </finance-header>
   <q-page padding>
     <q-card :class="`bg-${type}-bg`">
       <q-card-section :class="`row items-center justify-between q-pa-xs text-on-${type}`">
@@ -220,8 +224,4 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
       />
     </q-card>
   </q-dialog>
-
-  <teleport to="#toolbar">
-    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
-  </teleport>
 </template>

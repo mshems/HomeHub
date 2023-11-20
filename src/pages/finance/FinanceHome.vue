@@ -1,4 +1,5 @@
 <script setup>
+import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import BalanceChip from 'src/components/finance/BalanceChip.vue'
 
 import { computed } from 'vue'
@@ -23,6 +24,7 @@ const txThisMonth = computed(() => filter(transactions.value, { month: now.month
 </script>
 
 <template>
+  <finance-header/>
   <q-page padding>
     <q-card :class="`q-mb-sm ${total(txYearToDate) >= 0 ? 'credit' : 'debit'}-hover`">
       <q-card-section class="text-white">

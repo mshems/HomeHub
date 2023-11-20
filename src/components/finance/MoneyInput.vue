@@ -9,7 +9,7 @@ const props = defineProps({
 
 const inner = computed({
   get () {
-    return props.amount
+    return props.amount?.toFixed(2)
   },
   set (val) {
     emit('update:amount', props.credit ? parseFloat(val) : -parseFloat(val))
