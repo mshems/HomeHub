@@ -17,7 +17,7 @@ const form = ref({
   category: '',
   name: '',
   paid_by: currentUser.value.id,
-  amount: 0,
+  amount: null,
   notes: '',
   timestamp: DateTime.now().toFormat('yyyy-MM-dd')
 })
@@ -72,14 +72,14 @@ const txForm = ref(null)
         >
           <transaction-form ref="txForm" v-model:form="form"/>
           <div class="lt-sm column items-center q-gutter-sm">
-            <q-btn unelevated rounded type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
+            <q-btn unelevated type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
             <q-btn flat type="reset" label="Reset" color="negative"/>
             <q-btn flat label="cancel" @click="router.push('/finance/transactions')"/>
           </div>
           <div class="gt-xs row items-center q-gutter-sm">
-            <q-btn flat rounded label="cancel" @click="router.push('/finance/transactions')"/>
-            <q-btn unelevated rounded type="reset" label="Reset" color="negative"/>
-            <q-btn unelevated rounded type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
+            <q-btn flat label="cancel" @click="router.push('/finance/transactions')"/>
+            <q-btn unelevated type="reset" label="Reset" color="negative"/>
+            <q-btn unelevated type="submit" label="Create" color="positive" icon-right="mdi-cash-plus"/>
           </div>
           </q-form>
       </q-card-section>

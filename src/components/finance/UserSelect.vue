@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 const emit = defineEmits(['update:user'])
 const props = defineProps({
-  user: Object,
+  user: String,
   users: Object
 })
 const userOptions = computed(() => props.users ? Object.entries(props.users).map(([id, user]) => ({ label: user.name, value: id })) : [])

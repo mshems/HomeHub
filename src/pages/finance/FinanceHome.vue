@@ -15,6 +15,10 @@ const {
 
 const now = DateTime.local()
 const txYearToDate = computed(() => filter(transactions.value, { after: now.startOf('year') }))
+const creditsYTD = computed(() => filter(txYearToDate.value, { type: 'credit' }))
+const savedYTD = computed(() => total(creditsYTD.value))
+const debitsYTD = computed(() => filter(txYearToDate.value, { type: 'debit' }))
+const spentYTD = computed(() => total(debitsYTD.value))
 const txThisMonth = computed(() => filter(transactions.value, { month: now.month, year: now.year }))
 </script>
 

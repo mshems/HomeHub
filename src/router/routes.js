@@ -26,7 +26,6 @@ const routes = [
     children: [
       { path: '', component: () => import('src/pages/finance/TransactionsView.vue') },
       { path: ':id', props: true, component: () => import('src/pages/finance/TransactionView.vue') },
-      { path: ':id/edit', props: true, component: () => import('src/pages/finance/EditTransaction.vue') },
       { path: 'new', component: () => import('src/pages/finance/NewTransaction.vue') }
     ]
   },

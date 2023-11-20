@@ -105,11 +105,13 @@ defineExpose({ reset, setAmount, setDefault })
   </q-select>
 
   <MoneyInput
+    filled
     ref="moneyInput"
     label="Amount"
-    :money="form.amount"
-    @update:money="val => emit('update:form', {...form, amount: val})"
-  />
+    :amount="form.amount"
+    @update:amount="val => emit('update:form', {...form, amount: val})"
+  >
+  </MoneyInput>
 
   <q-select
     filled

@@ -1,44 +1,39 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 
-const emit = defineEmits(['update:money'])
-defineProps({
-  money: Number,
-  label: String
+const emit = defineEmits(['update:amount'])
+const props = defineProps({
+  amount: Number,
+  credit: Boolean
 })
 
-const rawValue = ref('')
-
-const set = (val) => {
-  rawValue.value = val.toFixed(2)
-  emit('update:money', Number.parseFloat(val))
-}
+const inner = computed({
+  get () {
+    return props.amount
+  },
+  set (val) {
+    emit('update:amount', props.credit ? parseFloat(val) : -parseFloat(val))
+  }
+})
 
 const reset = () => {
-  rawValue.value = ''
-  emit('update:money', 0)
+  emit('update:amount', 0)
 }
-
-defineExpose({ reset, set })
+defineExpose({ reset })
 </script>
 
 <template>
-  <div>
-    <q-input
-      filled
-      :label="label"
-      mask="#.##"
-      reverse-fill-mask
-      placeholder="0.00"
-      inputmode="numeric"
-      input-class="text-right"
-      required
-      v-model="rawValue"
-      @update:model-value="emit('update:money', Number.parseFloat(rawValue))"
-    >
-      <template #prepend>
-        <q-icon name="mdi-cash-multiple"/>
-      </template>
-    </q-input>
-  </div>
+  <q-input
+    mask="#.##"
+    fill-mask="0"
+    reverse-fill-mask
+    placeholder="0.00"
+    inputmode="numeric"
+    input-class="text-right"
+    v-model="inner"
+  >
+    <template #prepend>
+      <q-icon name="mdi-cash-multiple"/>
+    </template>
+  </q-input>
 </template>
