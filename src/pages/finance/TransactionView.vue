@@ -1,6 +1,6 @@
 <script setup>
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import CategorySelect from 'src/components/finance/CategorySelect.vue'
+import CategoryPopup from 'src/components/finance/tx/TxCategoryPopup.vue'
 import MoneyInput from 'src/components/finance/MoneyInput.vue'
 import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
 import UserSelect from 'src/components/finance/UserSelect.vue'
@@ -12,6 +12,7 @@ import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
 import { useRtdb } from 'src/composables/rtdb'
 import { useTransactions } from 'src/composables/transactions'
+import { useCategories } from 'src/composables/categories'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -19,7 +20,8 @@ const props = defineProps({
   id: String
 })
 
-const { categories, users } = useRtdb()
+const { users } = useRtdb()
+const { categories } = useCategories()
 const { get, update, removeTx } = useTransactions()
 const { data: transaction, pending: loading } = get(props.id)
 
@@ -94,12 +96,16 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
     <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
   </finance-header>
   <q-page padding>
-    <q-card :class="`bg-${type}-bg`">
+    <q-card v-if="loading" style="height: 88px" class="row items-center">
+      <q-spinner class="q-ml-md" size="lg" color="primary"/>
+      <q-space/>
+      <q-skeleton style="width: 200px; height: 32px" class="rounded q-mr-md" animation="none"/>
+    </q-card>
+    <q-card v-else :class="`bg-${type}-bg`">
       <q-card-section :class="`row items-center justify-between q-pa-xs text-on-${type}`">
         <div class="col-shrink">
-          <q-spinner v-if="loading"/>
           <q-btn
-            v-else-if="transaction"
+            v-if="transaction"
             flat
             dense
             class="cursor-pointer rounded q-py-xs q-px-sm"
@@ -116,9 +122,8 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
         <q-space/>
         <div class="col-shrink text-right ">
           <div style="font-size: 2.5rem;">
-            <q-spinner v-if="loading"/>
             <q-btn
-              v-else-if="transaction"
+              v-if="!loading && transaction"
               flat
               dense
               class="cursor-pointer rounded q-py-xs q-px-md"
@@ -203,25 +208,27 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
     @hide="onUpdate({amount: transaction.amount})"
   >
     <q-card style="min-width: 300px;">
-      <money-input
-        filled
-        :credit="type === 'credit'"
-        v-model:amount="transaction.amount"
-        style="font-size: 1.5rem;"
-      >
-      </money-input>
+      <q-card-section class="card-title" style="font-size: 1rem;">
+        Amount
+      </q-card-section>
+      <q-card-section class="card-subtitle" style="font-size: 0.8rem;">
+        Enter a value
+      </q-card-section>
+      <q-card-section>
+        <money-input
+          filled
+          :credit="transaction.category === 'income'"
+          v-model:amount="transaction.amount"
+          style="font-size: 1.5rem;"
+          >
+        </money-input>
+      </q-card-section>
     </q-card>
   </q-dialog>
 
-  <q-dialog
+  <category-popup
     v-model="showCategoryDialog"
-    @hide="onUpdate({category: transaction.category})"
-  >
-    <q-card style="min-width: 300px;">
-      <category-select
-        v-model:category="transaction.category"
-        behavior="dialog"
-      />
-    </q-card>
-  </q-dialog>
+    :category="transaction?.category"
+    @save="(val) => onUpdate({category: val})"
+  />
 </template>

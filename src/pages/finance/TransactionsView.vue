@@ -95,8 +95,43 @@ const clearFilters = () => {
           </div>
         </div>
       </q-card-section>
-      <q-card-section class="q-px-xs q-pt-sm q-pb-xs">
+      <q-card-section class="q-pt-sm">
+        <div class="row q-pt-sm q-px-sm">
+          <div class="col-auto q-mr-xs">
+            <balance-chip
+              :balance="monthlyTotal"
+              icon="mdi-finance"
+              style="font-size: 0.8rem;"
+            />
+          </div>
+          <template v-for="user, i in users" :key="i">
+            <div class="col-auto q-mr-xs">
+              <q-chip
+                :class="`full-width q-ma-none ${!isSelectedUser(user) ? '' : 'text-on-color'}`"
+                color="indigo-8"
+                style="font-size: 0.8rem;"
+                clickable
+                :outline="!isSelectedUser(user)"
+                @click="onSelectUser(user)"
+              >
+                <q-avatar
+                  :text-color="!isSelectedUser(user) ? 'indigo-8' : 'text-on-color'"
+                >
+                  {{ user.name[0] }}
+                </q-avatar>
+                <span>${{ (user.total).toFixed(2) }}</span>
+              </q-chip>
+            </div>
+          </template>
+        </div>
+
+      </q-card-section>
+    </q-card>
+
+    <div flat class="tx-container rounded q-mt-sm q-pa-xs">
+      <div class="row items-center">
         <q-expansion-item
+          class="col-grow q-mb-xs"
           v-model="expanded"
           dense
           header-class="q-px-none rounded"
@@ -104,14 +139,9 @@ const clearFilters = () => {
         >
           <template #header>
             <div class="q-pl-sm col-grow items-center row no-wrap">
-              <balance-chip
-                :balance="monthlyTotal"
-                icon="mdi-finance"
-                style="font-size: 0.8rem;"
-              >
-              </balance-chip>
+              <q-item-label class="text-bold">Transactions</q-item-label>
+              <q-space/>
               <template v-if="(selectedCategory || selectedUserId)">
-                <q-space/>
                 <q-chip
                   class="q-ma-none"
                   color="grey"
@@ -121,31 +151,18 @@ const clearFilters = () => {
                   @remove="clearFilters"
                 />
               </template>
+              <q-icon
+                class="q-mx-sm"
+                dense
+                color="muted"
+                size="sm"
+                :name="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
+                @click="e=> {e.stopPropagation(); store.descending = !store.descending}"
+              />
             </div>
           </template>
 
           <template #default>
-            <div class="row q-pt-sm q-px-sm">
-              <template v-for="user, i in users" :key="i">
-                <div class="col-auto q-mr-xs">
-                  <q-chip
-                    :class="`full-width q-ma-none ${!isSelectedUser(user) ? '' : 'text-on-color'}`"
-                    color="indigo-8"
-                    style="font-size: 0.8rem;"
-                    clickable
-                    :outline="!isSelectedUser(user)"
-                    @click="onSelectUser(user)"
-                  >
-                    <q-avatar
-                      :text-color="!isSelectedUser(user) ? 'indigo-8' : 'text-on-color'"
-                    >
-                      {{ user.name[0] }}
-                    </q-avatar>
-                    <span>${{ (user.total).toFixed(2) }}</span>
-                  </q-chip>
-                </div>
-              </template>
-            </div>
             <div class="row q-pt-sm q-px-sm">
               <template v-for="category, i in categories" :key="i">
                 <div class="col-auto q-mr-xs q-mb-sm">
@@ -160,25 +177,7 @@ const clearFilters = () => {
             </div>
           </template>
         </q-expansion-item>
-      </q-card-section>
-    </q-card>
-
-    <div flat class="tx-container rounded q-mt-sm q-pa-xs">
-
-      <div class="row items-center no-wrap justify-between q-mt-sm q-px-md">
-        <div class="text-bold text-default">Transactions</div>
-
-        <div class="row items-center">
-          <q-btn
-            dense
-            color="muted"
-            flat
-            :icon="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
-            @click="store.descending = !store.descending"
-          />
-        </div>
       </div>
-
       <q-linear-progress rounded indeterminate v-if="pending"/>
       <div v-if="displayedTransactions.length === 0">
         <q-item>

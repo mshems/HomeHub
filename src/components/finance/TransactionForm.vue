@@ -109,6 +109,7 @@ defineExpose({ reset, setAmount, setDefault })
     ref="moneyInput"
     label="Amount"
     :amount="form.amount"
+    :credit="form.category === 'income'"
     @update:amount="val => emit('update:form', {...form, amount: val})"
   >
   </MoneyInput>

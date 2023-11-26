@@ -7,6 +7,9 @@ $light-mode-muted: #969696;
 $dark-mode-text: #cbcbcb;
 $dark-mode-muted: #8a8a8a;
 
+$selected-background: rgba(0, 0, 0, 0.08);
+$selected-dark-background: rgba(255, 255, 255, 0.12);
+
 body {
   background: #efefef;
   color: $light-mode-text;
@@ -109,6 +112,10 @@ a:hover:not(.q-btn):not(.q-item) {
   .hoverable:hover {
     background: $table-hover-background;
   }
+
+  .selected {
+    background: $selected-background;
+  }
 }
 
 .body--dark {
@@ -150,5 +157,9 @@ a:hover:not(.q-btn):not(.q-item) {
 
   .hoverable:hover {
     background: $table-dark-hover-background;
+  }
+
+  .selected {
+    background: $selected-dark-background;
   }
 }
