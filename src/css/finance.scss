@@ -11,6 +11,11 @@ $debit-dark: $red-10;
 $debit-light-bg: $red-2;
 $debit-dark-bg: #c14848;
 
+body {
+  --q-credit: #66bb6a;
+  --q-debit: #ef5350;
+}
+
 .bg-credit {
   background: $credit-medium;
 }

@@ -15,11 +15,11 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "chart.js": "^4.4.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "firebase": "^10.1.0",
     "luxon": "^3.3.0",
     "pinia": "^2.0.11",
-    "quasar": "^2.6.0",
-    "v-money": "^0.8.1",
+    "quasar": "^2.14.0",
     "vue": "^3.0.0",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.0",

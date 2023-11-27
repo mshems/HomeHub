@@ -1,5 +1,5 @@
 <script setup>
-import { color } from 'src/composables/balance'
+import { color, formatBalance } from 'src/composables/balance'
 const props = defineProps({
   balance: {
     type: Number,
@@ -18,6 +18,6 @@ const props = defineProps({
     text-color="text-on-color"
     :color="color(props.balance)"
     :icon="icon"
-    :label="`\$${Math.abs(balance.toFixed(2))}`"
+    :label="formatBalance(Math.abs(props.balance))"
   />
 </template>

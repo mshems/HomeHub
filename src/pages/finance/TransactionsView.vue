@@ -5,6 +5,7 @@ import BalanceChip from 'src/components/finance/BalanceChip.vue'
 import CategoryChip from 'src/components/finance/CategoryChip.vue'
 import { computed, ref, unref } from 'vue'
 import { useRouter } from 'vue-router'
+import { formatBalance } from 'src/composables/balance'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 import { useCategories } from 'src/composables/categories'
@@ -84,10 +85,15 @@ const clearFilters = () => {
       <q-card-section class="card-title q-px-md">
         <div
           v-touch-swipe.mouse="onSwipeMonth"
-          class="q-ma-none cursor-pointer row items-center justify-between no-wrap"
+          class="q-ma-none cursor-pointer row items-center justify-between no-wrap ellipsis"
           style="font-size: 1.5rem;"
         >
+          <q-btn round size="sm" class="lt-sm" color="primary" dense flat icon="mdi-chevron-left" @click="store.prevMonth"/>
           <div class="">{{ store.date.monthLong }} {{ store.date.year }}</div>
+          <div class="lt-sm">
+            <q-btn round size="sm" color="primary" dense flat icon="mdi-calendar" @click="store.currentMonth()"/>
+            <q-btn round size="sm" color="primary" dense flat icon="mdi-chevron-right" @click="store.nextMonth"/>
+          </div>
           <div class="gt-xs">
             <q-btn color="primary" dense flat icon="mdi-chevron-left" @click="store.prevMonth"/>
             <q-btn color="primary" dense flat icon="mdi-calendar" @click="store.currentMonth()"/>
@@ -104,23 +110,25 @@ const clearFilters = () => {
               style="font-size: 0.8rem;"
             />
           </div>
-          <template v-for="user, i in users" :key="i">
+          <template v-for="u, i in users" :key="i">
             <div class="col-auto q-mr-xs">
               <q-chip
-                :class="`full-width q-ma-none ${!isSelectedUser(user) ? '' : 'text-on-color'}`"
+                :class="`full-width q-ma-none ${!isSelectedUser(u) ? '' : 'text-on-color'}`"
                 color="indigo-8"
                 style="font-size: 0.8rem;"
                 clickable
-                :outline="!isSelectedUser(user)"
-                @click="onSelectUser(user)"
+                :outline="!isSelectedUser(u)"
+                @click="onSelectUser(u)"
               >
                 <q-avatar
-                  :text-color="!isSelectedUser(user) ? 'indigo-8' : 'text-on-color'"
+                  :text-color="!isSelectedUser(u) ? 'indigo-8' : 'text-on-color'"
                 >
-                  {{ user.name[0] }}
+                  {{ u.name[0] }}
                 </q-avatar>
-                <span>${{ (user.total).toFixed(2) }}</span>
+                <span>{{ formatBalance(u.total) }}</span>
               </q-chip>
+              <!-- <div class="text-credit">${{ total(filter(monthlyTx, {userId: u.id, type: 'credit'})).toFixed(2) }}</div> -->
+              <!-- <div class="text-debit">${{ Math.abs(total(filter(monthlyTx, {userId: u.id, type: 'debit'})).toFixed(2)) }}</div> -->
             </div>
           </template>
         </div>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { DateTime } from 'luxon'
-
+import { formatBalance } from 'src/composables/balance'
 const emit = defineEmits(['delete', 'view'])
 const props = defineProps({
   item: {
@@ -48,11 +48,11 @@ const onClick = () => {
     <q-item-section class="text-right">
       <!-- credit -->
       <q-item-label v-if="item.amount > 0" class="text-credit">
-        ${{ Math.abs(item.amount).toFixed(2) }}
+        {{ formatBalance(Math.abs(item.amount)) }}
       </q-item-label>
       <!-- debit -->
       <q-item-label v-else class="text-debit">
-        ${{ Math.abs(item.amount).toFixed(2) }}
+        {{ formatBalance(Math.abs(item.amount)) }}
       </q-item-label>
       <!-- user -->
       <q-item-label caption class="subtitle text-muted">{{ user.name }}</q-item-label>

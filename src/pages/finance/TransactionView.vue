@@ -10,6 +10,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
+import { formatBalance } from 'src/composables/balance'
 import { useRtdb } from 'src/composables/rtdb'
 import { useTransactions } from 'src/composables/transactions'
 import { useCategories } from 'src/composables/categories'
@@ -130,7 +131,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
               @click="showAmountDialog = true"
               style="font-size: 2.5rem; font-weight: 400;"
             >
-              ${{ Math.abs(transaction?.amount).toFixed(2) }}
+              {{ formatBalance(Math.abs(transaction?.amount)) }}
             </q-btn>
           </div>
         </div>
