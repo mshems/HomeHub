@@ -1,41 +1,32 @@
 <script setup>
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import TransactionItem from 'src/components/finance/TransactionItem.vue'
-import BalanceChip from 'src/components/finance/BalanceChip.vue'
-import CategoryChip from 'src/components/finance/CategoryChip.vue'
+import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
+import TransactionsFilters from 'src/components/finance/TransactionsFilters.vue'
+import TransactionsList from 'src/components/finance/TransactionsList.vue'
+
 import { computed, ref, unref } from 'vue'
-import { useRouter } from 'vue-router'
-import { formatBalance } from 'src/composables/balance'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 import { useCategories } from 'src/composables/categories'
 import { useUserStore } from 'src/stores/user'
 import { useTxStore } from 'src/stores/tx'
 
-const router = useRouter()
 const user = useUserStore()
 const store = useTxStore()
 const { transactions: { data: transactions, pending }, total, filter } = useTransactions()
 
 const monthlyTx = computed(() => filter(transactions.value, { month: store.date.month, year: store.date.year }))
 const monthlyTotal = computed(() => (total(monthlyTx)))
-const monthlyTxByUser = computed(() => filter(monthlyTx.value, { userId: selectedUserId.value }))
+const monthlyTxByUser = computed(() => filter(monthlyTx.value, { userId: store.filters.userId }))
 
 const { users } = useUsers(monthlyTx)
-const selectedUserId = ref(null)
 
 const onSelectUser = (user) => {
-  if (selectedUserId.value === user.id) selectedUserId.value = null
-  else selectedUserId.value = user.id
+  if (store.filters.userId === user.id) store.filters.userId = null
+  else store.filters.userId = user.id
 }
 
-const selectedCategory = ref(null)
 const { categories } = useCategories(monthlyTxByUser)
-
-const onSelectCategory = (category) => {
-  if (selectedCategory.value === category.name) selectedCategory.value = null
-  else selectedCategory.value = category.name
-}
 
 const sortedTransactions = (tx, descending = true) => {
   if (descending) return unref(tx).sort((a, b) => a.timestamp - b.timestamp)
@@ -45,34 +36,22 @@ const displayedTransactions = computed(() => {
   return filter(
     monthlyTx.value,
     {
-      userId: selectedUserId.value,
-      category: selectedCategory.value
+      userId: store.filters.userId,
+      category: store.filters.category
     }
   )
 })
 
-const isSelectedCategory = (category) => {
-  return (selectedCategory.value === null) || (selectedCategory.value === category.name)
-}
-
-const isSelectedUser = (user) => {
-  return ((selectedUserId.value === null) || (selectedUserId.value === user.id))
-}
-
-const onSwipeMonth = ({ evt, ...info }) => {
-  if (info.direction === 'left') store.nextMonth()
-  else store.prevMonth()
-}
-
 const expanded = ref(false)
 const clearFilters = () => {
-  selectedCategory.value = null
-  selectedUserId.value = null
+  store.filters.userId = null
+  store.filters.userId = null
 }
 </script>
 
 <template>
   <finance-header></finance-header>
+
   <q-page padding style="padding-bottom: 80px;">
     <q-banner avatar="mdi-alert" rounded class="bg-red-5" v-if="!user.authorized">
       <template v-slot:avatar>
@@ -81,60 +60,17 @@ const clearFilters = () => {
       <div class="text-bold text-white">Log in to view</div>
     </q-banner>
 
-    <q-card v-else flat>
-      <q-card-section class="card-title q-px-md">
-        <div
-          v-touch-swipe.mouse="onSwipeMonth"
-          class="q-ma-none cursor-pointer row items-center justify-between no-wrap ellipsis"
-          style="font-size: 1.5rem;"
-        >
-          <q-btn round size="sm" class="lt-sm" color="primary" dense flat icon="mdi-chevron-left" @click="store.prevMonth"/>
-          <div class="">{{ store.date.monthLong }} {{ store.date.year }}</div>
-          <div class="lt-sm">
-            <q-btn round size="sm" color="primary" dense flat icon="mdi-calendar" @click="store.currentMonth()"/>
-            <q-btn round size="sm" color="primary" dense flat icon="mdi-chevron-right" @click="store.nextMonth"/>
-          </div>
-          <div class="gt-xs">
-            <q-btn color="primary" dense flat icon="mdi-chevron-left" @click="store.prevMonth"/>
-            <q-btn color="primary" dense flat icon="mdi-calendar" @click="store.currentMonth()"/>
-            <q-btn color="primary" dense flat icon="mdi-chevron-right" @click="store.nextMonth"/>
-          </div>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pt-sm">
-        <div class="row q-pt-sm q-px-sm">
-          <div class="col-auto q-mr-xs">
-            <balance-chip
-              :balance="monthlyTotal"
-              icon="mdi-finance"
-              style="font-size: 0.8rem;"
-            />
-          </div>
-          <template v-for="u, i in users" :key="i">
-            <div class="col-auto q-mr-xs">
-              <q-chip
-                :class="`full-width q-ma-none ${!isSelectedUser(u) ? '' : 'text-on-color'}`"
-                color="indigo-8"
-                style="font-size: 0.8rem;"
-                clickable
-                :outline="!isSelectedUser(u)"
-                @click="onSelectUser(u)"
-              >
-                <q-avatar
-                  :text-color="!isSelectedUser(u) ? 'indigo-8' : 'text-on-color'"
-                >
-                  {{ u.name[0] }}
-                </q-avatar>
-                <span>{{ formatBalance(u.total) }}</span>
-              </q-chip>
-              <!-- <div class="text-credit">${{ total(filter(monthlyTx, {userId: u.id, type: 'credit'})).toFixed(2) }}</div> -->
-              <!-- <div class="text-debit">${{ Math.abs(total(filter(monthlyTx, {userId: u.id, type: 'debit'})).toFixed(2)) }}</div> -->
-            </div>
-          </template>
-        </div>
-
-      </q-card-section>
-    </q-card>
+    <transactions-header
+      v-else
+      :date="store.date"
+      :total="monthlyTotal"
+      :users="users"
+      :selectedUserId="store.filters.userId"
+      @prev="store.prevMonth"
+      @next="store.nextMonth"
+      @current="store.currentMonth"
+      @selectUser="onSelectUser"
+    />
 
     <div flat class="tx-container rounded q-mt-sm q-pa-xs">
       <div class="row items-center">
@@ -149,7 +85,7 @@ const clearFilters = () => {
             <div class="q-pl-sm col-grow items-center row no-wrap">
               <q-item-label class="text-bold">Transactions</q-item-label>
               <q-space/>
-              <template v-if="(selectedCategory || selectedUserId)">
+              <template v-if="store.hasFilters()">
                 <q-chip
                   class="q-ma-none"
                   color="grey"
@@ -171,55 +107,20 @@ const clearFilters = () => {
           </template>
 
           <template #default>
-            <div class="row q-pt-sm q-px-sm">
-              <template v-for="category, i in categories" :key="i">
-                <div class="col-auto q-mr-xs q-mb-sm">
-                  <category-chip
-                    :category="category"
-                    :selected="isSelectedCategory(category)"
-                    @click="onSelectCategory(category)"
-                    style="font-size: 0.8rem;"
-                  />
-                </div>
-              </template>
-            </div>
+            <transactions-filters
+              :transactions="monthlyTxByUser"
+              v-model:filters="store.filters"
+            />
           </template>
         </q-expansion-item>
       </div>
-      <q-linear-progress rounded indeterminate v-if="pending"/>
-      <div v-if="displayedTransactions.length === 0">
-        <q-item>
-          <q-item-section>
-            <q-item-label class="text-muted row items-center">
-              <q-icon class="q-mr-sm" name="mdi-alert-circle" color="warning" size="sm"/>
-              <span>No Matching Transactions</span>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </div>
-      <template v-else v-for="item in sortedTransactions(displayedTransactions, store.descending)" :key="item.id">
-        <q-slide-item
-          left-color="transparent"
-          right-color="transparent"
-          @left="router.push(`/finance/transactions/${item.id}/edit`)"
-          class="q-mb-xs rounded"
-        >
-          <template #left>
-            <div class="row items-center text-warning">
-              <q-icon left name="mdi-pencil" color="warning"/>Edit
-            </div>
-          </template>
-          <template #default>
-            <transaction-item
-              class="rounded"
-              :item="item"
-              :category="categories[item.category]"
-              :user="users[item.paid_by]"
-              @view="(i) => router.push('/finance/transactions/' + i.id)"
-            />
-          </template>
-        </q-slide-item>
-      </template>
+
+      <transactions-list
+        :loading="pending"
+        :transactions="sortedTransactions(displayedTransactions, store.descending)"
+        :categories="categories"
+        :users="users"
+      />
     </div>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">

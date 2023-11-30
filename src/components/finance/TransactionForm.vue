@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import MoneyInput from 'src/components/finance/MoneyInput.vue'
+import TimestampInput from './TimestampInput.vue'
 import { useRtdb } from 'src/composables/rtdb'
 
 const emit = defineEmits(['update:form'])
@@ -39,17 +40,12 @@ defineExpose({ reset, setAmount, setDefault })
 </script>
 
 <template>
-  <q-input
+  <timestamp-input
     filled
-    type="date"
     label="Date"
-    :model-value="form.timestamp"
-    @update:model-value="val => emit('update:form', {...form, timestamp: val})"
-  >
-    <template #prepend>
-      <q-icon name="mdi-calendar"/>
-    </template>
-  </q-input>
+    :timestamp="form.timestamp"
+    @update:timestamp="val => emit('update:form', {...form, timestamp: val})"
+  />
 
   <q-input
     filled

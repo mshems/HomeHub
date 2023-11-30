@@ -1,0 +1,48 @@
+<script setup>
+import TransactionItem from './TransactionItem.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+defineProps({
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  transactions: {
+    type: Array,
+    default: () => []
+  },
+  categories: {
+    type: Object,
+    default: () => ({})
+  },
+  users: {
+    type: Object,
+    default: () => ({})
+  }
+})
+</script>
+
+<template>
+  <div>
+    <q-linear-progress rounded indeterminate v-if="loading"/>
+    <div v-if="transactions.length === 0">
+      <q-item>
+        <q-item-section>
+          <q-item-label class="text-muted row items-center">
+            <q-icon class="q-mr-sm" name="mdi-alert-circle" color="warning" size="sm"/>
+            <span>No Transactions</span>
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </div>
+    <template v-else v-for="item in transactions" :key="item.id">
+      <transaction-item
+        class="rounded"
+        :item="item"
+        :category="categories[item.category]"
+        :user="users[item.paid_by]"
+        @view="(i) => router.push('/finance/transactions/' + i.id)"
+      />
+    </template>
+  </div>
+</template>

@@ -2,11 +2,13 @@
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import BalanceChip from 'src/components/finance/BalanceChip.vue'
 import HorizontalStackedBar from 'src/components/charts/HorizontalStackedBar.vue'
+// import CategorySpendingChart from 'src/components/charts/CategorySpendingChart.vue'
 
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
 import { useTransactions } from 'src/composables/transactions'
+// import { useCategories } from 'src/composables/categories'
 
 const router = useRouter()
 const { transactions: { data: transactions }, total, filter } = useTransactions()
@@ -24,7 +26,7 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
 // const monthlyCategoryDatasets = computed(() => {
 //   return Object.entries(monthlyCategories.value).map(([key, category]) => {
 //     return {
-//       label: category.name,
+//       label: category.icon,
 //       value: Math.abs(category.total),
 //       color: category.color
 //     }
@@ -78,7 +80,7 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
             { label: 'Saved', value: savedThisMonth, color: 'credit' }
           ]"
         />
-        <!-- <horizontal-stacked-bar
+        <!-- <category-spending-chart
           title="Categories"
           :datasets="monthlyCategoryDatasets || []"
         /> -->

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { DateTime } from 'luxon'
-import { formatBalance } from 'src/composables/balance'
+import { formatBalance } from 'src/balance'
 const emit = defineEmits(['delete', 'view'])
 const props = defineProps({
   item: {
@@ -59,3 +59,4 @@ const onClick = () => {
     </q-item-section>
   </q-item>
 </template>
+src/balance

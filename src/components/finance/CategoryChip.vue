@@ -1,5 +1,5 @@
 <script setup>
-import { color, formatBalance } from 'src/composables/balance'
+import { color, formatBalance } from 'src/balance'
 defineProps({
   category: Object,
   selected: Boolean
@@ -14,7 +14,12 @@ defineProps({
     :outline="!selected"
     :color="color(category.total)"
   >
-    <q-icon :name="category.icon" class="q-pr-xs"/>
+    <q-icon :name="category.icon" class="q-pr-sm"/>
     <span>{{ formatBalance(Math.abs(category.total)) }}</span>
+    <!-- <q-avatar :color="category.color">
+      <q-icon :name="category.icon"/>
+    </q-avatar>
+    <span>{{ formatBalance(Math.abs(category.total)) }}</span> -->
   </q-chip>
 </template>
+src/balance

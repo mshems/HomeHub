@@ -6,7 +6,7 @@ import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
-import { formatBalance } from 'src/composables/balance'
+import { formatBalance } from 'src/balance'
 
 const props = defineProps({
   title: String,
@@ -62,6 +62,11 @@ const options = ref({
         weight: 'bold',
         anchor: 'center'
       },
+      display: (context) => {
+        const data = context.chart.data
+        const { datasetIndex } = context
+        return data.datasets[datasetIndex].data[0] > 10
+      },
       formatter: (value, context) => {
         const data = context.chart.data
         const { datasetIndex } = context
@@ -98,7 +103,6 @@ ChartJS.register(Title, Legend, BarElement, CategoryScale, LinearScale, ChartDat
 
 <template>
   <Bar
-    id="my-chart-id"
     :height="48"
     :options="options"
     :data="data"

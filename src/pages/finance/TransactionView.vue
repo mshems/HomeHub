@@ -10,7 +10,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
-import { formatBalance } from 'src/composables/balance'
+import { formatBalance } from 'src/balance'
 import { useRtdb } from 'src/composables/rtdb'
 import { useTransactions } from 'src/composables/transactions'
 import { useCategories } from 'src/composables/categories'
@@ -23,7 +23,7 @@ const props = defineProps({
 
 const { users } = useRtdb()
 const { categories } = useCategories()
-const { get, update, removeTx } = useTransactions()
+const { get, update, remove } = useTransactions()
 const { data: transaction, pending: loading } = get(props.id)
 
 const transactionDate = computed(() => {
@@ -77,7 +77,7 @@ const confirm = () => {
 
 const onDelete = async () => {
   transaction.value = {}
-  removeTx(props.id).then(() => {
+  remove(props.id).then(() => {
     $q.notify({
       message: 'Transaction deleted',
       color: 'negative',
@@ -233,3 +233,4 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
     @save="(val) => onUpdate({category: val})"
   />
 </template>
+src/balance

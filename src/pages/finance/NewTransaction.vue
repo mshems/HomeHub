@@ -20,7 +20,7 @@ const form = ref({
   paid_by: currentUser.value.id,
   amount: null,
   notes: '',
-  timestamp: DateTime.now().toFormat('yyyy-MM-dd')
+  timestamp: DateTime.now().toSeconds()
 })
 
 const setType = (t) => {
@@ -38,7 +38,6 @@ const resetForm = () => {
 
 const addTransaction = async () => {
   const payload = { ...form.value }
-  payload.timestamp = DateTime.fromFormat(payload.timestamp, 'yyyy-MM-dd').toSeconds()
   create(payload)
     .then(() => router.push('/finance/transactions'))
     .catch(() => console.log('error'))

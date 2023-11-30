@@ -20,9 +20,37 @@ export const useTxStore = defineStore('tx', () => {
     date.value = date.value.plus({ month: 1 })
   }
 
+  const filters = ref({
+    category: null,
+    userId: null,
+    month: null,
+    year: null
+  })
+
+  const hasFilters = () => {
+    return (
+      filters.value.category ||
+      filters.value.userId ||
+      filters.value.month ||
+      filters.value.year
+    )
+  }
+
+  const clearFilters = () => {
+    filters.value = {
+      category: null,
+      userId: null,
+      month: null,
+      year: null
+    }
+  }
+
   return {
     descending,
     date,
+    filters,
+    hasFilters,
+    clearFilters,
     currentMonth,
     prevMonth,
     nextMonth
