@@ -1,6 +1,6 @@
 <script setup>
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import NavChip from 'src/components/finance/NavChip.vue'
+import NavChip from 'src/components/NavChip.vue'
 import TransactionForm from 'src/components/finance/TransactionForm.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

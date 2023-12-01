@@ -3,9 +3,10 @@ import CategoryChip from './CategoryChip.vue'
 
 import { toRef } from 'vue'
 import { useCategories } from 'src/composables/categories'
-// import { useUsers } from 'src/composables/users'
+import { useUsers } from 'src/composables/users'
+import { formatBalance } from 'src/balance'
 
-const emit = defineEmits(['update:filters'])
+const emit = defineEmits(['update:filters', 'clear'])
 const props = defineProps({
   filters: {
     type: Object,
@@ -17,11 +18,15 @@ const props = defineProps({
   }
 })
 
-// const { users } = useUsers(toRef(() => props.transactions))
-// const onSelectUser = (user) => {
-//   if (props.filters.userId === user.id) emit('update:filters', { ...props.filters, userId: null })
-//   else emit('update:filters', { ...props.filters, userId: user.id })
-// }
+const { users } = useUsers(toRef(() => props.transactions))
+const onSelectUser = (user) => {
+  if (props.filters.userId === user.id) emit('update:filters', { ...props.filters, userId: null })
+  else emit('update:filters', { ...props.filters, userId: user.id })
+}
+
+const isSelectedUser = (user) => {
+  return ((props.filters.userId === null) || (props.filters.userId === user.id))
+}
 
 const { categories } = useCategories(toRef(() => props.transactions))
 const onSelectCategory = (category) => {
@@ -33,22 +38,45 @@ const isSelectedCategory = (category) => {
   return (props.filters.category === null) || (props.filters.category === category.name)
 }
 
-// const clearFilters = () => {
-//   emit('update:filters', {})
-// }
+const clearFilters = () => {
+  emit('clear')
+}
 </script>
 
 <template>
-  <div class="row q-pt-sm q-px-sm">
-    <template v-for="category, i in categories" :key="i">
-      <div class="col-auto q-mr-xs q-mb-sm">
-        <category-chip
-          :category="category"
-          :selected="isSelectedCategory(category)"
-          @click="onSelectCategory(category)"
-          style="font-size: 0.8rem;"
-        />
-      </div>
-    </template>
+  <div>
+    <div class="row q-pt-sm q-px-sm">
+      <template v-for="u, i in users" :key="i">
+        <div class="col-auto q-mr-xs q-mb-sm">
+          <q-chip
+            :class="`full-width q-ma-none ${!isSelectedUser(u) ? '' : 'text-on-color'}`"
+            color="indigo-8"
+            style="font-size: 0.8rem;"
+            clickable
+            :outline="!isSelectedUser(u)"
+            @click="onSelectUser(u)"
+          >
+            <q-avatar
+              :text-color="!isSelectedUser(u) ? 'indigo-8' : 'text-on-color'"
+            >
+              {{ u.name[0] }}
+            </q-avatar>
+            <span>{{ formatBalance(u.total) }}</span>
+          </q-chip>
+        </div>
+      </template>
+    </div>
+    <div class="row q-pt-sm q-px-sm">
+      <template v-for="category, i in categories" :key="i">
+        <div class="col-auto q-mr-xs q-mb-sm">
+          <category-chip
+            :category="category"
+            :selected="isSelectedCategory(category)"
+            @click="onSelectCategory(category)"
+            style="font-size: 0.8rem;"
+          />
+        </div>
+      </template>
+    </div>
   </div>
 </template>

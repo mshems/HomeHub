@@ -16,10 +16,6 @@ defineProps({
   >
     <q-icon :name="category.icon" class="q-pr-sm"/>
     <span>{{ formatBalance(Math.abs(category.total)) }}</span>
-    <!-- <q-avatar :color="category.color">
-      <q-icon :name="category.icon"/>
-    </q-avatar>
-    <span>{{ formatBalance(Math.abs(category.total)) }}</span> -->
   </q-chip>
 </template>
 src/balance

@@ -35,7 +35,7 @@ defineProps({
         </q-item-section>
       </q-item>
     </div>
-    <template v-else v-for="item in transactions" :key="item.id">
+    <template v-else v-for="item, i in transactions" :key="i">
       <transaction-item
         class="rounded"
         :item="item"

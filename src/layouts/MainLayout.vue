@@ -1,5 +1,5 @@
 <script setup>
-import NavChip from 'src/components/finance/NavChip.vue'
+import NavChip from 'src/components/NavChip.vue'
 import SettingsDialog from 'src/components/SettingsDialog.vue'
 
 import { useQuasar } from 'quasar'

@@ -1,11 +1,11 @@
 <script setup>
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import CategoryPopup from 'src/components/finance/tx/TxCategoryPopup.vue'
-import MoneyInput from 'src/components/finance/MoneyInput.vue'
+import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
 import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
-import UserSelect from 'src/components/finance/UserSelect.vue'
-import TimestampInput from 'src/components/finance/TimestampInput.vue'
-import NavChip from 'src/components/finance/NavChip.vue'
+import UserSelect from 'src/components/finance/inputs/UserSelect.vue'
+import TimestampInput from 'src/components/finance/inputs/TimestampInput.vue'
+import NavChip from 'src/components/NavChip.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -95,6 +95,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
 <template>
   <finance-header>
     <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
+    <nav-chip :path="`/finance/transactions/${id}`" icon="mdi-cash" label="Transaction Info"/>
   </finance-header>
   <q-page padding>
     <q-card v-if="loading" style="height: 88px" class="row items-center">

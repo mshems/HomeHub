@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const emit = defineEmits(['update:amount'])
 const props = defineProps({
@@ -7,6 +7,7 @@ const props = defineProps({
   credit: Boolean
 })
 
+const input = ref()
 const inner = computed({
   get () {
     return props.amount?.toFixed(2)
@@ -24,6 +25,7 @@ defineExpose({ reset })
 
 <template>
   <q-input
+    ref="input"
     mask="#.##"
     fill-mask="0"
     reverse-fill-mask
@@ -31,6 +33,7 @@ defineExpose({ reset })
     inputmode="numeric"
     input-class="text-right"
     v-model="inner"
+    @focus="input.select()"
   >
     <template #prepend>
       <q-icon name="mdi-cash-multiple"/>

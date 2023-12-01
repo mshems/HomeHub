@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import MoneyInput from 'src/components/finance/MoneyInput.vue'
-import TimestampInput from './TimestampInput.vue'
+import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
+import TimestampInput from './inputs/TimestampInput.vue'
 import { useRtdb } from 'src/composables/rtdb'
 
 const emit = defineEmits(['update:form'])
@@ -18,17 +18,11 @@ const { categories, users } = useRtdb()
 const categoryOptions = computed(() => categories.value ? Object.entries(categories.value).map(([k, v]) => k) : [])
 const userOptions = computed(() => users.value ? Object.entries(users.value).map(([id, user]) => ({ label: user.name, value: id })) : [])
 
-const setAmount = (amt) => {
-  moneyInput.value.set(amt)
-}
-
 const formDefault = ref({})
 const setDefault = (val) => {
   formDefault.value = val
-  moneyInput.value.set(val.amount)
 }
 const reset = () => {
-  moneyInput.value.set(formDefault.value.amount)
   emit('update:form', { ...formDefault.value })
 }
 
@@ -36,7 +30,7 @@ onMounted(() => {
   formDefault.value = { ...props.form }
 })
 
-defineExpose({ reset, setAmount, setDefault })
+defineExpose({ reset, setDefault })
 </script>
 
 <template>

@@ -5,6 +5,7 @@ const props = defineProps({
   path: String,
   label: String,
   icon: String,
+  full: Boolean,
   color: {
     type: String,
     default: 'primary'
@@ -16,7 +17,7 @@ const router = useRouter()
 const routeParts = computed(() => route.path.split('/'))
 const pathParts = computed(() => props.path.split('/'))
 const match = computed(() => {
-  return route.path.startsWith(props.path) && !(routeParts.value.length > (pathParts.value.length + 1))
+  return route.path.startsWith(props.path) && !(routeParts.value.length > (pathParts.value.length))
 })
 
 </script>
@@ -30,7 +31,7 @@ const match = computed(() => {
     :color="color"
     no-caps
     size="sm"
-    :label="match ? label : ''"
+    :label="(full || match) ? label : ''"
     @click="router.push(path)"
     style="font-size: 0.75rem;"
   />

@@ -1,8 +1,10 @@
 <script setup>
+import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
 import TransactionsFilters from 'src/components/finance/TransactionsFilters.vue'
 import TransactionsList from 'src/components/finance/TransactionsList.vue'
+import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 
 import { computed, ref, unref } from 'vue'
 import { useTransactions } from 'src/composables/transactions'
@@ -28,29 +30,25 @@ const onSelectUser = (user) => {
 
 const { categories } = useCategories(monthlyTxByUser)
 
-const sortedTransactions = (tx, descending = true) => {
-  if (descending) return unref(tx).sort((a, b) => a.timestamp - b.timestamp)
-  else return unref(tx).sort((a, b) => b.timestamp - a.timestamp)
-}
 const displayedTransactions = computed(() => {
-  return filter(
+  const txs = filter(
     monthlyTx.value,
     {
       userId: store.filters.userId,
       category: store.filters.category
     }
   )
+  if (store.descending) return unref(txs).sort((a, b) => a.timestamp - b.timestamp)
+  else return unref(txs).sort((a, b) => b.timestamp - a.timestamp)
 })
 
 const expanded = ref(false)
-const clearFilters = () => {
-  store.filters.userId = null
-  store.filters.userId = null
-}
 </script>
 
 <template>
-  <finance-header></finance-header>
+  <finance-header>
+    <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
+  </finance-header>
 
   <q-page padding style="padding-bottom: 80px;">
     <q-banner avatar="mdi-alert" rounded class="bg-red-5" v-if="!user.authorized">
@@ -64,13 +62,20 @@ const clearFilters = () => {
       v-else
       :date="store.date"
       :total="monthlyTotal"
-      :users="users"
-      :selectedUserId="store.filters.userId"
       @prev="store.prevMonth"
       @next="store.nextMonth"
       @current="store.currentMonth"
-      @selectUser="onSelectUser"
     />
+
+    <div class="row q-mt-none q-gutter-sm">
+      <template v-for="user in users" :key="user.id">
+        <user-balance-card
+          :class="`cursor-pointer hoverable ${store.filters.userId === user.id ? 'active' : ''}`"
+          :user="user"
+          @click="onSelectUser(user)"
+        />
+      </template>
+    </div>
 
     <div flat class="tx-container rounded q-mt-sm q-pa-xs">
       <div class="row items-center">
@@ -92,7 +97,7 @@ const clearFilters = () => {
                   icon="mdi-filter"
                   removable
                   style="font-size: 0.8rem;"
-                  @remove="clearFilters"
+                  @remove="store.clearFilters()"
                 />
               </template>
               <q-icon
@@ -117,7 +122,7 @@ const clearFilters = () => {
 
       <transactions-list
         :loading="pending"
-        :transactions="sortedTransactions(displayedTransactions, store.descending)"
+        :transactions="displayedTransactions"
         :categories="categories"
         :users="users"
       />
