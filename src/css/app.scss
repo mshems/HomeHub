@@ -73,7 +73,13 @@ a:hover:not(.q-btn):not(.q-item) {
   border-bottom: none;
 }
 
-.title,
+.title {
+  font-family: 'Montserrat';
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.font-title,
 .card-title {
   font-family: 'Montserrat';
 }
@@ -81,6 +87,14 @@ a:hover:not(.q-btn):not(.q-item) {
 .subtitle,
 .card-subtitle {
   font-family: 'Roboto Slab';
+}
+
+.border-transparent {
+  border-color: transparent !important;
+}
+
+.no-border {
+  border: none !important;
 }
 
 .body--light {
@@ -120,11 +134,11 @@ a:hover:not(.q-btn):not(.q-item) {
 
 .body--dark {
   .text-primary {
-    color: #4b5d6e !important;
+    color: var(--q-primary) !important;
   }
 
   .bg-primary {
-    background: #4b5d6e !important;
+    background: var(--q-primary) !important;
   }
 
   .text-on-color {

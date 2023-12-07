@@ -37,9 +37,9 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
 <template>
   <finance-header/>
   <q-page padding>
-    <q-card :class="`q-mb-sm bg-${total(txYearToDate) >= 0 ? 'credit' : 'debit'}-bg`">
+    <q-card class="hoverable cursor-pointer q-mb-sm" :balance="total(txYearToDate)">
       <q-card-section class="row items-center justify-between">
-        <div class="text-bold text-primary" style="font-size: 2rem;">
+        <div class="text-bold text-default font-title" style="font-size: 2rem;">
           YTD {{ now.year }}
           <span style="font-size: 0.8rem;"></span>
         </div>
@@ -60,10 +60,11 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
     </q-card>
 
     <q-card
-      :class="`q-mb-sm cursor-pointer bg-${total(txThisMonth) >= 0 ? 'credit' : 'debit'}-bg`"
+      class="q-mb-sm hoverable cursor-pointer"
+      :balance="total(txThisMonth)"
       @click="router.push('/finance/transactions')">
       <q-card-section class="row items-center justify-between">
-        <div class="text-bold text-primary" style="font-size: 2rem;">
+        <div class="text-bold text-default font-title" style="font-size: 2rem;">
           {{ now.monthLong }}
           <span style="font-size: 0.8rem;"></span>
         </div>

@@ -6,7 +6,7 @@ const router = useRouter()
   <q-page padding>
     <div class="container column q-gutter-sm">
       <q-card
-        class="finance-card cursor-pointer bg-credit-bg"
+        class="hoverable cursor-pointer bg-credit-bg"
         @click="router.push('/finance')"
       >
         <q-card-section class="row no-wrap items-center card-title text-on-credit">
@@ -20,9 +20,9 @@ const router = useRouter()
         target="recipes.mshems.dev"
       >
       <q-card
-        class="recipe-card cursor-pointer bg-red-2"
+        class="hoverable cursor-pointer bg-debit-bg"
       >
-        <q-card-section class="row no-wrap items-center card-title text-red-10">
+        <q-card-section class="row no-wrap items-center card-title text-on-debit">
           <q-icon name="mdi-pot-steam" class="q-mr-md" size="lg"/>
           <div>Recipes</div>
         </q-card-section>

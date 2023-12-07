@@ -5,6 +5,7 @@ import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
 import TransactionsFilters from 'src/components/finance/TransactionsFilters.vue'
 import TransactionsList from 'src/components/finance/TransactionsList.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
+import BalanceCard from 'src/components/finance/BalanceCard.vue'
 
 import { computed, ref, unref } from 'vue'
 import { useTransactions } from 'src/composables/transactions'
@@ -51,82 +52,77 @@ const expanded = ref(false)
   </finance-header>
 
   <q-page padding style="padding-bottom: 80px;">
-    <q-banner avatar="mdi-alert" rounded class="bg-red-5" v-if="!user.authorized">
-      <template v-slot:avatar>
-        <q-icon name="mdi-alert-rhombus" color="white" />
-      </template>
-      <div class="text-bold text-white">Log in to view</div>
-    </q-banner>
+    <template v-if="user.authorized">
+      <transactions-header
+        :date="store.date"
+        :transactions="monthlyTx"
+        @prev="store.prevMonth"
+        @next="store.nextMonth"
+        @current="store.currentMonth"
+      />
 
-    <transactions-header
-      v-else
-      :date="store.date"
-      :total="monthlyTotal"
-      @prev="store.prevMonth"
-      @next="store.nextMonth"
-      @current="store.currentMonth"
-    />
-
-    <div class="row q-mt-none q-gutter-sm">
-      <template v-for="user in users" :key="user.id">
-        <user-balance-card
-          :class="`cursor-pointer hoverable ${store.filters.userId === user.id ? 'active' : ''}`"
-          :user="user"
-          @click="onSelectUser(user)"
-        />
-      </template>
-    </div>
-
-    <div flat class="tx-container rounded q-mt-sm q-pa-xs">
-      <div class="row items-center">
-        <q-expansion-item
-          class="col-grow q-mb-xs"
-          v-model="expanded"
-          dense
-          header-class="q-px-none rounded"
-          expand-icon-class="text-muted"
-        >
-          <template #header>
-            <div class="q-pl-sm col-grow items-center row no-wrap">
-              <q-item-label class="text-bold">Transactions</q-item-label>
-              <q-space/>
-              <template v-if="store.hasFilters()">
-                <q-chip
-                  class="q-ma-none"
-                  color="grey"
-                  icon="mdi-filter"
-                  removable
-                  style="font-size: 0.8rem;"
-                  @remove="store.clearFilters()"
-                />
-              </template>
-              <q-icon
-                class="q-mx-sm"
-                dense
-                color="muted"
-                size="sm"
-                :name="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
-                @click="e=> {e.stopPropagation(); store.descending = !store.descending}"
-              />
-            </div>
-          </template>
-
-          <template #default>
-            <transactions-filters
-              :transactions="monthlyTxByUser"
-              v-model:filters="store.filters"
-            />
-          </template>
-        </q-expansion-item>
+      <div class="row q-mt-none q-gutter-sm">
+        <balance-card class="col-grow col-sm-auto" :balance="monthlyTotal"/>
+        <template v-for="user in users" :key="user.id">
+          <user-balance-card
+            :bordered="store.filters.userId === user.id"
+            :class="`cursor-pointer hoverable`"
+            :user="user"
+            @click="onSelectUser(user)"
+          />
+        </template>
       </div>
 
-      <transactions-list
-        :loading="pending"
-        :transactions="displayedTransactions"
-        :categories="categories"
-        :users="users"
-      />
-    </div>
+      <div flat class="tx-container rounded q-mt-sm q-pa-xs">
+        <div class="row items-center">
+          <q-expansion-item
+            class="col-grow q-mb-xs"
+            v-model="expanded"
+            dense
+            header-class="q-px-none rounded"
+            expand-icon-class="text-muted"
+          >
+            <template #header>
+              <div class="q-pl-sm col-grow items-center row no-wrap">
+                <q-item-label class="text-bold">Transactions</q-item-label>
+                <q-space/>
+                <template v-if="store.hasFilters()">
+                  <q-chip
+                    class="q-ma-none"
+                    icon="mdi-filter"
+                    removable
+                    style="font-size: 0.8rem;"
+                    @remove="store.clearFilters()"
+                  />
+                </template>
+                <q-icon
+                  class="q-mx-sm"
+                  dense
+                  color="muted"
+                  size="sm"
+                  :name="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
+                  @click="e=> {e.stopPropagation(); store.descending = !store.descending}"
+                />
+              </div>
+            </template>
+
+            <template #default>
+              <transactions-filters
+                :transactions="monthlyTxByUser"
+                v-model:filters="store.filters"
+              />
+            </template>
+          </q-expansion-item>
+        </div>
+
+        <transactions-list
+          :loading="pending"
+          :transactions="displayedTransactions"
+          :categories="categories"
+          :users="users"
+        />
+      </div>
+    </template>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="mdi-cash-plus" color="secondary" to="/finance/transactions/new"/>

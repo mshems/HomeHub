@@ -1,14 +1,17 @@
 <script setup>
-import BalanceChip from './BalanceChip.vue'
+import HorizontalStackedBar from '../charts/HorizontalStackedBar.vue'
+
+import { computed } from 'vue'
+import { useTransactions } from 'src/composables/transactions'
 
 const emit = defineEmits(['prev', 'next', 'current'])
-defineProps({
+const props = defineProps({
   date: {
     type: Object,
     required: true
   },
-  total: {
-    type: Number,
+  transactions: {
+    type: Array,
     required: true
   },
   filters: {
@@ -16,6 +19,10 @@ defineProps({
     default: () => ({})
   }
 })
+
+const { total, filter } = useTransactions()
+const spent = computed(() => total(filter(props.transactions, { type: 'debit' })))
+const saved = computed(() => total(filter(props.transactions, { type: 'credit' })))
 
 const onSwipeMonth = ({ evt, ...info }) => {
   if (info.direction === 'left') emit('next')
@@ -26,35 +33,39 @@ const onSwipeMonth = ({ evt, ...info }) => {
 
 <template>
   <q-card flat>
-    <q-card-section class="card-title q-px-md">
+    <q-card-section class="q-pa-xs">
       <div
         v-touch-swipe.mouse="onSwipeMonth"
-        class="q-ma-none cursor-pointer row items-center justify-between no-wrap ellipsis"
-        style="font-size: 1.5rem;"
+        class="cursor-pointer row no-wrap justify-between"
       >
-        <q-btn size="sm" class="lt-sm" color="primary" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
-        <div class="">{{ date.monthLong }} {{ date.year }}</div>
-        <div class="lt-sm">
-          <q-btn class="q-mr-xs" size="sm" color="primary" dense flat icon="mdi-calendar" @click="emit('current')"/>
-          <q-btn size="sm" color="primary" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
+        <div class="lt-sm flex" style="width: 50px;">
+          <q-btn size="md" color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
         </div>
-        <div class="gt-xs">
-          <q-btn color="primary" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
-          <q-btn color="primary" dense flat icon="mdi-calendar" @click="emit('current')"/>
-          <q-btn color="primary" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
+        <div class="lt-sm title q-py-sm text-bold">
+          {{ date.monthLong }} {{ date.year }}
         </div>
-      </div>
-    </q-card-section>
-    <q-card-section class="q-pt-sm">
-      <div class="row q-pt-sm q-px-sm">
-        <div class="col-auto q-mr-xs">
-          <balance-chip
-            :balance="total"
-            icon="mdi-finance"
-            style="font-size: 0.8rem;"
-          />
+        <div class="gt-xs q-pl-sm q-py-sm title text-bold">
+          {{ date.monthLong }} {{ date.year }}
+        </div>
+        <div class="lt-sm flex">
+          <q-btn class="q-mr-xs" size="md" color="default" dense flat icon="mdi-calendar" @click="emit('current')"/>
+          <q-btn size="md" color="default" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
+        </div>
+        <div class="gt-xs row items-center q-gutter-xs">
+          <q-btn color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
+          <q-btn color="default" dense flat icon="mdi-calendar" @click="emit('current')"/>
+          <q-btn color="default" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
         </div>
       </div>
     </q-card-section>
+    <horizontal-stacked-bar
+      v-if="(spent !== null && saved !== null)"
+      class="q-px-sm"
+      :title="date.monthLong"
+      :datasets="[
+        { label: 'Saved', value: saved, color: 'credit' },
+        { label: 'Spent', value: Math.abs(spent), color: 'debit' },
+      ]"
+    />
   </q-card>
 </template>

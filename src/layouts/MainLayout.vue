@@ -18,8 +18,8 @@ const settings = useSettingsStore()
 
       </q-toolbar-title>
       <div class="row items-center no-wrap">
-        <q-btn round size="md" dense flat color="primary" icon="mdi-compare" @click="$q.dark.toggle()"/>
-        <q-btn round size="md" dense flat color="primary" icon="mdi-cog" @click="settings.showMenu = true"/>
+        <q-btn size="md" dense flat color="primary" icon="mdi-compare" @click="$q.dark.toggle()"/>
+        <q-btn size="md" dense flat color="primary" icon="mdi-cog" @click="settings.showMenu = true"/>
       </div>
     </q-toolbar>
     <q-page-container>

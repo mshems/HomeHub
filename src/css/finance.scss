@@ -1,44 +1,46 @@
 $credit-light: $green-2;
-$credit-medium: $green-5;
 $credit-dark: $green-10;
 $credit-light-bg: $green-2;
 $credit-dark-bg: #5fa959;
 
 $debit-light: $red-2;
-$debit-medium: $red-5;
 $debit-dark: $red-10;
 $debit-dark: $red-10;
 $debit-light-bg: $red-2;
 $debit-dark-bg: #c14848;
 
-
-body {
+.body--light {
   --q-credit: #66bb6a;
   --q-debit: #ef5350;
 }
 
+.body--dark {
+  --q-credit: #5fa959;
+  --q-debit: #c14848;
+}
+
 .bg-credit {
-  background: $credit-medium;
+  background: var(--q-credit);
 }
 
 .bg-debit {
-  background: $debit-medium;
+  background: var(--q-debit);
 }
 
 .text-credit {
-  color: $credit-medium;
+  color: var(--q-credit);
 }
 
 .text-debit {
-  color: $debit-medium;
-}
-
-.border-debit {
-  border-color: $debit-medium;
+  color: var(--q-debit);
 }
 
 .border-credit {
-  border-color: $credit-medium;
+  border-color: var(--q-credit) !important;
+}
+
+.border-debit {
+  border-color: var(--q-debit) !important;
 }
 
 .body--light {
@@ -52,12 +54,12 @@ body {
 
   .hoverable.bg-credit-bg:hover,
   .hoverable.active.bg-credit-bg {
-    background: color-mix(in srgb, $credit-light-bg, $credit-medium 25%);
+    background: color-mix(in srgb, $credit-light-bg, var(--q-credit) 25%);
   }
 
   .hoverable.bg-debit-bg:hover,
   .hoverable.active.bg-debit-bg {
-    background: color-mix(in srgb, $debit-light-bg, $debit-medium 25%);
+    background: color-mix(in srgb, $debit-light-bg, var(--q-debit) 25%);
   }
 
   .text-on-credit {
@@ -80,12 +82,12 @@ body {
 
   .hoverable.bg-credit-bg:hover,
   .hoverable.active.bg-credit-bg {
-    background: color-mix(in srgb, $credit-dark-bg, #fff 10%);
+    background: color-mix(in srgb, $credit-dark-bg, #fff 5%);
   }
 
   .hoverable.bg-debit-bg:hover,
   .hoverable.active.bg-debit-bg {
-    background: color-mix(in srgb, $debit-dark-bg, #fff 10%);
+    background: color-mix(in srgb, $debit-dark-bg, #fff 5%);
   }
 
   .text-on-credit {
@@ -94,5 +96,13 @@ body {
 
   .text-on-debit {
     color: $debit-light;
+  }
+
+  .border-credit {
+    border-color: $credit-light !important;
+  }
+
+  .border-debit {
+    border-color: $debit-light !important;
   }
 }

@@ -14,7 +14,8 @@ const props = defineProps({
 
 <template>
   <q-chip
-    class="q-ma-none text-on-color"
+    square
+    class="q-ma-none text-on-color text-right text-bold"
     text-color="text-on-color"
     :color="color(props.balance)"
     :icon="icon"

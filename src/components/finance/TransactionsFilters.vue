@@ -37,10 +37,6 @@ const onSelectCategory = (category) => {
 const isSelectedCategory = (category) => {
   return (props.filters.category === null) || (props.filters.category === category.name)
 }
-
-const clearFilters = () => {
-  emit('clear')
-}
 </script>
 
 <template>
@@ -49,15 +45,16 @@ const clearFilters = () => {
       <template v-for="u, i in users" :key="i">
         <div class="col-auto q-mr-xs q-mb-sm">
           <q-chip
-            :class="`full-width q-ma-none ${!isSelectedUser(u) ? '' : 'text-on-color'}`"
-            color="indigo-8"
+            square
+            :class="`full-width q-ma-none text-right ${!isSelectedUser(u) ? '' : 'text-on-color'} text-bold`"
+            :color="u.color"
             style="font-size: 0.8rem;"
             clickable
             :outline="!isSelectedUser(u)"
             @click="onSelectUser(u)"
           >
             <q-avatar
-              :text-color="!isSelectedUser(u) ? 'indigo-8' : 'text-on-color'"
+              :text-color="!isSelectedUser(u) ? u.color : 'text-on-color'"
             >
               {{ u.name[0] }}
             </q-avatar>

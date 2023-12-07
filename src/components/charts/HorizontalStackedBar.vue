@@ -85,6 +85,11 @@ const datasets = computed(() => props.datasets.map(d => (
     backgroundColor: colors.getPaletteColor(d.color),
     hoverBackgroundColor: colors.lighten(colors.getPaletteColor(d.color), 25),
     datalabels: {
+      font: {
+        size: 12,
+        weight: 'bold',
+        family: 'Noto Sans'
+      },
       color: getCssVar('text-on-color')
     }
   }
