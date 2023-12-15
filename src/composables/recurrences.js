@@ -1,7 +1,7 @@
 import { filter } from '../filters'
 import { useCollection } from './collection'
 
-const useTransactions = () => {
+const useRecurrences = () => {
   const { get, update, remove, create, collection: recurrences } = useCollection('data/finance/recurrences')
 
   return {
@@ -14,4 +14,4 @@ const useTransactions = () => {
   }
 }
 
-export { useTransactions }
+export { useRecurrences }

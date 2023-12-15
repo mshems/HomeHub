@@ -21,6 +21,13 @@ const routes = [
     ]
   },
   {
+    path: '/finance/bills',
+    component: () => import('layouts/FinanceLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/finance/BillsView.vue') }
+    ]
+  },
+  {
     path: '/finance/transactions',
     component: () => import('layouts/FinanceLayout.vue'),
     children: [

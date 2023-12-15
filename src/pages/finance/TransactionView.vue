@@ -12,7 +12,7 @@ import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
 import { formatBalance } from 'src/balance'
 import { useRtdb } from 'src/composables/rtdb'
-import { useTransactions } from 'src/composables/transactions'
+import { useTransactions, useTransaction } from 'src/composables/transactions'
 import { useCategories } from 'src/composables/categories'
 
 const $q = useQuasar()
@@ -25,16 +25,17 @@ const { users } = useRtdb()
 const { categories } = useCategories()
 const { get, update, remove } = useTransactions()
 const { data: transaction, pending: loading } = get(props.id)
+const { paidBy, category } = useTransaction(transaction)
 
 const transactionDate = computed(() => {
   if (loading.value) return ''
   return DateTime.fromSeconds(parseInt(transaction.value.timestamp)).toLocaleString()
 })
 
-const paidBy = computed(() => {
-  if (loading.value) return ''
-  return users.value[transaction.value.paid_by].name
-})
+// const paidBy = computed(() => {
+//   if (loading.value) return ''
+//   return users.value[transaction.value.paid_by].name
+// })
 
 const onUpdate = (data) => {
   const payload = { ...transaction.value, ...data }
