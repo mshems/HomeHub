@@ -15,7 +15,7 @@ const useTransaction = (data) => {
     return categories.value[unref(data).category] || {}
   })
 
-  const type = computed(() => unref(data).amount > 0 ? 'credit' : 'debit')
+  const type = computed(() => unref(data)?.amount > 0 ? 'credit' : 'debit')
   const balanceString = computed(() => formatBalance(unref(data).amount))
 
   return {

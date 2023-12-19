@@ -8,12 +8,14 @@ const userStore = useUserStore()
 
 const useUsers = (txRef) => {
   const dbUsers = getObject('/data/users')
+
   const currentUser = computed(() => {
-    for (const uid in dbUsers.value) {
-      if (dbUsers.value[uid].email === userStore.email) return dbUsers.value[uid]
+    for (const dbuser of Object.values(dbUsers.value || {})) {
+      if (dbuser.email === userStore.email) return dbuser
     }
     return {}
   })
+
   const users = computed(() => {
     return Object.fromEntries(
       Object.keys(dbUsers.value || {}).map(u => [

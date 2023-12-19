@@ -1,12 +1,12 @@
 <script setup>
 import { computed } from 'vue'
-import { useRtdb } from 'src/composables/rtdb'
+import { useCategories } from 'src/composables/categories'
 
 const emit = defineEmits(['update:category'])
 defineProps({
   category: String
 })
-const { categories } = useRtdb()
+const { categories } = useCategories()
 const categoryOptions = computed(() => categories.value ? Object.entries(categories.value).map(([k, v]) => k) : [])
 
 </script>
@@ -27,8 +27,8 @@ const categoryOptions = computed(() => categories.value ? Object.entries(categor
       <div v-if="opt">
         <q-icon
           class="q-mr-sm"
-          :color="(categories !== undefined) ? categories[opt].color : 'grey-5'"
-          :name="(categories !== undefined) ? categories[opt].icon : 'mdi-question'"
+          :color="(categories !== undefined) ? categories[opt]?.color : 'grey-5'"
+          :name="(categories !== undefined) ? categories[opt]?.icon : 'mdi-question'"
         />
         <span class="text-capitalize">{{ opt }}</span>
       </div>

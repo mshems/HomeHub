@@ -51,7 +51,7 @@ const expanded = ref(false)
     <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
   </finance-header>
 
-  <q-page padding style="padding-bottom: 80px;">
+  <q-page class="container" padding style="padding-bottom: 80px;">
     <template v-if="user.authorized">
       <transactions-header
         :date="store.date"

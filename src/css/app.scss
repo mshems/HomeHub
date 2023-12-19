@@ -28,6 +28,11 @@ a:hover:not(.q-btn):not(.q-item) {
   text-decoration: underline;
 }
 
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .rounded {
   border-radius: 4px !important;
 }

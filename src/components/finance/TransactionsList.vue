@@ -21,7 +21,6 @@ defineProps({
   }
 })
 const onClickItem = (item) => {
-  console.log(item)
   router.push(`/finance/transactions/${item.id}`)
 }
 </script>

@@ -22,21 +22,11 @@ const txThisMonth = computed(() => filter(transactions.value, { month: now.month
 const spentThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'debit' })))
 const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'credit' })))
 
-// const { categories: monthlyCategories } = useCategories(txThisMonth)
-// const monthlyCategoryDatasets = computed(() => {
-//   return Object.entries(monthlyCategories.value).map(([key, category]) => {
-//     return {
-//       label: category.icon,
-//       value: Math.abs(category.total),
-//       color: category.color
-//     }
-//   })
-// })
 </script>
 
 <template>
   <finance-header/>
-  <q-page padding>
+  <q-page padding class="container">
     <q-card class="hoverable cursor-pointer q-mb-sm" :balance="total(txYearToDate)">
       <q-card-section class="row items-center justify-between">
         <div class="text-bold text-default font-title" style="font-size: 2rem;">

@@ -5,7 +5,8 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     auth: getAuth(),
     authorized: false,
-    email: ''
+    email: '',
+    user: {}
   }),
   getters: {
   },
@@ -15,10 +16,12 @@ export const useUserStore = defineStore('user', {
         if (user) {
           // User is signed in, see docs for a list of available properties
           this.email = user.email
+          this.user = user
           this.authorized = true
         } else {
           // User is signed out
           this.authorized = false
+          this.user = {}
         }
       })
     },
@@ -28,6 +31,7 @@ export const useUserStore = defineStore('user', {
     logout () {
       signOut(this.auth).then(() => {
         this.email = ''
+        this.user = {}
         // Sign-out successful.
       }).catch((error) => {
         // An error happened.

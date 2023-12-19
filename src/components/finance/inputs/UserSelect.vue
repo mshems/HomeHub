@@ -1,12 +1,14 @@
 <script setup>
 import { computed } from 'vue'
+import { useUsers } from 'src/composables/users'
 
 const emit = defineEmits(['update:user'])
 const props = defineProps({
-  user: String,
-  users: Object
+  user: String
 })
-const userOptions = computed(() => props.users ? Object.entries(props.users).map(([id, user]) => ({ label: user.name, value: id })) : [])
+
+const { users } = useUsers()
+const userOptions = computed(() => users.value ? Object.entries(users.value).map(([id, user]) => ({ label: user.name, value: id })) : [])
 
 </script>
 
