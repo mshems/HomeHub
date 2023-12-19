@@ -6,14 +6,15 @@ import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
 import UserSelect from 'src/components/finance/inputs/UserSelect.vue'
 import TimestampInput from 'src/components/finance/inputs/TimestampInput.vue'
 import NavChip from 'src/components/NavChip.vue'
+
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
 import { formatBalance } from 'src/balance'
-import { useRtdb } from 'src/composables/rtdb'
-import { useTransactions, useTransaction } from 'src/composables/transactions'
-import { useCategories } from 'src/composables/categories'
+import { useTransactions } from 'src/composables/transactions'
+import { useTransaction } from 'src/composables/transaction'
+import { useUsers } from 'src/composables/users'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -21,21 +22,15 @@ const props = defineProps({
   id: String
 })
 
-const { users } = useRtdb()
-const { categories } = useCategories()
+const { users } = useUsers()
 const { get, update, remove } = useTransactions()
 const { data: transaction, pending: loading } = get(props.id)
-const { paidBy, category } = useTransaction(transaction)
+const { user, category, type } = useTransaction(transaction)
 
 const transactionDate = computed(() => {
   if (loading.value) return ''
   return DateTime.fromSeconds(parseInt(transaction.value.timestamp)).toLocaleString()
 })
-
-// const paidBy = computed(() => {
-//   if (loading.value) return ''
-//   return users.value[transaction.value.paid_by].name
-// })
 
 const onUpdate = (data) => {
   const payload = { ...transaction.value, ...data }
@@ -90,7 +85,6 @@ const onDelete = async () => {
 }
 const showAmountDialog = ref(false)
 const showCategoryDialog = ref(false)
-const type = computed(() => transaction.value ? ((transaction.value.amount < 0) ? 'debit' : 'credit') : 'default')
 </script>
 
 <template>
@@ -117,7 +111,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
           >
             <q-icon
               :class="`text-on-${type}`"
-              :name="categories[transaction.category].icon"
+              :name="category.icon"
               size="xl"
             />
           </q-btn>
@@ -166,7 +160,7 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
           <tx-editable-field
             icon="mdi-account"
             :field="transaction.paid_by"
-            :display="paidBy"
+            :display="user.name"
           >
             <q-popup-edit
               class="q-px-none"
@@ -235,4 +229,3 @@ const type = computed(() => transaction.value ? ((transaction.value.amount < 0) 
     @save="(val) => onUpdate({category: val})"
   />
 </template>
-src/balance

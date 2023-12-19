@@ -20,6 +20,10 @@ defineProps({
     default: () => ({})
   }
 })
+const onClickItem = (item) => {
+  console.log(item)
+  router.push(`/finance/transactions/${item.id}`)
+}
 </script>
 
 <template>
@@ -41,7 +45,7 @@ defineProps({
         :item="item"
         :category="categories[item.category]"
         :user="users[item.paid_by]"
-        @view="(i) => router.push('/finance/transactions/' + i.id)"
+        @view="onClickItem"
       />
     </template>
   </div>

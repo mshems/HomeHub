@@ -75,6 +75,10 @@ const filter = (transactions, { userId, category, month, year, type, before, aft
     year)
 }
 
+const total = (transactions) => {
+  return unref(transactions).reduce((acc, t) => acc + t.amount, 0)
+}
+
 export {
   byType,
   byCategory,
@@ -83,5 +87,6 @@ export {
   afterDate,
   beforeDate,
   byUser,
-  filter
+  filter,
+  total
 }

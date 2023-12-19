@@ -1,11 +1,11 @@
 import { computed, unref } from 'vue'
 import { useRtdb } from './rtdb'
-import { useTransactions } from './transactions'
+import { total, filter } from 'src/filters'
 
-const { categories: dbCategories } = useRtdb()
-const { total, filter } = useTransactions()
+const { getObject } = useRtdb()
 
 const useCategories = (txRef) => {
+  const dbCategories = getObject('/data/finance/categories')
   const tx = computed(() => unref(txRef))
   const categories = computed(() => {
     return Object.fromEntries(

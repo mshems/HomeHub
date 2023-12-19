@@ -25,10 +25,7 @@ const useRtdb = () => {
     return useDatabaseObject(dbRef(db, path))
   }
 
-  const categories = useDatabaseObject(dbRef(db, 'data/finance/categories'))
-  const users = useDatabaseObject(dbRef(db, 'data/users'))
-
-  return { db, categories, users, write, add, get, remove, getRef, getList, getObject }
+  return { db, write, add, get, remove, getRef, getList, getObject }
 }
 
 export { useRtdb }
