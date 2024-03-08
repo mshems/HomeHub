@@ -2,10 +2,10 @@
 $on-color-text: #ffffffdd;
 
 $light-mode-text: #1d1d1d;
-$light-mode-muted: #969696;
+$light-mode-muted: #7b808c;
 
 $dark-mode-text: #cbcbcb;
-$dark-mode-muted: #8a8a8a;
+$dark-mode-muted: #7b808c;
 
 $selected-background: rgba(0, 0, 0, 0.08);
 $selected-dark-background: rgba(255, 255, 255, 0.12);
@@ -31,6 +31,27 @@ a:hover:not(.q-btn):not(.q-item) {
 .container {
   max-width: 600px;
   margin: 0 auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 }
 
 .rounded {
@@ -89,6 +110,7 @@ a:hover:not(.q-btn):not(.q-item) {
   font-family: 'Montserrat';
 }
 
+.text-mono,
 .subtitle,
 .card-subtitle {
   font-family: 'Roboto Slab';

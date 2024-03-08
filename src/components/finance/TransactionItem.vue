@@ -9,7 +9,7 @@ const props = defineProps({
     required: true
   },
   category: {
-    type: [Object, Boolean],
+    type: [Object, Boolean, undefined],
     required: true
   },
   user: {
@@ -30,7 +30,7 @@ const onClick = () => {
 <template>
   <q-item class="q-px-md q-py-sm" clickable @click="onClick">
     <q-item-section avatar class="col-shrink q-pr-md">
-      <q-icon :name="category.icon || 'mdi-cash'" :color="category.color || 'grey-5'"></q-icon>
+      <q-icon :name="category?.icon || 'mdi-cash'" :color="category?.color || 'grey-5'"></q-icon>
     </q-item-section>
 
     <q-item-section>
@@ -55,7 +55,7 @@ const onClick = () => {
         {{ formatBalance(Math.abs(item.amount)) }}
       </q-item-label>
       <!-- user -->
-      <q-item-label caption class="subtitle text-muted">{{ user.name }}</q-item-label>
+      <q-item-label caption class="subtitle text-muted">{{ user?.name }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>

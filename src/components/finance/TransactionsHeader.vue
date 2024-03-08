@@ -1,11 +1,11 @@
 <script setup>
-import HorizontalStackedBar from '../charts/HorizontalStackedBar.vue'
+// import HorizontalStackedBar from '../charts/HorizontalStackedBar.vue'
 
-import { computed } from 'vue'
-import { useTransactions } from 'src/composables/transactions'
+// import { computed } from 'vue'
+// import { useTransactions } from 'src/composables/transactions'
 
 const emit = defineEmits(['prev', 'next', 'current'])
-const props = defineProps({
+defineProps({
   date: {
     type: Object,
     required: true
@@ -20,9 +20,9 @@ const props = defineProps({
   }
 })
 
-const { total, filter } = useTransactions()
-const spent = computed(() => total(filter(props.transactions, { type: 'debit' })))
-const saved = computed(() => total(filter(props.transactions, { type: 'credit' })))
+// const { total, filter } = useTransactions()
+// const spent = computed(() => total(filter(props.transactions, { type: 'debit' })))
+// const saved = computed(() => total(filter(props.transactions, { type: 'credit' })))
 
 const onSwipeMonth = ({ evt, ...info }) => {
   if (info.direction === 'left') emit('next')
@@ -32,8 +32,8 @@ const onSwipeMonth = ({ evt, ...info }) => {
 </script>
 
 <template>
-  <q-card flat>
-    <q-card-section class="q-pa-xs">
+  <div>
+    <q-card-section class="q-pa-none">
       <div
         v-touch-swipe.mouse="onSwipeMonth"
         class="cursor-pointer row no-wrap justify-between"
@@ -41,12 +41,16 @@ const onSwipeMonth = ({ evt, ...info }) => {
         <div class="lt-sm flex" style="width: 50px;">
           <q-btn size="md" color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
         </div>
-        <div class="lt-sm title q-py-sm text-bold">
-          {{ date.monthLong }} {{ date.year }}
-        </div>
-        <div class="gt-xs q-pl-sm q-py-sm title text-bold">
-          {{ date.monthLong }} {{ date.year }}
-        </div>
+
+        <q-btn flat dense no-caps @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)">
+          <div class="lt-sm title q-py-sm text-bold">
+            {{ date.monthLong }} {{ date.year }}
+          </div>
+          <div class="gt-xs q-py-sm title text-bold">
+            {{ date.monthLong }} {{ date.year }}
+          </div>
+        </q-btn>
+
         <div class="lt-sm flex">
           <q-btn class="q-mr-xs" size="md" color="default" dense flat icon="mdi-calendar" @click="emit('current')"/>
           <q-btn size="md" color="default" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
@@ -58,7 +62,7 @@ const onSwipeMonth = ({ evt, ...info }) => {
         </div>
       </div>
     </q-card-section>
-    <horizontal-stacked-bar
+    <!-- <horizontal-stacked-bar
       v-if="(spent !== null && saved !== null)"
       class="q-px-sm"
       :title="date.monthLong"
@@ -66,6 +70,6 @@ const onSwipeMonth = ({ evt, ...info }) => {
         { label: 'Saved', value: saved, color: 'credit' },
         { label: 'Spent', value: Math.abs(spent), color: 'debit' },
       ]"
-    />
-  </q-card>
+    /> -->
+  </div>
 </template>

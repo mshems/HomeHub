@@ -1,5 +1,6 @@
 import { unref } from 'vue'
 import { DateTime } from 'luxon'
+import { useCategories } from './composables/categories'
 
 const credits = (transactions) => {
   return unref(transactions).filter(t => t.amount >= 0)
@@ -13,6 +14,12 @@ const byType = (transactions, type) => {
   if (!unref(type)) return transactions
   if (unref(type) === 'credit') return credits(transactions)
   return debits(transactions)
+}
+
+const byCategoryType = (transactions, categoryType) => {
+  if (!unref(categoryType)) return transactions
+  const { categories } = useCategories(transactions)
+  return unref(transactions).filter(t => unref(categories)[t.category].type === unref(categoryType))
 }
 
 const byCategory = (transactions, category) => {
@@ -57,22 +64,32 @@ const byUser = (transactions, userId) => {
   return unref(transactions).filter(t => t.paid_by === unref(userId))
 }
 
-const filter = (transactions, { userId, category, month, year, type, before, after }) => {
-  return byYear(
-    byMonth(
-      byUser(
-        byCategory(
-          byType(
-            beforeDate(
-              afterDate(
-                unref(transactions),
-                after),
-              before),
-            type),
-          category),
-        userId),
-      month, year),
-    year)
+const byName = (transactions, name) => {
+  if (!unref(name)) return transactions
+  return unref(transactions).filter(t => t.name.toLowerCase().startsWith(unref(name.toLowerCase())))
+}
+
+const filter = (transactions, { userId, category, categoryType, month, year, type, before, after, name }) => {
+  return byName(
+    byYear(
+      byMonth(
+        byUser(
+          byCategory(
+            byCategoryType(
+              byType(
+                beforeDate(
+                  afterDate(
+                    unref(transactions),
+                    after),
+                  before),
+                type),
+              categoryType),
+            category),
+          userId),
+        month, year),
+      year),
+    name
+  )
 }
 
 const total = (transactions) => {

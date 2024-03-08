@@ -29,7 +29,7 @@ const { user, category, type } = useTransaction(transaction)
 
 const transactionDate = computed(() => {
   if (loading.value) return ''
-  return DateTime.fromSeconds(parseInt(transaction.value.timestamp)).toLocaleString()
+  return DateTime.fromSeconds(parseInt(transaction.value.timestamp)).toFormat('MMM d, yyyy')
 })
 
 const onUpdate = (data) => {
@@ -83,6 +83,7 @@ const onDelete = async () => {
   }
   )
 }
+const amountDialog = ref()
 const showAmountDialog = ref(false)
 const showCategoryDialog = ref(false)
 </script>
@@ -90,7 +91,7 @@ const showCategoryDialog = ref(false)
 <template>
   <finance-header>
     <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
-    <nav-chip :path="`/finance/transactions/${id}`" icon="mdi-cash" label="Transaction Info"/>
+    <nav-chip :path="`/finance/transactions/${id}`" icon="mdi-cash" label="Details"/>
   </finance-header>
 
   <q-page padding>
@@ -141,7 +142,7 @@ const showCategoryDialog = ref(false)
           </div>
         </q-card-section>
       </q-card>
-      <q-card v-if="!loading && transaction" class="q-mt-sm">
+      <q-card v-if="!loading && transaction" class="q-mt-sm" style="font-size: 1rem;">
         <q-card-section class="q-pa-xs">
           <q-list class="q-px-none">
             <tx-editable-field
@@ -197,7 +198,11 @@ const showCategoryDialog = ref(false)
                 @save="(val) => onUpdate({notes: val})"
                 anchor="top middle"
               >
-                <q-input type="textarea" dense filled v-model="scope.value" autofocus @keyup.enter.stop/>
+                <q-input input-class="text-mono" type="textarea" dense filled v-model="scope.value" autofocus @keyup.enter.stop>
+                  <template #prepend>
+                    <q-icon name="mdi-note"/>
+                  </template>
+                </q-input>
               </q-popup-edit>
             </tx-editable-field>
           </q-list>
@@ -210,6 +215,7 @@ const showCategoryDialog = ref(false)
   </q-page>
 
   <q-dialog
+    ref="amountDialog"
     v-model="showAmountDialog"
     @hide="onUpdate({amount: transaction.amount})"
   >
@@ -227,6 +233,7 @@ const showCategoryDialog = ref(false)
           label="Amount"
           v-model:amount="transaction.amount"
           style="font-size: 1.5rem;"
+          @keyup.enter = amountDialog.hide()
         >
         </MoneyInput>
       </q-card-section>

@@ -3,7 +3,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      { path: '', component: () => import('src/pages/DashboardView.vue') }
     ]
   },
   {
@@ -34,6 +34,20 @@ const routes = [
       { path: '', component: () => import('src/pages/finance/TransactionsView.vue') },
       { path: ':id', props: true, component: () => import('src/pages/finance/TransactionView.vue') },
       { path: 'new', component: () => import('src/pages/finance/NewTransaction.vue') }
+    ]
+  },
+  {
+    path: '/finance/month',
+    component: () => import('layouts/FinanceLayout.vue'),
+    children: [
+      {
+        path: '',
+        props: route => ({
+          m: route.query.m ? Number.parseInt(route.query.m) : undefined,
+          y: route.query.y ? Number.parseInt(route.query.y) : undefined
+        }),
+        component: () => import('src/pages/finance/MonthView.vue')
+      }
     ]
   },
 

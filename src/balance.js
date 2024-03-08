@@ -1,7 +1,7 @@
 import { unref } from 'vue'
 
 const color = (balance) => {
-  if (!unref(balance)) return 'neutral'
+  if (!unref(balance)) return 'muted'
   return (unref(balance) > 0) ? 'credit' : 'debit'
 }
 

@@ -17,7 +17,7 @@ const inner = computed({
   }
 })
 
-const credit = ref(props.amount >= 0)
+const credit = ref(props.amount > 0)
 watch(credit, () => {
   emit('update:amount', -props.amount)
 })
@@ -31,7 +31,7 @@ defineExpose({ reset })
 <template>
   <div class="row">
     <q-input
-      class="col-grow"
+      class="col"
       filled
       ref="input"
       mask="#.##"
@@ -49,7 +49,7 @@ defineExpose({ reset })
       </template>
     </q-input>
     <q-btn
-      class="q-ml-xs"
+      class="col-auto q-ml-xs"
       unelevated
       :outline="credit"
       color="debit"
@@ -57,7 +57,7 @@ defineExpose({ reset })
       @click="credit = false; emit('debit')"
     />
     <q-btn
-      class="q-ml-xs"
+      class="col-auto q-ml-xs"
       unelevated
       :outline="!credit"
       color="credit"

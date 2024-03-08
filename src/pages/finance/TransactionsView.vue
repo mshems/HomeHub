@@ -35,8 +35,10 @@ const displayedTransactions = computed(() => {
   const txs = filter(
     monthlyTx.value,
     {
+      name: store.filters.name,
       userId: store.filters.userId,
-      category: store.filters.category
+      category: store.filters.category,
+      categoryType: store.filters.categoryType
     }
   )
   if (store.descending) return unref(txs).sort((a, b) => a.timestamp - b.timestamp)
@@ -73,6 +75,17 @@ const expanded = ref(false)
         </template>
       </div>
 
+      <q-input
+        v-model="store.filters.name"
+        class="q-mt-sm"
+        clearable
+        dense
+      >
+        <template #prepend>
+          <q-icon name="mdi-magnify" class="cursor-pointer"/>
+        </template>
+      </q-input>
+
       <div flat class="tx-container rounded q-mt-sm q-pa-xs">
         <div class="row items-center">
           <q-expansion-item
@@ -95,14 +108,14 @@ const expanded = ref(false)
                     @remove="store.clearFilters()"
                   />
                 </template>
-                <q-icon
+                <!-- <q-icon
                   class="q-mx-sm"
                   dense
                   color="muted"
                   size="sm"
                   :name="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
                   @click="e=> {e.stopPropagation(); store.descending = !store.descending}"
-                />
+                /> -->
               </div>
             </template>
 

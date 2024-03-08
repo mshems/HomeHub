@@ -2,9 +2,10 @@
 import { useRouter } from 'vue-router'
 const router = useRouter()
 </script>
+
 <template>
-  <q-page padding>
-    <div class="container column q-gutter-sm">
+  <q-page padding class="container">
+    <div class="column q-gutter-sm">
       <q-card
         class="hoverable cursor-pointer bg-credit-bg"
         @click="router.push('/finance')"

@@ -15,8 +15,8 @@ const settings = useSettingsStore()
     </q-toolbar-title>
     <div class="row items-center no-wrap q-gutter-xs">
       <slot name="buttons"></slot>
-      <q-btn size="md" dense flat color="primary" icon="mdi-compare" @click="$q.dark.toggle()"/>
-      <q-btn size="md" dense flat color="primary" icon="mdi-cog" @click="settings.showMenu = true"/>
+      <q-btn size="md" dense flat color="muted" icon="mdi-compare" @click="$q.dark.toggle()"/>
+      <q-btn size="md" dense flat color="muted" icon="mdi-cog" @click="settings.showMenu = true"/>
     </div>
   </q-toolbar>
   <q-banner avatar="mdi-alert" rounded class="bg-red-5 q-mx-sm" v-if="!user.authorized">

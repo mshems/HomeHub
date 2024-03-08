@@ -36,7 +36,7 @@ const login = () => {
           error.value = 'Invalid email or password'
           break
         default:
-          error.value = 'Could not log in'
+          error.value = 'Could not log in. Please try again'
       }
     })
 }
@@ -46,10 +46,13 @@ const login = () => {
   <q-page padding class="column items-center justify-center">
     <q-card>
       <q-form @submit.prevent="login">
-        <q-card-section>
-          <h1 style="font-size: 2rem;" class="q-my-none">Log In</h1>
-          <q-separator/>
-          <q-banner v-if="error" rounded class="q-mt-md text-white bg-primary">
+        <q-card-section class="text-center">
+          <div style="font-size: 2rem;" class="q-py-sm q-my-none title row no-wrap items-center justify-center q-gutter-sm">
+            <q-icon name="mdi-home-analytics"/>
+            <q-icon name="mdi-pot-steam"/>
+            <q-icon name="mdi-piggy-bank"/>
+          </div>
+          <q-banner v-if="error" rounded class="q-mt-md text-white bg-negative">
             {{ error }}
           </q-banner>
         </q-card-section>
@@ -82,9 +85,10 @@ const login = () => {
           </q-input>
         </q-card-section>
         <q-card-actions align="center" class="row q-px-md q-pb-md">
-          <q-btn unelevated no-caps class="col" label="Sign In" color="primary" type="submit" />
+          <q-btn unelevated class="col" label="Log In" color="primary" type="submit" />
         </q-card-actions>
       </q-form>
     </q-card>
+    <q-btn flat label="Cancel" color="primary" @click="router.push('/')" class="q-mt-sm"/>
   </q-page>
 </template>

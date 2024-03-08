@@ -7,8 +7,7 @@ defineProps({
   category: String
 })
 const { categories } = useCategories()
-const categoryOptions = computed(() => categories.value ? Object.entries(categories.value).map(([k, v]) => k) : [])
-
+const categoryOptions = computed(() => categories.value ? Object.entries(categories.value).map(([k, v]) => v.name) : [])
 </script>
 
 <template>
@@ -20,7 +19,6 @@ const categoryOptions = computed(() => categories.value ? Object.entries(categor
     :loading="categories === undefined"
     :options="categoryOptions"
     @update:model-value="val => emit('update:category', val)"
-    popup-content-class="bg-grey-3"
   >
     <template #prepend><q-icon name="mdi-tag"/></template>
     <template #selected-item="{opt}">
@@ -33,11 +31,11 @@ const categoryOptions = computed(() => categories.value ? Object.entries(categor
         <span class="text-capitalize">{{ opt }}</span>
       </div>
     </template>
-    <template #option="{opt}">
+    <template #option="{itemProps, opt}">
       <q-item
-        clickable
-        :active="category === opt"
-        @click="emit('update:category', opt)"
+        class="rounded q-ma-xs hoverable"
+        v-bind="itemProps"
+        :active="category === opt.name"
         v-close-popup
       >
         <q-item-section avatar>

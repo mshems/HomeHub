@@ -33,24 +33,25 @@ const onSelect = (category) => {
       <q-card-section class="card-title" style="font-size: 1rem;">
         Category
       </q-card-section>
-      <q-card-section class="card-subtitle" style="font-size: 0.8rem;">
+      <q-card-section class="card-subtitle q-pb-none" style="font-size: 0.8rem;">
         Click to select
       </q-card-section>
-      <q-card-section class="q-px-xs q-pb-none">
+      <q-card-section class="q-px-xs q-pb-none q-pt-sm">
+        <q-separator class="q-mx-sm"/>
         <q-list>
-          <template v-for="category, i in categories" :key="i">
+          <template v-for="c, i in categories" :key="i">
             <q-item
-              class="rounded q-my-xs"
-              :active="newVal === category.name"
+              class="rounded q-my-xs hoverable"
+              :active="category === c.name"
               active-class="selected"
               clickable
-              @click="onSelect(category.name)"
+              @click="onSelect(c.name)"
             >
               <q-item-section class="col-shrink">
-                <q-icon :name="category.icon" :color="category.color" size="md"/>
+                <q-icon :name="c.icon" :color="c.color" size="md"/>
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-capitalize">{{ category.name }}</q-item-label>
+                <q-item-label class="text-capitalize">{{ c.name }}</q-item-label>
               </q-item-section>
             </q-item>
             </template>

@@ -43,11 +43,11 @@ const txForm = ref(null)
   </finance-header>
 
   <q-page padding class="container">
+    <q-card-section class="card-title row items-center q-pa-sm q-mb-sm">
+      <q-icon class="q-mr-sm" name="mdi-piggy-bank" color="pink-4" size="lg"/>
+      New Transaction
+    </q-card-section>
     <q-card flat>
-      <q-card-section class="card-title row items-center">
-        <q-icon class="q-mr-sm" name="mdi-piggy-bank" color="pink-4" size="lg"/>
-        New Transaction
-      </q-card-section>
       <q-card-section>
         <q-form
           class="column q-gutter-sm"
@@ -55,10 +55,16 @@ const txForm = ref(null)
           @reset="resetForm"
         >
           <transaction-form ref="txForm" v-model:form="form"/>
-          <div class="column items-center q-gutter-sm">
-            <q-btn unelevated type="submit" label="Create" color="positive" icon-right="mdi-credit-card-plus"/>
+          <div class="lt-sm column items-center q-gutter-sm">
+            <q-btn class="full-width lt-sm" size="md" unelevated type="submit" label="Create" color="positive" icon-right="mdi-credit-card-plus"/>
             <q-btn flat type="reset" label="Reset" color="negative"/>
             <q-btn flat label="cancel" @click="router.push('/finance/transactions')"/>
+          </div>
+          <div class="gt-xs row items-center">
+            <q-btn flat label="cancel" @click="router.push('/finance/transactions')"/>
+            <q-space/>
+            <q-btn class="q-mx-xs" flat type="reset" label="Reset" color="negative"/>
+            <q-btn unelevated type="submit" label="Create" color="positive" icon-right="mdi-credit-card-plus"/>
           </div>
           </q-form>
       </q-card-section>

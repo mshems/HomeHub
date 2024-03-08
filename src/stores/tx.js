@@ -21,7 +21,9 @@ export const useTxStore = defineStore('tx', () => {
   }
 
   const filters = ref({
+    name: null,
     category: null,
+    categoryType: null,
     userId: null,
     month: null,
     year: null

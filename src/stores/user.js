@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', {
     user: {}
   }),
   getters: {
+    color: (state) => state.user.color || 'primary'
   },
   actions: {
     initialize () {

@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue'
+
 const emit = defineEmits(['update:field', 'save'])
 defineProps({
   field: [String, Number, Boolean, Object, Array],
@@ -6,6 +8,7 @@ defineProps({
   icon: String,
   inputProps: Object
 })
+const input = ref()
 </script>
 
 <template>
@@ -17,7 +20,7 @@ defineProps({
     auto-save
     @save="(val) => emit('save', {name: val})"
   >
-    <q-input v-bind="inputProps" dense filled v-model="scope.value" autofocus @keyup.enter="scope.set">
+    <q-input ref="input" v-bind="inputProps" dense filled v-model="scope.value" autofocus @keyup.enter="scope.set">
       <template #prepend>
         <q-icon :name="icon"/>
       </template>

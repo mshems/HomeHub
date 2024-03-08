@@ -10,7 +10,7 @@ import NavChip from 'src/components/NavChip.vue'
       <slot></slot>
     </template>
     <template #buttons>
-      <q-btn size="md" dense flat color="primary" icon="mdi-home" :to="'/'"/>
+      <q-btn size="md" dense flat color="muted" icon="mdi-view-grid" :to="'/'"/>
     </template>
   </nav-header>
 </template>

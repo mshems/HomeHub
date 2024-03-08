@@ -4,7 +4,7 @@ import CategorySelect from './inputs/CategorySelect.vue'
 import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
 import TimestampInput from './inputs/TimestampInput.vue'
 import { onMounted, ref } from 'vue'
-
+import TxCategoryPopup from './tx/TxCategoryPopup.vue'
 const emit = defineEmits(['update:form'])
 const props = defineProps({
   form: {
@@ -39,11 +39,23 @@ defineExpose({ reset, setDefault })
 </script>
 
 <template>
-  <timestamp-input
-    filled
-    label="Date"
-    :timestamp="form.timestamp"
-    @update:timestamp="val => emit('update:form', {...form, timestamp: val})"
+
+  <div class="row">
+    <MoneyInput
+      class="col-grow"
+      filled
+      ref="moneyInput"
+      label="Amount"
+      :amount="form.amount"
+      @update:amount="val => emit('update:form', {...form, amount: val})"
+      @credit="setCredit"
+      @debit="setDebit"
+    />
+  </div>
+
+  <CategorySelect
+    :category="form.category"
+    @update:category="val => emit('update:form', {...form, category: val})"
   />
 
   <q-input
@@ -58,22 +70,12 @@ defineExpose({ reset, setDefault })
     </template>
   </q-input>
 
-  <CategorySelect
-    :category="form.category"
-    @update:category="val => emit('update:form', {...form, category: val})"
+  <timestamp-input
+    filled
+    label="Date"
+    :timestamp="form.timestamp"
+    @update:timestamp="val => emit('update:form', {...form, timestamp: val})"
   />
-  <div class="row">
-    <MoneyInput
-      class="col-grow"
-      filled
-      ref="moneyInput"
-      label="Amount"
-      :amount="form.amount"
-      @update:amount="val => emit('update:form', {...form, amount: val})"
-      @credit="setCredit"
-      @debit="setDebit"
-    />
-  </div>
 
   <UserSelect
     filled
@@ -89,6 +91,7 @@ defineExpose({ reset, setDefault })
     label="Notes"
     :model-value="form.notes"
     @update:model-value="val => emit('update:form', {...form, notes: val})"
+    input-class="text-mono"
   >
     <template #prepend>
       <q-icon name="mdi-note"/>

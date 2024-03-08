@@ -27,7 +27,7 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
 <template>
   <finance-header/>
   <q-page padding class="container">
-    <q-card class="hoverable cursor-pointer q-mb-sm" :balance="total(txYearToDate)">
+    <q-card class="q-mb-sm" :balance="total(txYearToDate)">
       <q-card-section class="row items-center justify-between">
         <div class="text-bold text-default font-title" style="font-size: 2rem;">
           YTD {{ now.year }}
@@ -39,20 +39,20 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
         />
       </q-card-section>
       <q-card-section>
-        <horizontal-stacked-bar
+        <!-- <horizontal-stacked-bar
           title="Year to Date"
           :datasets="[
             { label: 'Spent', value: Math.abs(spentYTD), color: 'debit' },
             { label: 'Saved', value: savedYTD, color: 'credit' }
           ]"
-        />
+        /> -->
       </q-card-section>
     </q-card>
 
     <q-card
-      class="q-mb-sm hoverable cursor-pointer"
+      class="q-mb-sm"
       :balance="total(txThisMonth)"
-      @click="router.push('/finance/transactions')">
+    >
       <q-card-section class="row items-center justify-between">
         <div class="text-bold text-default font-title" style="font-size: 2rem;">
           {{ now.monthLong }}
@@ -64,18 +64,28 @@ const savedThisMonth = computed(() => total(filter(txThisMonth.value, { type: 'c
         />
       </q-card-section>
       <q-card-section>
-        <horizontal-stacked-bar
+        <!-- <horizontal-stacked-bar
           :title="now.monthLong"
           :datasets="[
             { label: 'Spent', value: Math.abs(spentThisMonth), color: 'debit' },
             { label: 'Saved', value: savedThisMonth, color: 'credit' }
           ]"
-        />
+        /> -->
         <!-- <category-spending-chart
           title="Categories"
           :datasets="monthlyCategoryDatasets || []"
         /> -->
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn
+          no-caps
+          flat
+          color="info"
+          label="View Transactions"
+          icon-right="mdi-credit-card-multiple"
+          @click="router.push('/finance/transactions')"
+        />
+      </q-card-actions>
     </q-card>
   </q-page>
 </template>
