@@ -1,4 +1,4 @@
-import { filter, total } from '../filters'
+import { filter, total, useFilters } from '../filters'
 import { useCollection } from './collection'
 
 const useTransactions = () => {
@@ -11,7 +11,8 @@ const useTransactions = () => {
     remove,
     create,
     total,
-    filter
+    filter,
+    useFilters
   }
 }
 

@@ -4,9 +4,8 @@ import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
-
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 import { useCategories } from 'src/composables/categories'
@@ -24,15 +23,23 @@ const props = defineProps({
   }
 })
 
+const month = ref(props.m)
+const year = ref(props.y)
+const date = computed(() => DateTime.fromObject({ month: month.value, year: year.value }))
+watch(() => ({ ...props }), (p) => {
+  month.value = p.m
+  year.value = p.y
+})
+
 const router = useRouter()
 
 const user = useUserStore()
-const { transactions: { data: transactions }, total, filter } = useTransactions()
+const { transactions: { data: transactions }, useFilters } = useTransactions()
 
-const monthlyTx = computed(() => filter(transactions, { month: props.m, year: props.y }))
-const monthlyTotal = computed(() => (total(monthlyTx)))
-const wantsTotal = computed(() => (total(filter(monthlyTx, { categoryType: 'want' }))))
-const needsTotal = computed(() => (total(filter(monthlyTx, { categoryType: 'need' }))))
+const { tx: monthlyTx, total: monthlyTotal } = useFilters(transactions, { month, year })
+const { total: wantsTotal } = useFilters(monthlyTx, { categoryType: 'want' })
+const { total: needsTotal } = useFilters(monthlyTx, { categoryType: 'need' })
+const { total: incomeTotal } = useFilters(monthlyTx, { category: 'income' })
 
 const { users } = useUsers(monthlyTx)
 const { categories } = useCategories(monthlyTx)
@@ -50,10 +57,20 @@ const { categories } = useCategories(monthlyTx)
       <transactions-header
         :date="DateTime.fromObject({ month: props.m, year: props.y })"
         :transactions="monthlyTx"
-        @prev="() => router.replace(`/finance/month?m=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).year}`)"
-        @next="() => router.replace(`/finance/month?m=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).year}`)"
+        @prev="() => router.replace(`/finance/month?m=${date.minus({ months: 1 }).month}&y=${date.minus({ months: 1 }).year}`)"
+        @next="() => router.replace(`/finance/month?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace('/finance/month')"
       />
+      <div>
+      <q-btn
+        no-caps
+        flat
+        color="info"
+        label="View Transactions"
+        icon-right="mdi-credit-card-multiple"
+        @click="router.push(`/finance/transactions?m=${date.month}&y=${date.year}`)"
+        />
+      </div>
       <div class="text-muted q-mt-md q-px-xs">Overview</div>
       <div class="row q-mt-none q-gutter-sm">
         <balance-card :balance="monthlyTotal"/>
@@ -65,6 +82,7 @@ const { categories } = useCategories(monthlyTx)
       <div class="row q-mt-none q-gutter-sm">
         <balance-card caption="Wants" icon="mdi-shopping" :balance="wantsTotal"/>
         <balance-card caption="Needs" icon="mdi-toolbox" :balance="needsTotal"/>
+        <balance-card caption="Saved" icon="mdi-piggy-bank" :absolute={False} :balance="(needsTotal + wantsTotal) + incomeTotal"/>
       </div>
 
       <div class="text-muted q-mt-md q-px-xs">Categories</div>

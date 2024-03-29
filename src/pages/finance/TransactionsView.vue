@@ -1,4 +1,9 @@
 <script setup>
+import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useSorted } from '@vueuse/core'
+import { DateTime } from 'luxon'
+
 import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
@@ -7,42 +12,46 @@ import TransactionsList from 'src/components/finance/TransactionsList.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 
-import { computed, ref, unref } from 'vue'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 import { useCategories } from 'src/composables/categories'
 import { useUserStore } from 'src/stores/user'
 import { useTxStore } from 'src/stores/tx'
+const props = defineProps({
+  m: {
+    type: Number,
+    default: DateTime.local().month
+  },
+  y: {
+    type: Number,
+    default: DateTime.local().year
+  }
+})
 
+const month = ref(props.m)
+const year = ref(props.y)
+watch(() => ({ ...props }), (p) => {
+  month.value = p.m
+  year.value = p.y
+})
+
+const router = useRouter()
 const user = useUserStore()
 const store = useTxStore()
-const { transactions: { data: transactions, pending }, total, filter } = useTransactions()
-
-const monthlyTx = computed(() => filter(transactions.value, { month: store.date.month, year: store.date.year }))
-const monthlyTotal = computed(() => (total(monthlyTx)))
-const monthlyTxByUser = computed(() => filter(monthlyTx.value, { userId: store.filters.userId }))
+const { transactions: { data: transactions, pending }, useFilters } = useTransactions()
+const { tx: monthlyTx, total: monthlyTotal } = useFilters(transactions, { month, year })
+const { tx: monthlyTxByUser } = useFilters(monthlyTx, { userId: store.filters.userId })
 
 const { users } = useUsers(monthlyTx)
-
-const onSelectUser = (user) => {
-  if (store.filters.userId === user.id) store.filters.userId = null
-  else store.filters.userId = user.id
-}
-
 const { categories } = useCategories(monthlyTxByUser)
 
 const displayedTransactions = computed(() => {
-  const txs = filter(
-    monthlyTx.value,
-    {
-      name: store.filters.name,
-      userId: store.filters.userId,
-      category: store.filters.category,
-      categoryType: store.filters.categoryType
-    }
+  const { tx } = useFilters(
+    monthlyTx,
+    store.filters
   )
-  if (store.descending) return unref(txs).sort((a, b) => a.timestamp - b.timestamp)
-  else return unref(txs).sort((a, b) => b.timestamp - a.timestamp)
+  if (store.descending) return useSorted(tx.value, (a, b) => a.timestamp - b.timestamp)
+  else return useSorted(tx.value, (a, b) => b.timestamp - a.timestamp)
 })
 
 const expanded = ref(false)
@@ -56,30 +65,29 @@ const expanded = ref(false)
   <q-page class="container" padding style="padding-bottom: 80px;">
     <template v-if="user.authorized">
       <transactions-header
-        :date="store.date"
+        :date="DateTime.fromObject({ month: props.m, year: props.y })"
         :transactions="monthlyTx"
-        @prev="store.prevMonth"
-        @next="store.nextMonth"
-        @current="store.currentMonth"
+        @prev="() => router.replace(`/finance/transactions?m=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).year}`)"
+        @next="() => router.replace(`/finance/transactions?m=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).year}`)"
+        @current="() => router.replace('/finance/transactions')"
       />
 
       <div class="row q-mt-none q-gutter-sm">
         <balance-card class="col-grow col-sm-auto" :balance="monthlyTotal"/>
         <template v-for="user in users" :key="user.id">
           <user-balance-card
-            :bordered="store.filters.userId === user.id"
             :class="`cursor-pointer hoverable`"
             :user="user"
-            @click="onSelectUser(user)"
+            @click="router.push(`/finance/users/${user.id}`)"
           />
         </template>
       </div>
-
       <q-input
         v-model="store.filters.name"
-        class="q-mt-sm"
+        class="q-mt-sm on-background"
         clearable
         dense
+        filled
       >
         <template #prepend>
           <q-icon name="mdi-magnify" class="cursor-pointer"/>
@@ -127,7 +135,6 @@ const expanded = ref(false)
             </template>
           </q-expansion-item>
         </div>
-
         <transactions-list
           :loading="pending"
           :transactions="displayedTransactions"

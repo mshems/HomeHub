@@ -9,52 +9,35 @@ export const useTxStore = defineStore('tx', () => {
     LocalStorage.set('txDesc', val)
   })
 
-  const date = ref(DateTime.local())
-  const currentMonth = () => {
-    date.value = DateTime.local()
-  }
-  const prevMonth = () => {
-    date.value = date.value.minus({ month: 1 })
-  }
-  const nextMonth = () => {
-    date.value = date.value.plus({ month: 1 })
-  }
-
   const filters = ref({
     name: null,
     category: null,
     categoryType: null,
-    userId: null,
-    month: null,
-    year: null
+    userId: null
   })
 
   const hasFilters = () => {
     return (
       filters.value.category ||
-      filters.value.userId ||
-      filters.value.month ||
-      filters.value.year
+      filters.value.categoryType ||
+      filters.value.name ||
+      filters.value.userId
     )
   }
 
   const clearFilters = () => {
     filters.value = {
       category: null,
-      userId: null,
-      month: null,
-      year: null
+      name: null,
+      categoryType: null,
+      userId: null
     }
   }
 
   return {
     descending,
-    date,
     filters,
     hasFilters,
-    clearFilters,
-    currentMonth,
-    prevMonth,
-    nextMonth
+    clearFilters
   }
 })

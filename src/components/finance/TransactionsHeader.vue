@@ -11,7 +11,7 @@ defineProps({
     required: true
   },
   transactions: {
-    type: Array,
+    type: [Array, Object],
     required: true
   },
   filters: {
@@ -42,7 +42,7 @@ const onSwipeMonth = ({ evt, ...info }) => {
           <q-btn size="md" color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
         </div>
 
-        <q-btn flat dense no-caps @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)">
+        <q-btn flat dense no-caps @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)" class="q-px-sm">
           <div class="lt-sm title q-py-sm text-bold">
             {{ date.monthLong }} {{ date.year }}
           </div>

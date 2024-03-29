@@ -1,6 +1,7 @@
 <script setup>
-import TransactionItem from './TransactionItem.vue'
+import { unref } from 'vue'
 import { useRouter } from 'vue-router'
+import TransactionItem from './TransactionItem.vue'
 const router = useRouter()
 defineProps({
   loading: {
@@ -8,7 +9,7 @@ defineProps({
     default: false
   },
   transactions: {
-    type: Array,
+    type: [Array, Object],
     default: () => []
   },
   categories: {
@@ -28,7 +29,7 @@ const onClickItem = (item) => {
 <template>
   <div>
     <q-linear-progress rounded indeterminate v-if="loading"/>
-    <div v-if="transactions.length === 0">
+    <div v-if="unref(transactions).length === 0">
       <q-item>
         <q-item-section>
           <q-item-label class="text-muted row items-center">
@@ -38,7 +39,7 @@ const onClickItem = (item) => {
         </q-item-section>
       </q-item>
     </div>
-    <template v-else v-for="item, i in transactions" :key="i">
+    <template v-else v-for="item, i in unref(transactions)" :key="i">
       <transaction-item
         class="rounded"
         :item="item"

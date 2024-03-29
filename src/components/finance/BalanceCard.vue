@@ -5,7 +5,11 @@ defineProps({
   bordered: Boolean,
   loading: Boolean,
   caption: String,
-  icon: String
+  icon: String,
+  absolute: {
+    type: Boolean,
+    default: true
+  }
 })
 </script>
 
@@ -21,7 +25,7 @@ defineProps({
         <q-item-section>
 
           <q-item-label :class="`text-on-${color(balance)} text-right text-bold`" style="font-size: 0.8rem;">
-            {{ formatBalance(Math.abs(balance)) }}
+            {{ absolute ? formatBalance(Math.abs(balance)) : formatBalance(balance) }}
           </q-item-label>
           <q-item-label v-if="caption" caption :class="`text-on-${color(balance)} text-right ellipsis`">
             {{ caption }}

@@ -13,7 +13,7 @@ const props = defineProps({
     default: () => ({})
   },
   transactions: {
-    type: Array,
+    type: [Array, Object],
     default: () => []
   }
 })

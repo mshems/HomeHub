@@ -95,6 +95,13 @@ a:hover:not(.q-btn):not(.q-item) {
   border-radius: 4px 4px 4px 4px;
 }
 
+.on-background.q-field--filled .q-field__control {
+  background: $selected-background !important;
+}
+.body--dark .on-background.q-field--filled .q-field__control {
+  background: $dark !important;
+}
+
 .q-field--filled .q-field__control:before {
   border-bottom: none;
 }
