@@ -39,7 +39,7 @@ const routes = [
         }),
         component: () => import('src/pages/finance/TransactionsView.vue')
       },
-      { path: ':id', component: () => import('src/pages/finance/TransactionView.vue') },
+      { path: ':id', props: true, component: () => import('src/pages/finance/TransactionView.vue') },
       { path: 'new', component: () => import('src/pages/finance/NewTransaction.vue') }
     ]
   },
