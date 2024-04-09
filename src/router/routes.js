@@ -1,3 +1,6 @@
+import { DateTime } from 'luxon'
+const now = DateTime.now()
+
 const routes = [
   {
     path: '/',
@@ -34,8 +37,8 @@ const routes = [
       {
         path: '',
         props: route => ({
-          m: route.query.m ? Number.parseInt(route.query.m) : undefined,
-          y: route.query.y ? Number.parseInt(route.query.y) : undefined
+          m: route.query.m ? Number.parseInt(route.query.m) : now.month,
+          y: route.query.y ? Number.parseInt(route.query.y) : now.year
         }),
         component: () => import('src/pages/finance/TransactionsView.vue')
       },
@@ -50,8 +53,8 @@ const routes = [
       {
         path: '',
         props: route => ({
-          m: route.query.m ? Number.parseInt(route.query.m) : undefined,
-          y: route.query.y ? Number.parseInt(route.query.y) : undefined
+          m: route.query.m ? Number.parseInt(route.query.m) : now.month,
+          y: route.query.y ? Number.parseInt(route.query.y) : now.year
         }),
         component: () => import('src/pages/finance/MonthView.vue')
       }
@@ -65,8 +68,8 @@ const routes = [
         path: ':id',
         props: route => ({
           id: route.params.id,
-          m: route.query.m ? Number.parseInt(route.query.m) : undefined,
-          y: route.query.y ? Number.parseInt(route.query.y) : undefined
+          m: route.query.m ? Number.parseInt(route.query.m) : now.month,
+          y: route.query.y ? Number.parseInt(route.query.y) : now.year
         }),
         component: () => import('src/pages/finance/UserView.vue')
       }

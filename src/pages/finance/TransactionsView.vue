@@ -30,6 +30,7 @@ const props = defineProps({
 
 const month = ref(props.m)
 const year = ref(props.y)
+const date = computed(() => DateTime.fromObject({ month: month.value, year: year.value }))
 watch(() => ({ ...props }), (p) => {
   month.value = p.m
   year.value = p.y
@@ -67,13 +68,13 @@ const expanded = ref(false)
       <transactions-header
         :date="DateTime.fromObject({ month: props.m, year: props.y })"
         :transactions="monthlyTx"
-        @prev="() => router.replace(`/finance/transactions?m=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).minus({ months: 1 }).year}`)"
-        @next="() => router.replace(`/finance/transactions?m=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).month}&y=${DateTime.fromObject({ month: props.m, year: props.y }).plus({ months: 1 }).year}`)"
+        @prev="() => router.replace(`/finance/transactions?m=${date.minus({ months: 1 }).month}&y=${date.minus({ months: 1 }).year}`)"
+        @next="() => router.replace(`/finance/transactions?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace('/finance/transactions')"
       />
 
       <div class="row q-mt-none q-gutter-sm">
-        <balance-card class="col-grow col-sm-auto" :balance="monthlyTotal"/>
+        <balance-card class="col-grow col-sm-auto clickable hoverable cursor-pointer" :balance="monthlyTotal" @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)" />
         <template v-for="user in users" :key="user.id">
           <user-balance-card
             :class="`cursor-pointer hoverable`"

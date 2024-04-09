@@ -5,6 +5,11 @@ const color = (balance) => {
   return (unref(balance) > 0) ? 'credit' : 'debit'
 }
 
+const textColor = (balance) => {
+  if (!unref(balance)) return 'text-default'
+  return `text-on-${color(balance)}`
+}
+
 const formatBalance = (balance) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -12,4 +17,4 @@ const formatBalance = (balance) => {
   }).format(unref(balance))
 }
 
-export { color, formatBalance }
+export { color, textColor, formatBalance }

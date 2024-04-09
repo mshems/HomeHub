@@ -61,16 +61,6 @@ const { categories } = useCategories(monthlyTx)
         @next="() => router.replace(`/finance/month?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace('/finance/month')"
       />
-      <div>
-      <q-btn
-        no-caps
-        flat
-        color="info"
-        label="View Transactions"
-        icon-right="mdi-credit-card-multiple"
-        @click="router.push(`/finance/transactions?m=${date.month}&y=${date.year}`)"
-        />
-      </div>
       <div class="text-muted q-mt-md q-px-xs">Overview</div>
       <div class="row q-mt-none q-gutter-sm">
         <balance-card :balance="monthlyTotal"/>
@@ -82,7 +72,7 @@ const { categories } = useCategories(monthlyTx)
       <div class="row q-mt-none q-gutter-sm">
         <balance-card caption="Wants" icon="mdi-shopping" :balance="wantsTotal"/>
         <balance-card caption="Needs" icon="mdi-toolbox" :balance="needsTotal"/>
-        <balance-card caption="Saved" icon="mdi-piggy-bank" :absolute={False} :balance="(needsTotal + wantsTotal) + incomeTotal"/>
+        <balance-card caption="Saved" icon="mdi-piggy-bank" :absolute="false" :balance="(needsTotal + wantsTotal) + incomeTotal"/>
       </div>
 
       <div class="text-muted q-mt-md q-px-xs">Categories</div>

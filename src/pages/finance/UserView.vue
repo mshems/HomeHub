@@ -50,7 +50,7 @@ const user = computed(() => users.value[props.id])
 <template>
   <finance-header>
     <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
-    <nav-chip path="/finance/month" icon="mdi-calendar" label="Details"/>
+    <nav-chip :path="`/finance/users/${id}`" icon="mdi-account" label="Details"/>
   </finance-header>
 
   <q-page class="container" padding style="padding-bottom: 80px;">
@@ -62,17 +62,7 @@ const user = computed(() => users.value[props.id])
         @next="() => router.replace(`/finance/users/${id}?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace(`/finance/users/${id}`)"
       />
-      <div class="row justify-end">
-        <q-btn
-          no-caps
-          flat
-          color="info"
-          label="View Transactions"
-          icon-right="mdi-credit-card-multiple"
-          @click="router.push(`/finance/transactions?m=${date.month}&y=${date.year}`)"
-        />
-      </div>
-      <div class="text-muted q-mt-md q-px-xs">{{ user.name }}</div>
+      <div class="text-muted q-mt-md q-px-xs">{{ user?.name }}</div>
       <div class="row q-mt-none q-gutter-sm">
         <balance-card
           class="col-grow col-sm-auto"

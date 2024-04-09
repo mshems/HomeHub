@@ -5,7 +5,7 @@ defineProps({
   bordered: Boolean,
   loading: Boolean,
   caption: String,
-  icon: String,
+  icon: [String, Boolean],
   absolute: {
     type: Boolean,
     default: true
@@ -17,7 +17,7 @@ defineProps({
   <q-card flat :class="`bg-${color(balance)}-bg ${bordered ? ('bordered border-' + color(balance)) : 'bordered border-transparent'}`">
     <slot>
       <q-item dense class="q-pa-sm">
-        <q-item-section side class="q-pr-sm">
+        <q-item-section side class="q-pr-sm" v-if="icon !== null">
           <slot name="side">
             <q-icon :name="icon || 'mdi-finance'" :class="`text-on-${color(balance)}`" />
           </slot>

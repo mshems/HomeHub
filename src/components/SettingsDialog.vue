@@ -22,9 +22,9 @@ const settings = useSettingsStore()
           Settings
         </div>
       </q-card-section>
-      <q-card-section class="q-pb-md q-pt-sm q-px-none">
+      <q-card-section class="q-pb-xs q-pt-sm q-px-xs">
         <q-list>
-          <q-item v-if="settings.user.authorized">
+          <q-item v-if="settings.user.authorized" class="rounded">
             <q-item-section side avatar>
               <q-icon name="mdi-account-circle" color="muted" size="md"/>
             </q-item-section>
@@ -38,7 +38,7 @@ const settings = useSettingsStore()
               <q-btn flat label="Log Out" color="negative" @click="settings.user.logout()" v-close-popup />
             </q-item-section>
           </q-item>
-          <q-item v-else clickable @click="router.push('/login')">
+          <q-item v-else clickable @click="router.push('/login')" class="rounded">
             <q-item-section side avatar>
               <q-icon name="mdi-account-circle" color="muted" size="md"/>
             </q-item-section>
@@ -55,6 +55,7 @@ const settings = useSettingsStore()
           <q-item
             clickable
             @click="$q.dark.set(!$q.dark.isActive)"
+            class="rounded"
           >
             <q-item-section side avatar>
               <q-icon name="mdi-compare" color="muted" size="md"/>
