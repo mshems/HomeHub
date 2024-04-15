@@ -117,14 +117,14 @@ const expanded = ref(false)
                     @remove="store.clearFilters()"
                   />
                 </template>
-                <!-- <q-icon
+                <q-icon
                   class="q-mx-sm"
                   dense
                   color="muted"
                   size="sm"
                   :name="store.descending ? 'mdi-sort-calendar-descending' : 'mdi-sort-calendar-ascending'"
                   @click="e=> {e.stopPropagation(); store.descending = !store.descending}"
-                /> -->
+                />
               </div>
             </template>
 

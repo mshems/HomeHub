@@ -1,15 +1,23 @@
 <script setup>
+// eslint-disable-next-line
+import { Chart as ChartJS, Title, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import { getCssVar, colors } from 'quasar'
 import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
-// eslint-disable-next-line
-import { Chart as ChartJS, Title, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import { formatBalance } from 'src/balance'
 
 const props = defineProps({
   title: String,
+  displayPercentage: {
+    type: Boolean,
+    default: false
+  },
+  displayBalance: {
+    type: Boolean,
+    default: false
+  },
   datasets: {
     type: Array,
     required: true
@@ -70,7 +78,14 @@ const options = ref({
       formatter: (value, context) => {
         const data = context.chart.data
         const { datasetIndex } = context
-        return formatBalance(Math.abs(data.datasets[datasetIndex].count))
+        const item = data.datasets[datasetIndex]
+        if (props.displayPercentage) {
+          return `${value.toFixed(1)}%`
+        } else if (props.displayBalance) {
+          return formatBalance(Math.abs(item.count))
+        } else {
+          return item.count
+        }
       }
     }
   },

@@ -11,6 +11,7 @@ import { useUsers } from 'src/composables/users'
 import { useCategories } from 'src/composables/categories'
 import { useUserStore } from 'src/stores/user'
 import { DateTime } from 'luxon'
+// import HorizontalStackedBar from 'src/components/charts/HorizontalStackedBar.vue'
 
 const props = defineProps({
   m: {
@@ -75,6 +76,17 @@ const { categories } = useCategories(monthlyTx)
         <balance-card caption="Saved" icon="mdi-piggy-bank" :absolute="false" :balance="(needsTotal + wantsTotal) + incomeTotal"/>
       </div>
 
+      <!-- <HorizontalStackedBar
+        class="q-mt-md"
+        title="Wants/Needs"
+        displayPercentage
+        :datasets="[
+          { label: 'Wants', value: Math.abs(wantsTotal), color: 'debit' },
+          { label: 'Needs', value: Math.abs(needsTotal), color: 'warning' },
+          ...(monthlyTotal > 0 ? [{ label: 'Saved', value: Math.abs(monthlyTotal), color: 'credit' }] : [])
+        ]"
+      /> -->
+
       <div class="text-muted q-mt-md q-px-xs">Categories</div>
       <div class="row q-mt-none q-col-gutter-xs">
         <template v-for="category in categories" :key="category.id">
@@ -84,7 +96,7 @@ const { categories } = useCategories(monthlyTx)
               :caption="category.name"
             >
               <template #side>
-                <q-icon :name="category.icon" :color="category.color"/>
+                <q-icon :name="category.icon"/>
               </template>
             </balance-card>
           </div>

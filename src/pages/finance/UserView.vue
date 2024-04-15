@@ -3,13 +3,11 @@ import { watch, ref, computed } from 'vue'
 import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
-import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 
 import { useRouter } from 'vue-router'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
-import { useCategories } from 'src/composables/categories'
 import { useUserStore } from 'src/stores/user'
 import { DateTime } from 'luxon'
 
@@ -39,8 +37,8 @@ const router = useRouter()
 const userStore = useUserStore()
 const { transactions: { data: transactions }, useFilters } = useTransactions()
 const { tx: monthlyTx, total: monthlyTotal } = useFilters(transactions, { month, year, userId: props.id })
-const { tx: credits, total: creditsTotal } = useFilters(monthlyTx, { type: 'credit' })
-const { tx: debits, total: debitsTotal } = useFilters(monthlyTx, { type: 'debit' })
+const { total: creditsTotal } = useFilters(monthlyTx, { type: 'credit' })
+const { total: debitsTotal } = useFilters(monthlyTx, { type: 'debit' })
 
 const { users } = useUsers(monthlyTx)
 const user = computed(() => users.value[props.id])

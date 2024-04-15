@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
 import { useTransactions } from 'src/composables/transactions'
 import { useFilters } from 'src/filters'
-import { textColor } from 'src/balance'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 
 const router = useRouter()
@@ -31,9 +30,9 @@ for (let i = 1; i <= 12; i++) {
 <template>
   <finance-header/>
   <q-page padding class="container">
-    <BalanceCard class="q-mb-sm" :balance="ytdTotal">
+    <BalanceCard class="q-mb-sm">
       <q-card-section class="row items-center justify-between">
-        <div :class="`text-bold ${textColor(ytdTotal)} font-title`" style="font-size: 2rem;">
+        <div :class="`text-bold font-title`" style="font-size: 2rem;">
           YTD {{ now.year }}
           <span style="font-size: 0.8rem;"></span>
         </div>
@@ -46,11 +45,10 @@ for (let i = 1; i <= 12; i++) {
     <BalanceCard
         class="q-mb-sm hoverable clickable cursor-pointer"
         :icon="null"
-        :balance="thisMonthTotal"
         @click="router.push(`/finance/transactions?m=${now.month}&y=${now.year}`)"
       >
         <q-card-section class="row items-center justify-between">
-          <div :class="`text-bold ${textColor(thisMonthTotal)} font-title`" style="font-size: 2rem;">
+          <div :class="`text-bold font-title`" style="font-size: 2rem;">
             {{ now.monthLong }}
             <span style="font-size: 0.8rem;"></span>
           </div>

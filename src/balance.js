@@ -6,7 +6,7 @@ const color = (balance) => {
 }
 
 const textColor = (balance) => {
-  if (!unref(balance)) return 'text-default'
+  if (!unref(balance)) return 'text-muted'
   return `text-on-${color(balance)}`
 }
 

@@ -1,5 +1,5 @@
 <script setup>
-import { color, formatBalance } from 'src/balance'
+import { color, textColor, formatBalance } from 'src/balance'
 defineProps({
   balance: Number,
   bordered: Boolean,
@@ -24,7 +24,7 @@ defineProps({
         </q-item-section>
         <q-item-section>
 
-          <q-item-label :class="`text-on-${color(balance)} text-right text-bold`" style="font-size: 0.8rem;">
+          <q-item-label :class="`${textColor(balance)} text-right text-bold`" style="font-size: 0.8rem;">
             {{ absolute ? formatBalance(Math.abs(balance)) : formatBalance(balance) }}
           </q-item-label>
           <q-item-label v-if="caption" caption :class="`text-on-${color(balance)} text-right ellipsis`">
