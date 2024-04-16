@@ -1,10 +1,10 @@
 <script setup>
-import UserSelect from './inputs/UserSelect.vue'
-import CategorySelect from './inputs/CategorySelect.vue'
-import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
-import TimestampInput from './inputs/TimestampInput.vue'
+import MoneyInput from '../inputs/MoneyInput.vue'
+import UserSelect from '../inputs/UserSelect.vue'
+import CategorySelect from '../inputs/CategorySelect.vue'
+import TimestampInput from '../inputs/TimestampInput.vue'
 import { onMounted, ref } from 'vue'
-import TxCategoryPopup from './tx/TxCategoryPopup.vue'
+
 const emit = defineEmits(['update:form'])
 const props = defineProps({
   form: {

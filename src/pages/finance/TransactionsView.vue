@@ -6,9 +6,9 @@ import { DateTime } from 'luxon'
 
 import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
-import TransactionsFilters from 'src/components/finance/TransactionsFilters.vue'
-import TransactionsList from 'src/components/finance/TransactionsList.vue'
+import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
+import TransactionsFilters from 'src/components/finance/tx/TransactionsFilters.vue'
+import TransactionsList from 'src/components/finance/tx/TransactionsList.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 

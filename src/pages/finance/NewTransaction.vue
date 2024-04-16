@@ -1,7 +1,7 @@
 <script setup>
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import NavChip from 'src/components/NavChip.vue'
-import TransactionForm from 'src/components/finance/TransactionForm.vue'
+import TransactionForm from 'src/components/finance/tx/TransactionForm.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { DateTime } from 'luxon'
@@ -43,14 +43,14 @@ const txForm = ref(null)
   </finance-header>
 
   <q-page padding class="container">
-    <q-card-section class="card-title row items-center q-pa-sm q-mb-sm">
+    <q-card-section class="card-title row items-center q-px-md q-mb-sm">
       <q-icon class="q-mr-sm" name="mdi-piggy-bank" color="pink-4" size="lg"/>
       New Transaction
     </q-card-section>
-    <q-card flat>
+    <q-card flat class="bg-transparent">
       <q-card-section>
         <q-form
-          class="column q-gutter-sm"
+          class="column q-gutter-md"
           @submit="addTransaction"
           @reset="resetForm"
         >

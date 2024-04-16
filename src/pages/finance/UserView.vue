@@ -2,7 +2,7 @@
 import { watch, ref, computed } from 'vue'
 import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
+import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 
 import { useRouter } from 'vue-router'

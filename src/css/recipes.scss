@@ -1,0 +1,67 @@
+$recipes: #c54646;
+$recipes-light-bg: #f8d7da;
+$recipes-dark-bg: #c54646;
+$recipes-light: $red-2;
+$recipes-dark: $red-10;
+
+
+.body--light {
+  --q-recipes: #c54646;
+}
+
+.body--dark {
+  --q-recipes: #c54646;
+}
+
+.bg-recipes {
+  background: var(--q-recipes);
+}
+
+.text-recipes {
+  color: var(--q-recipes);
+}
+
+.border-recipes {
+  border-color: var(--q-recipes) !important;
+}
+
+.body--light {
+  .bg-recipes-bg {
+    background: $recipes-light-bg;
+  }
+
+  .hoverable.bg-recipes-bg:hover,
+  .hoverable.active.bg-recipes-bg {
+    background: color-mix(in srgb, $recipes-light-bg, var(--q-recipes) 25%);
+  }
+
+  .hoverable.bg-recipes-bg:hover,
+  .hoverable.active.bg-recipes-bg {
+    background: color-mix(in srgb, $recipes-light-bg, var(--q-recipes) 25%);
+  }
+
+  .text-on-recipes {
+    color: $recipes-dark !important;
+  }
+}
+
+.body--dark {
+  .bg-recipes-bg {
+    background: $recipes-dark-bg;
+  }
+
+  .hoverable.bg-recipes:hover,
+  .hoverable.bg-recipes-bg:hover,
+  .hoverable.active.bg-credit-bg {
+    background: color-mix(in srgb, $recipes-dark-bg, #fff 5%);
+  }
+
+  .hoverable.bg-recipes-bg:hover,
+  .hoverable.active.bg-recipes-bg {
+    background: color-mix(in srgb, $recipes-dark-bg, #fff 5%);
+  }
+
+  .text-on-recipes {
+    color: $recipes-light !important;
+  }
+}

@@ -1,5 +1,5 @@
 <script setup>
-import CategoryChip from './CategoryChip.vue'
+import CategoryChip from '../CategoryChip.vue'
 
 import { toRef } from 'vue'
 import { useCategories } from 'src/composables/categories'

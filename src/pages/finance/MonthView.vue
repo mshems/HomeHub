@@ -1,7 +1,7 @@
 <script setup>
 import NavChip from 'src/components/NavChip.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import TransactionsHeader from 'src/components/finance/TransactionsHeader.vue'
+import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
 import BalanceCard from 'src/components/finance/BalanceCard.vue'
 import { ref, computed, watch } from 'vue'

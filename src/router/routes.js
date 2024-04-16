@@ -76,6 +76,14 @@ const routes = [
     ]
   },
 
+  {
+    path: '/mealprep',
+    component: () => import('layouts/RecipesLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/recipes/MealPrepView.vue') }
+    ]
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {
