@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { useTransactions } from 'src/composables/transactions'
+
 import { useCategories } from 'src/composables/categories'
+import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 
 export const useFinanceStore = defineStore('finance', () => {

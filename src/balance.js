@@ -17,4 +17,4 @@ const formatBalance = (balance) => {
   }).format(unref(balance))
 }
 
-export { color, textColor, formatBalance }
+export { color, formatBalance, textColor }

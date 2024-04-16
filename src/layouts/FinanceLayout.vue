@@ -9,7 +9,7 @@ const settings = useSettingsStore()
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <router-view />
-      <settings-dialog v-model="settings.showMenu"/>
+      <settings-dialog v-model="settings.showMenu" />
     </q-page-container>
   </q-layout>
 </template>

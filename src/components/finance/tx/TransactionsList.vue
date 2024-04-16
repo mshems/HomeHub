@@ -1,7 +1,9 @@
 <script setup>
 import { unref } from 'vue'
 import { useRouter } from 'vue-router'
+
 import TransactionItem from './TransactionItem.vue'
+
 const router = useRouter()
 defineProps({
   loading: {
@@ -28,18 +30,31 @@ const onClickItem = (item) => {
 
 <template>
   <div>
-    <q-linear-progress rounded indeterminate v-if="loading"/>
+    <q-linear-progress
+      rounded
+      indeterminate
+      v-if="loading"
+    />
     <div v-if="unref(transactions).length === 0">
       <q-item>
         <q-item-section>
           <q-item-label class="text-muted row items-center">
-            <q-icon class="q-mr-sm" name="mdi-alert-circle" color="warning" size="sm"/>
+            <q-icon
+              class="q-mr-sm"
+              name="mdi-alert-circle"
+              color="warning"
+              size="sm"
+            />
             <span>No Transactions</span>
           </q-item-label>
         </q-item-section>
       </q-item>
     </div>
-    <template v-else v-for="item, i in unref(transactions)" :key="i">
+    <template
+      v-else
+      v-for="item, i in unref(transactions)"
+      :key="i"
+    >
       <transaction-item
         class="rounded"
         :item="item"

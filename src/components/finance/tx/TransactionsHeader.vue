@@ -38,8 +38,18 @@ const onSwipeMonth = ({ evt, ...info }) => {
         v-touch-swipe.mouse="onSwipeMonth"
         class="cursor-pointer row no-wrap justify-between"
       >
-        <div class="lt-sm flex" style="width: 50px;">
-          <q-btn size="md" color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
+        <div
+          class="lt-sm flex"
+          style="width: 50px;"
+        >
+          <q-btn
+            size="md"
+            color="default"
+            dense
+            flat
+            icon="mdi-chevron-left"
+            @click="emit('prev')"
+          />
         </div>
 
         <div class="lt-sm title q-py-sm text-bold">
@@ -50,13 +60,46 @@ const onSwipeMonth = ({ evt, ...info }) => {
         </div>
 
         <div class="lt-sm flex">
-          <q-btn class="q-mr-xs" size="md" color="default" dense flat icon="mdi-calendar" @click="emit('current')"/>
-          <q-btn size="md" color="default" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
+          <q-btn
+            class="q-mr-xs"
+            size="md"
+            color="default"
+            dense
+            flat
+            icon="mdi-calendar"
+            @click="emit('current')"
+          />
+          <q-btn
+            size="md"
+            color="default"
+            dense
+            flat
+            icon="mdi-chevron-right"
+            @click="emit('next')"
+          />
         </div>
         <div class="gt-xs row items-center q-gutter-xs">
-          <q-btn color="default" dense flat icon="mdi-chevron-left" @click="emit('prev')"/>
-          <q-btn color="default" dense flat icon="mdi-calendar" @click="emit('current')"/>
-          <q-btn color="default" dense flat icon="mdi-chevron-right" @click="emit('next')"/>
+          <q-btn
+            color="default"
+            dense
+            flat
+            icon="mdi-chevron-left"
+            @click="emit('prev')"
+          />
+          <q-btn
+            color="default"
+            dense
+            flat
+            icon="mdi-calendar"
+            @click="emit('current')"
+          />
+          <q-btn
+            color="default"
+            dense
+            flat
+            icon="mdi-chevron-right"
+            @click="emit('next')"
+          />
         </div>
       </div>
     </q-card-section>

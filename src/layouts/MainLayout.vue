@@ -11,10 +11,14 @@ const settings = useSettingsStore()
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <nav-header>
-        <nav-chip path="/" icon="mdi-view-grid" label="Dashboard"/>
+        <nav-chip
+          path="/"
+          icon="mdi-view-grid"
+          label="Dashboard"
+        />
       </nav-header>
       <router-view />
-      <settings-dialog v-model="settings.showMenu"/>
+      <settings-dialog v-model="settings.showMenu" />
     </q-page-container>
   </q-layout>
 </template>

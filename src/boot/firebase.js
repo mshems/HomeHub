@@ -1,8 +1,7 @@
-import { boot } from 'quasar/wrappers'
-
-import { getDatabase } from 'firebase/database'
-import { initializeApp } from 'firebase/app'
 import { VueFire } from 'vuefire'
+import { boot } from 'quasar/wrappers'
+import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyABgoAbmQ4jtBjz-ggA9be-YSbNKmsqmao',
@@ -23,4 +22,4 @@ export default boot(({ app }) => {
   })
 })
 
-export { firebaseApp, db }
+export { db, firebaseApp }

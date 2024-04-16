@@ -3,10 +3,22 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['update:field', 'save'])
 defineProps({
-  field: [String, Number, Boolean, Object, Array],
-  display: String,
-  icon: String,
-  inputProps: Object
+  field: {
+    type: [String, Number, Boolean, Object, Array],
+    required: true
+  },
+  display: {
+    type: String,
+    default: ''
+  },
+  icon: {
+    type: String,
+    required: true
+  },
+  inputProps: {
+    type: Object,
+    default: () => ({})
+  }
 })
 const input = ref()
 </script>
@@ -20,9 +32,17 @@ const input = ref()
     auto-save
     @save="(val) => emit('save', {name: val})"
   >
-    <q-input ref="input" v-bind="inputProps" dense filled v-model="scope.value" autofocus @keyup.enter="scope.set">
+    <q-input
+      ref="input"
+      v-bind="inputProps"
+      dense
+      filled
+      v-model="scope.value"
+      autofocus
+      @keyup.enter="scope.set"
+    >
       <template #prepend>
-        <q-icon :name="icon"/>
+        <q-icon :name="icon" />
       </template>
     </q-input>
   </q-popup-edit>

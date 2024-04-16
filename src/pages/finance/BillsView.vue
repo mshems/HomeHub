@@ -1,9 +1,8 @@
 <script setup>
-import NavChip from 'src/components/NavChip.vue'
+import { color, formatBalance } from 'src/balance'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-
+import NavChip from 'src/components/NavChip.vue'
 import { useRecurrences } from 'src/composables/recurrences'
-import { formatBalance, color } from 'src/balance'
 import { useUsers } from 'src/composables/users'
 
 const { users } = useUsers()
@@ -12,18 +11,34 @@ const { recurrences: bills } = useRecurrences()
 
 <template>
   <finance-header>
-    <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
+    <nav-chip
+      path="/finance/transactions"
+      icon="mdi-credit-card-multiple"
+      label="Transactions"
+    />
   </finance-header>
-  <q-page padding class="container">
+  <q-page
+    padding
+    class="container"
+  >
     <q-card>
       <q-card-section class="card-title">
         Bills
       </q-card-section>
       <q-list>
-        <template v-for="bill in bills" :key="bill.id">
+        <template
+          v-for="bill in bills"
+          :key="bill.id"
+        >
           <q-item>
-            <q-item-section avatar class="col-shrink q-pr-md">
-              <q-icon name="mdi-cash" :color="color(bill.amount)"/>
+            <q-item-section
+              avatar
+              class="col-shrink q-pr-md"
+            >
+              <q-icon
+                name="mdi-cash"
+                :color="color(bill.amount)"
+              />
             </q-item-section>
 
             <q-item-section>
@@ -31,8 +46,14 @@ const { recurrences: bills } = useRecurrences()
               <q-item-label class="text-default text-capitalize">
                 {{ bill.name }}
               </q-item-label>
-              <q-item-label caption class="subtitle text-muted text-capitalize">
-                <q-icon name="mdi-repeat" color="muted"/>
+              <q-item-label
+                caption
+                class="subtitle text-muted text-capitalize"
+              >
+                <q-icon
+                  name="mdi-repeat"
+                  color="muted"
+                />
                 {{ bill.period }}
               </q-item-label>
             </q-item-section>
@@ -43,7 +64,12 @@ const { recurrences: bills } = useRecurrences()
                 {{ formatBalance(Math.abs(bill.amount)) }}
               </q-item-label>
               <!-- user -->
-              <q-item-label caption class="subtitle text-muted">{{ users[bill.paid_by]?.name }}</q-item-label>
+              <q-item-label
+                caption
+                class="subtitle text-muted"
+              >
+                {{ users[bill.paid_by]?.name }}
+              </q-item-label>
             </q-item-section>
           </q-item>
         </template>

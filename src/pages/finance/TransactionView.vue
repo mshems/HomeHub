@@ -1,25 +1,28 @@
 <script setup>
-import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import CategoryPopup from 'src/components/finance/tx/TxCategoryPopup.vue'
-import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
-import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
-import UserSelect from 'src/components/finance/inputs/UserSelect.vue'
-import TimestampInput from 'src/components/finance/inputs/TimestampInput.vue'
-import NavChip from 'src/components/NavChip.vue'
-
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { DateTime } from 'luxon'
+
 import { formatBalance } from 'src/balance'
-import { useTransactions } from 'src/composables/transactions'
+import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
+import MoneyInput from 'src/components/finance/inputs/MoneyInput.vue'
+import TimestampInput from 'src/components/finance/inputs/TimestampInput.vue'
+import UserSelect from 'src/components/finance/inputs/UserSelect.vue'
+import CategoryPopup from 'src/components/finance/tx/TxCategoryPopup.vue'
+import TxEditableField from 'src/components/finance/tx/TxEditableField.vue'
+import NavChip from 'src/components/NavChip.vue'
 import { useTransaction } from 'src/composables/transaction'
+import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 
 const $q = useQuasar()
 const router = useRouter()
 const props = defineProps({
-  id: String
+  id: {
+    type: String,
+    required: true
+  }
 })
 
 const { users } = useUsers()
@@ -90,24 +93,55 @@ const showCategoryDialog = ref(false)
 
 <template>
   <finance-header>
-    <nav-chip :path="`/finance/transactions`" icon="mdi-credit-card-multiple" label="Transactions"/>
-    <nav-chip :path="`/finance/transactions/${id}`" icon="mdi-cash" label="Details"/>
+    <nav-chip
+      :path="`/finance/transactions`"
+      icon="mdi-credit-card-multiple"
+      label="Transactions"
+    />
+    <nav-chip
+      :path="`/finance/transactions/${id}`"
+      icon="mdi-cash"
+      label="Details"
+    />
   </finance-header>
 
   <q-page padding>
     <div class="container">
-      <q-card v-if="loading" style="height: 88px" class="row items-center">
-        <q-spinner class="q-ml-md" size="lg" color="primary"/>
-        <q-space/>
-        <q-skeleton style="width: 200px; height: 32px" class="rounded q-mr-md" animation="none"/>
+      <q-card
+        v-if="loading"
+        style="height: 88px"
+        class="row items-center"
+      >
+        <q-spinner
+          class="q-ml-md"
+          size="lg"
+          color="primary"
+        />
+        <q-space />
+        <q-skeleton
+          style="width: 200px; height: 32px"
+          class="rounded q-mr-md"
+          animation="none"
+        />
       </q-card>
-      <q-banner v-if="!transaction && !loading" flat rounded class="bg-negative text-on-color" icon="mdi-alert-rhombus">
-        <template v-slot:avatar>
-          <q-icon name="mdi-alert-circle-outline"/>
+      <q-banner
+        v-if="!transaction && !loading"
+        flat
+        rounded
+        class="bg-negative text-on-color"
+        icon="mdi-alert-rhombus"
+      >
+        <template #avatar>
+          <q-icon name="mdi-alert-circle-outline" />
         </template>
-        <div class="text-bold">Transaction not found</div>
+        <div class="text-bold">
+          Transaction not found
+        </div>
       </q-banner>
-      <q-card v-else :class="`bg-${type}-bg`">
+      <q-card
+        v-else
+        :class="`bg-${type}-bg`"
+      >
         <q-card-section :class="`row items-center justify-between q-pa-xs text-on-${type}`">
           <div class="col-shrink">
             <q-btn
@@ -125,7 +159,7 @@ const showCategoryDialog = ref(false)
               />
             </q-btn>
           </div>
-          <q-space/>
+          <q-space />
           <div class="col-shrink text-right ">
             <div style="font-size: 2.5rem;">
               <q-btn
@@ -142,7 +176,11 @@ const showCategoryDialog = ref(false)
           </div>
         </q-card-section>
       </q-card>
-      <q-card v-if="!loading && transaction" class="q-mt-sm" style="font-size: 1rem;">
+      <q-card
+        v-if="!loading && transaction"
+        class="q-mt-sm"
+        style="font-size: 1rem;"
+      >
         <q-card-section class="q-pa-xs">
           <q-list class="q-px-none">
             <tx-editable-field
@@ -154,7 +192,8 @@ const showCategoryDialog = ref(false)
             <tx-editable-field
               icon="mdi-calendar"
               :field="transaction.timestamp"
-              :display="transactionDate">
+              :display="transactionDate"
+            >
               <q-popup-edit
                 class="q-px-none"
                 v-model="transaction.timestamp"
@@ -162,7 +201,13 @@ const showCategoryDialog = ref(false)
                 auto-save
                 @save="(val) => onUpdate({timestamp: val})"
               >
-                <timestamp-input dense filled v-model:timestamp="scope.value" autofocus @keyup.enter="scope.set"/>
+                <timestamp-input
+                  dense
+                  filled
+                  v-model:timestamp="scope.value"
+                  autofocus
+                  @keyup.enter="scope.set"
+                />
               </q-popup-edit>
             </tx-editable-field>
 
@@ -178,7 +223,14 @@ const showCategoryDialog = ref(false)
                 auto-save
                 @save="(val) => onUpdate({paid_by: val})"
               >
-                <user-select dense filled :users="users" v-model:user="scope.value" autofocus @keyup.enter="scope.set"/>
+                <user-select
+                  dense
+                  filled
+                  :users="users"
+                  v-model:user="scope.value"
+                  autofocus
+                  @keyup.enter="scope.set"
+                />
               </q-popup-edit>
             </tx-editable-field>
 
@@ -198,9 +250,17 @@ const showCategoryDialog = ref(false)
                 @save="(val) => onUpdate({notes: val})"
                 anchor="top middle"
               >
-                <q-input input-class="text-mono" type="textarea" dense filled v-model="scope.value" autofocus @keyup.enter.stop>
+                <q-input
+                  input-class="text-mono"
+                  type="textarea"
+                  dense
+                  filled
+                  v-model="scope.value"
+                  autofocus
+                  @keyup.enter.stop
+                >
                   <template #prepend>
-                    <q-icon name="mdi-note"/>
+                    <q-icon name="mdi-note" />
                   </template>
                 </q-input>
               </q-popup-edit>
@@ -208,7 +268,12 @@ const showCategoryDialog = ref(false)
           </q-list>
         </q-card-section>
         <q-card-actions align="center">
-          <q-btn flat label="delete" color="negative" @click="confirm"/>
+          <q-btn
+            flat
+            label="delete"
+            color="negative"
+            @click="confirm"
+          />
         </q-card-actions>
       </q-card>
     </div>
@@ -220,10 +285,16 @@ const showCategoryDialog = ref(false)
     @hide="onUpdate({amount: transaction.amount})"
   >
     <q-card style="min-width: 300px;">
-      <q-card-section class="card-title" style="font-size: 1rem;">
+      <q-card-section
+        class="card-title"
+        style="font-size: 1rem;"
+      >
         Amount
       </q-card-section>
-      <q-card-section class="card-subtitle" style="font-size: 0.8rem;">
+      <q-card-section
+        class="card-subtitle"
+        style="font-size: 0.8rem;"
+      >
         Enter a value
       </q-card-section>
       <q-card-section>
@@ -233,9 +304,8 @@ const showCategoryDialog = ref(false)
           label="Amount"
           v-model:amount="transaction.amount"
           style="font-size: 1.5rem;"
-          @keyup.enter = amountDialog.hide()
-        >
-        </MoneyInput>
+          @keyup.enter="amountDialog.hide()"
+        />
       </q-card-section>
     </q-card>
   </q-dialog>

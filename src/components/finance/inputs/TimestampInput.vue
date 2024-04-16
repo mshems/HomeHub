@@ -5,7 +5,8 @@ import { DateTime } from 'luxon'
 const emit = defineEmits(['update:timestamp'])
 const props = defineProps({
   timestamp: {
-    type: Number
+    type: Number,
+    required: true
   }
 })
 
@@ -26,7 +27,7 @@ const inner = computed({
     v-model="inner"
   >
     <template #prepend>
-      <q-icon name="mdi-calendar"/>
+      <q-icon name="mdi-calendar" />
     </template>
   </q-input>
 </template>

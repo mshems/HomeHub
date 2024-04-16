@@ -1,7 +1,9 @@
-import { useRtdb } from './rtdb'
-import { useUserStore } from 'src/stores/user'
 import { computed } from 'vue'
-import { total, filter } from 'src/filters'
+
+import { filter, total } from 'src/filters'
+import { useUserStore } from 'src/stores/user'
+
+import { useRtdb } from './rtdb'
 
 const { getObject } = useRtdb()
 const userStore = useUserStore()

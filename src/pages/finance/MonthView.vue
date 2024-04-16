@@ -1,16 +1,17 @@
 <script setup>
-import NavChip from 'src/components/NavChip.vue'
+import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { DateTime } from 'luxon'
+
+import BalanceCard from 'src/components/finance/BalanceCard.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
-import BalanceCard from 'src/components/finance/BalanceCard.vue'
-import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import NavChip from 'src/components/NavChip.vue'
+import { useCategories } from 'src/composables/categories'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
-import { useCategories } from 'src/composables/categories'
 import { useUserStore } from 'src/stores/user'
-import { DateTime } from 'luxon'
 // import HorizontalStackedBar from 'src/components/charts/HorizontalStackedBar.vue'
 
 const props = defineProps({
@@ -49,11 +50,23 @@ const { categories } = useCategories(monthlyTx)
 
 <template>
   <finance-header>
-    <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
-    <nav-chip path="/finance/month" icon="mdi-calendar" label="Details"/>
+    <nav-chip
+      path="/finance/transactions"
+      icon="mdi-credit-card-multiple"
+      label="Transactions"
+    />
+    <nav-chip
+      path="/finance/month"
+      icon="mdi-calendar"
+      label="Details"
+    />
   </finance-header>
 
-  <q-page class="container" padding style="padding-bottom: 80px;">
+  <q-page
+    class="container"
+    padding
+    style="padding-bottom: 80px;"
+  >
     <template v-if="user.authorized">
       <transactions-header
         :date="DateTime.fromObject({ month: props.m, year: props.y })"
@@ -62,18 +75,36 @@ const { categories } = useCategories(monthlyTx)
         @next="() => router.replace(`/finance/month?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace('/finance/month')"
       />
-      <div class="text-muted q-mt-md q-px-xs">Overview</div>
+      <div class="text-muted q-mt-md q-px-xs">
+        Overview
+      </div>
       <div class="row q-mt-none q-gutter-sm">
-        <balance-card :balance="monthlyTotal"/>
-        <template v-for="user in users" :key="user.id">
-          <user-balance-card :user="user"/>
+        <balance-card :balance="monthlyTotal" />
+        <template
+          v-for="u in users"
+          :key="u.id"
+        >
+          <user-balance-card :user="u" />
         </template>
       </div>
 
       <div class="row q-mt-none q-gutter-sm">
-        <balance-card caption="Wants" icon="mdi-shopping" :balance="wantsTotal"/>
-        <balance-card caption="Needs" icon="mdi-toolbox" :balance="needsTotal"/>
-        <balance-card caption="Saved" icon="mdi-piggy-bank" :absolute="false" :balance="(needsTotal + wantsTotal) + incomeTotal"/>
+        <balance-card
+          caption="Wants"
+          icon="mdi-shopping"
+          :balance="wantsTotal"
+        />
+        <balance-card
+          caption="Needs"
+          icon="mdi-toolbox"
+          :balance="needsTotal"
+        />
+        <balance-card
+          caption="Saved"
+          icon="mdi-piggy-bank"
+          :absolute="false"
+          :balance="(needsTotal + wantsTotal) + incomeTotal"
+        />
       </div>
 
       <!-- <HorizontalStackedBar
@@ -87,24 +118,32 @@ const { categories } = useCategories(monthlyTx)
         ]"
       /> -->
 
-      <div class="text-muted q-mt-md q-px-xs">Categories</div>
+      <div class="text-muted q-mt-md q-px-xs">
+        Categories
+      </div>
       <div class="row q-mt-none q-col-gutter-xs">
-        <template v-for="category in categories" :key="category.id">
+        <template
+          v-for="category in categories"
+          :key="category.id"
+        >
           <div class="col-4 col-sm-3 col-md-3 col-lg-2">
-            <balance-card class="text-capitalize"
+            <balance-card
+              class="text-capitalize"
               :balance="category.total"
               :caption="category.name"
             >
               <template #side>
-                <q-icon :name="category.icon"/>
+                <q-icon :name="category.icon" />
               </template>
             </balance-card>
           </div>
         </template>
       </div>
 
-      <div flat class="rounded q-mt-sm q-pa-xs">
-      </div>
+      <div
+        flat
+        class="rounded q-mt-sm q-pa-xs"
+      />
     </template>
   </q-page>
 </template>

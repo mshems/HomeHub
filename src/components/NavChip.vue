@@ -1,11 +1,24 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
 const props = defineProps({
-  path: String,
-  label: String,
-  icon: String,
-  full: Boolean,
+  path: {
+    type: String,
+    required: true
+  },
+  label: {
+    type: String,
+    required: true
+  },
+  icon: {
+    type: String,
+    required: true
+  },
+  full: {
+    type: Boolean,
+    default: false
+  },
   color: {
     type: String,
     default: 'primary'

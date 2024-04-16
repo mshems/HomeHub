@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from 'src/stores/user'
+
 import { useSettingsStore } from './stores/settings'
 
 const store = useUserStore()

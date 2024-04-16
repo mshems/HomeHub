@@ -1,5 +1,5 @@
-import { useDatabase, useDatabaseObject, useDatabaseList } from 'vuefire'
-import { ref as dbRef, set, push, remove, get } from 'firebase/database'
+import { useDatabase, useDatabaseList, useDatabaseObject } from 'vuefire'
+import { get, push, ref as dbRef, remove, set } from 'firebase/database'
 
 const db = useDatabase()
 

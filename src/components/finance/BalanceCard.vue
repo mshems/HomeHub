@@ -1,11 +1,24 @@
 <script setup>
-import { color, textColor, formatBalance } from 'src/balance'
+import { color, formatBalance, textColor } from 'src/balance'
+
 defineProps({
-  balance: Number,
-  bordered: Boolean,
+  balance: {
+    type: Number,
+    required: true
+  },
+  bordered: {
+    type: Boolean,
+    default: false
+  },
   loading: Boolean,
-  caption: String,
-  icon: [String, Boolean],
+  caption: {
+    type: String,
+    default: ''
+  },
+  icon: {
+    type: [String, Boolean],
+    default: false
+  },
   absolute: {
     type: Boolean,
     default: true
@@ -14,20 +27,39 @@ defineProps({
 </script>
 
 <template>
-  <q-card flat :class="`bg-${color(balance)}-bg ${bordered ? ('bordered border-' + color(balance)) : 'bordered border-transparent'}`">
+  <q-card
+    flat
+    :class="`bg-${color(balance)}-bg ${bordered ? ('bordered border-' + color(balance)) : 'bordered border-transparent'}`"
+  >
     <slot>
-      <q-item dense class="q-pa-sm">
-        <q-item-section side class="q-pr-sm" v-if="icon !== null">
+      <q-item
+        dense
+        class="q-pa-sm"
+      >
+        <q-item-section
+          side
+          class="q-pr-sm"
+          v-if="icon !== null"
+        >
           <slot name="side">
-            <q-icon :name="icon || 'mdi-finance'" :class="`text-on-${color(balance)}`" />
+            <q-icon
+              :name="icon || 'mdi-finance'"
+              :class="`text-on-${color(balance)}`"
+            />
           </slot>
         </q-item-section>
         <q-item-section>
-
-          <q-item-label :class="`${textColor(balance)} text-right text-bold`" style="font-size: 0.8rem;">
+          <q-item-label
+            :class="`${textColor(balance)} text-right text-bold`"
+            style="font-size: 0.8rem;"
+          >
             {{ absolute ? formatBalance(Math.abs(balance)) : formatBalance(balance) }}
           </q-item-label>
-          <q-item-label v-if="caption" caption :class="`text-on-${color(balance)} text-right ellipsis`">
+          <q-item-label
+            v-if="caption"
+            caption
+            :class="`text-on-${color(balance)} text-right ellipsis`"
+          >
             {{ caption }}
           </q-item-label>
         </q-item-section>

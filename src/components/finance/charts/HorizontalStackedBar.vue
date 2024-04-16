@@ -1,15 +1,18 @@
 <script setup>
 // eslint-disable-next-line
 import { Chart as ChartJS, Title, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import { getCssVar, colors } from 'quasar'
-import { ref, computed } from 'vue'
+import { colors, getCssVar } from 'quasar'
+import { computed, ref } from 'vue'
 import { Bar } from 'vue-chartjs'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import { formatBalance } from 'src/balance'
 
 const props = defineProps({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   displayPercentage: {
     type: Boolean,
     default: false

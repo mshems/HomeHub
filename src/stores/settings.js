@@ -1,7 +1,8 @@
 import { ref, watch } from 'vue'
+import { Dark, LocalStorage } from 'quasar'
 import { defineStore } from 'pinia'
+
 import { useUserStore } from 'src/stores/user'
-import { LocalStorage, Dark } from 'quasar'
 
 export const useSettingsStore = defineStore('settings', () => {
   const user = useUserStore()

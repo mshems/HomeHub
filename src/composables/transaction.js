@@ -1,5 +1,7 @@
 import { computed, unref } from 'vue'
+
 import { formatBalance } from 'src/balance'
+
 import { useCategories } from './categories'
 import { useUsers } from './users'
 

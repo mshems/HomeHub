@@ -1,10 +1,16 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const emit = defineEmits(['update:amount', 'update:credit', 'credit', 'debit'])
 const props = defineProps({
-  amount: Number,
-  label: String
+  amount: {
+    type: Number,
+    required: true
+  },
+  label: {
+    type: String,
+    default: 'Amount'
+  }
 })
 
 const input = ref()
@@ -45,7 +51,7 @@ defineExpose({ reset })
       @focus="input.select()"
     >
       <template #prepend>
-        <q-icon name="mdi-cash-multiple"/>
+        <q-icon name="mdi-cash-multiple" />
       </template>
     </q-input>
     <q-btn

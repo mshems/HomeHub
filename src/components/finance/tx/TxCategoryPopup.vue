@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from 'vue'
+
 import { useCategories } from 'src/composables/categories'
 
 const emit = defineEmits(['save', 'cancel'])
 const props = defineProps({
-  category: String
+  category: {
+    type: String,
+    required: true
+  }
 })
 
 const { categories } = useCategories()
@@ -30,16 +34,25 @@ const onSelect = (category) => {
     @hide="save"
   >
     <q-card style="min-width: 300px;">
-      <q-card-section class="card-title" style="font-size: 1rem;">
+      <q-card-section
+        class="card-title"
+        style="font-size: 1rem;"
+      >
         Category
       </q-card-section>
-      <q-card-section class="card-subtitle q-pb-none" style="font-size: 0.8rem;">
+      <q-card-section
+        class="card-subtitle q-pb-none"
+        style="font-size: 0.8rem;"
+      >
         Click to select
       </q-card-section>
       <q-card-section class="q-px-xs q-pb-none q-pt-sm">
-        <q-separator class="q-mx-sm"/>
+        <q-separator class="q-mx-sm" />
         <q-list>
-          <template v-for="c, i in categories" :key="i">
+          <template
+            v-for="c, i in categories"
+            :key="i"
+          >
             <q-item
               class="rounded q-my-xs hoverable"
               :active="category === c.name"
@@ -48,13 +61,19 @@ const onSelect = (category) => {
               @click="onSelect(c.name)"
             >
               <q-item-section class="col-shrink">
-                <q-icon :name="c.icon" :color="c.color" size="md"/>
+                <q-icon
+                  :name="c.icon"
+                  :color="c.color"
+                  size="md"
+                />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-capitalize">{{ c.name }}</q-item-label>
+                <q-item-label class="text-capitalize">
+                  {{ c.name }}
+                </q-item-label>
               </q-item-section>
             </q-item>
-            </template>
+          </template>
         </q-list>
       </q-card-section>
     </q-card>

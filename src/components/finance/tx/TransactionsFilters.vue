@@ -1,10 +1,11 @@
 <script setup>
-import CategoryChip from '../CategoryChip.vue'
-
 import { toRef } from 'vue'
+
+import { formatBalance } from 'src/balance'
 import { useCategories } from 'src/composables/categories'
 import { useUsers } from 'src/composables/users'
-import { formatBalance } from 'src/balance'
+
+import CategoryChip from '../CategoryChip.vue'
 
 const emit = defineEmits(['update:filters', 'clear'])
 const props = defineProps({
@@ -42,7 +43,10 @@ const isSelectedCategory = (category) => {
 <template>
   <div>
     <div class="row q-pt-sm q-px-sm">
-      <template v-for="u, i in users" :key="i">
+      <template
+        v-for="u, i in users"
+        :key="i"
+      >
         <div class="col-auto q-mr-xs q-mb-sm">
           <q-chip
             square
@@ -64,7 +68,10 @@ const isSelectedCategory = (category) => {
       </template>
     </div>
     <div class="row q-pt-sm q-px-sm">
-      <template v-for="category, i in categories" :key="i">
+      <template
+        v-for="category, i in categories"
+        :key="i"
+      >
         <div class="col-auto q-mr-xs q-mb-sm">
           <category-chip
             :category="category"

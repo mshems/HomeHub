@@ -1,19 +1,20 @@
 <script setup>
-import { watch, ref, computed } from 'vue'
-import NavChip from 'src/components/NavChip.vue'
+import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { DateTime } from 'luxon'
+
+import BalanceCard from 'src/components/finance/BalanceCard.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
 import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
-import BalanceCard from 'src/components/finance/BalanceCard.vue'
-
-import { useRouter } from 'vue-router'
+import NavChip from 'src/components/NavChip.vue'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
 import { useUserStore } from 'src/stores/user'
-import { DateTime } from 'luxon'
 
 const props = defineProps({
   id: {
-    type: String
+    type: String,
+    required: true
   },
   m: {
     type: Number,
@@ -47,11 +48,23 @@ const user = computed(() => users.value[props.id])
 
 <template>
   <finance-header>
-    <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
-    <nav-chip :path="`/finance/users/${id}`" icon="mdi-account" label="Details"/>
+    <nav-chip
+      path="/finance/transactions"
+      icon="mdi-credit-card-multiple"
+      label="Transactions"
+    />
+    <nav-chip
+      :path="`/finance/users/${id}`"
+      icon="mdi-account"
+      label="Details"
+    />
   </finance-header>
 
-  <q-page class="container" padding style="padding-bottom: 80px;">
+  <q-page
+    class="container"
+    padding
+    style="padding-bottom: 80px;"
+  >
     <template v-if="userStore.authorized">
       <transactions-header
         :date="DateTime.fromObject({ month: props.m, year: props.y })"
@@ -60,7 +73,9 @@ const user = computed(() => users.value[props.id])
         @next="() => router.replace(`/finance/users/${id}?m=${date.plus({ months: 1 }).month}&y=${date.plus({ months: 1 }).year}`)"
         @current="() => router.replace(`/finance/users/${id}`)"
       />
-      <div class="text-muted q-mt-md q-px-xs">{{ user?.name }}</div>
+      <div class="text-muted q-mt-md q-px-xs">
+        {{ user?.name }}
+      </div>
       <div class="row q-mt-none q-gutter-sm">
         <balance-card
           class="col-grow col-sm-auto"
@@ -80,7 +95,6 @@ const user = computed(() => users.value[props.id])
           icon="mdi-cash-minus"
           caption="Spending"
         />
-
       </div>
     </template>
   </q-page>

@@ -1,10 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+
 import { useUsers } from 'src/composables/users'
 
 const emit = defineEmits(['update:user'])
 defineProps({
-  user: String
+  user: {
+    type: String,
+    required: true
+  }
 })
 
 const { users } = useUsers()
@@ -23,9 +27,9 @@ const userSelect = ref()
     @update:model-value="val => emit('update:user', val)"
   >
     <template #prepend>
-      <q-icon name="mdi-account"/>
+      <q-icon name="mdi-account" />
     </template>
-    <template v-slot:option="{itemProps, opt, selected}">
+    <template #option="{itemProps, opt, selected}">
       <q-item
         class="rounded q-ma-xs hoverable"
         v-bind="itemProps"
@@ -33,7 +37,11 @@ const userSelect = ref()
         v-close-popup
       >
         <q-item-section avatar>
-          <q-avatar size="sm" :color="opt.color" class="text-on-color text-bold">
+          <q-avatar
+            size="sm"
+            :color="opt.color"
+            class="text-on-color text-bold"
+          >
             {{ opt.label[0] }}
           </q-avatar>
         </q-item-section>

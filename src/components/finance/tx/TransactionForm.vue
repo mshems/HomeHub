@@ -1,9 +1,10 @@
 <script setup>
-import MoneyInput from '../inputs/MoneyInput.vue'
-import UserSelect from '../inputs/UserSelect.vue'
-import CategorySelect from '../inputs/CategorySelect.vue'
-import TimestampInput from '../inputs/TimestampInput.vue'
 import { onMounted, ref } from 'vue'
+
+import CategorySelect from '../inputs/CategorySelect.vue'
+import MoneyInput from '../inputs/MoneyInput.vue'
+import TimestampInput from '../inputs/TimestampInput.vue'
+import UserSelect from '../inputs/UserSelect.vue'
 
 const emit = defineEmits(['update:form'])
 const props = defineProps({
@@ -39,7 +40,6 @@ defineExpose({ reset, setDefault })
 </script>
 
 <template>
-
   <div class="row">
     <MoneyInput
       class="col-grow"
@@ -66,7 +66,7 @@ defineExpose({ reset, setDefault })
     required
   >
     <template #prepend>
-      <q-icon name="mdi-label"/>
+      <q-icon name="mdi-label" />
     </template>
   </q-input>
 
@@ -94,7 +94,7 @@ defineExpose({ reset, setDefault })
     input-class="text-mono"
   >
     <template #prepend>
-      <q-icon name="mdi-note"/>
+      <q-icon name="mdi-note" />
     </template>
   </q-input>
 </template>

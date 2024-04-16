@@ -1,7 +1,6 @@
 import { ref, watch } from 'vue'
-import { defineStore } from 'pinia'
-import { DateTime } from 'luxon'
 import { LocalStorage } from 'quasar'
+import { defineStore } from 'pinia'
 
 export const useTxStore = defineStore('tx', () => {
   const descending = ref(LocalStorage.getItem('txDesc'))

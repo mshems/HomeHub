@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { DateTime } from 'luxon'
 import { ref } from 'vue'
+import { DateTime } from 'luxon'
+import { defineStore } from 'pinia'
 
 export const useDateStore = defineStore('financeDate', () => {
   const date = ref(DateTime.local())

@@ -1,7 +1,8 @@
-import { unref, computed } from 'vue'
+import { computed, unref } from 'vue'
 import { DateTime } from 'luxon'
-import { useCategories } from './composables/categories'
 import { useArrayFilter, useArrayReduce } from '@vueuse/core'
+
+import { useCategories } from './composables/categories'
 
 const credits = (transactions) => {
   return useArrayFilter(transactions, t => t.amount >= 0)

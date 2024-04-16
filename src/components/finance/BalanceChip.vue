@@ -1,5 +1,6 @@
 <script setup>
 import { color, formatBalance } from 'src/balance'
+
 const props = defineProps({
   balance: {
     type: Number,

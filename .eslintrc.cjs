@@ -5,7 +5,7 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    ecmaVersion: 2021, // Allows for the parsing of modern ECMAScript features
+    ecmaVersion: 2021 // Allows for the parsing of modern ECMAScript features
   },
 
   env: {
@@ -22,8 +22,8 @@ module.exports = {
     // Uncomment any of the lines below to choose desired strictness,
     // but leave only one uncommented!
     // See https://eslint.vuejs.org/rules/#available-rules
-    'plugin:vue/vue3-essential', // Priority A: Essential (Error Prevention)
-    // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
+    // 'plugin:vue/vue3-essential', // Priority A: Essential (Error Prevention)
+    'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     'standard'
@@ -34,7 +34,8 @@ module.exports = {
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
     // required to lint *.vue files
     'vue',
-
+    'simple-import-sort',
+    'import'
   ],
 
   globals: {
@@ -52,6 +53,29 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    // simple import sort plugin
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // `vue` first, `next` second, then packages starting with a character
+          ['^vue', '^vue-router', '^quasar', '^[a-z]', '^@'],
+          // Packages starting with `~`
+          ['^~'],
+          // aliases
+          ['^src'],
+          // Imports starting with `../`
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Imports starting with `./`
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+          // Style imports
+          ['^.+\\.s?css$'],
+          // Side effect imports
+          ['^\\u0000']
+        ]
+      }
+    ],
+    'simple-import-sort/exports': 'error',
     // allow async-await
     'generator-star-spacing': 'off',
     // allow paren-less arrow functions
@@ -62,7 +86,8 @@ module.exports = {
     'no-unused-vars': 'warn',
     'no-trailing-comma': 'off',
 
-    'import/first': 'off',
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
     'import/named': 'error',
     'import/namespace': 'error',
     'import/default': 'error',
@@ -75,4 +100,5 @@ module.exports = {
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
+
 }

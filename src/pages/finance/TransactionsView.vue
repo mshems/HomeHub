@@ -1,22 +1,22 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useSorted } from '@vueuse/core'
 import { DateTime } from 'luxon'
+import { useSorted } from '@vueuse/core'
 
-import NavChip from 'src/components/NavChip.vue'
+import BalanceCard from 'src/components/finance/BalanceCard.vue'
 import FinanceHeader from 'src/components/finance/FinanceHeader.vue'
-import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
 import TransactionsFilters from 'src/components/finance/tx/TransactionsFilters.vue'
+import TransactionsHeader from 'src/components/finance/tx/TransactionsHeader.vue'
 import TransactionsList from 'src/components/finance/tx/TransactionsList.vue'
 import UserBalanceCard from 'src/components/finance/UserBalanceCard.vue'
-import BalanceCard from 'src/components/finance/BalanceCard.vue'
-
+import NavChip from 'src/components/NavChip.vue'
+import { useCategories } from 'src/composables/categories'
 import { useTransactions } from 'src/composables/transactions'
 import { useUsers } from 'src/composables/users'
-import { useCategories } from 'src/composables/categories'
-import { useUserStore } from 'src/stores/user'
 import { useTxStore } from 'src/stores/tx'
+import { useUserStore } from 'src/stores/user'
+
 const props = defineProps({
   m: {
     type: Number,
@@ -60,10 +60,18 @@ const expanded = ref(false)
 
 <template>
   <finance-header>
-    <nav-chip path="/finance/transactions" icon="mdi-credit-card-multiple" label="Transactions"/>
+    <nav-chip
+      path="/finance/transactions"
+      icon="mdi-credit-card-multiple"
+      label="Transactions"
+    />
   </finance-header>
 
-  <q-page class="container" padding style="padding-bottom: 80px;">
+  <q-page
+    class="container"
+    padding
+    style="padding-bottom: 80px;"
+  >
     <template v-if="user.authorized">
       <transactions-header
         :date="DateTime.fromObject({ month: props.m, year: props.y })"
@@ -74,11 +82,18 @@ const expanded = ref(false)
       />
 
       <div class="row q-mt-none q-gutter-sm">
-        <balance-card class="col-grow col-sm-auto clickable hoverable cursor-pointer" :balance="monthlyTotal" @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)" />
-        <template v-for="user in users" :key="user.id">
+        <balance-card
+          class="col-grow col-sm-auto clickable hoverable cursor-pointer"
+          :balance="monthlyTotal"
+          @click="$router.push(`/finance/month?m=${date.month}&y=${date.year}`)"
+        />
+        <template
+          v-for="u in users"
+          :key="u.id"
+        >
           <user-balance-card
             :class="`cursor-pointer hoverable`"
-            :user="user"
+            :user="u"
             @click="router.push(`/finance/users/${user.id}`)"
           />
         </template>
@@ -91,11 +106,17 @@ const expanded = ref(false)
         filled
       >
         <template #prepend>
-          <q-icon name="mdi-magnify" class="cursor-pointer"/>
+          <q-icon
+            name="mdi-magnify"
+            class="cursor-pointer"
+          />
         </template>
       </q-input>
 
-      <div flat class="tx-container rounded q-mt-sm q-pa-xs">
+      <div
+        flat
+        class="tx-container rounded q-mt-sm q-pa-xs"
+      >
         <div class="row items-center">
           <q-expansion-item
             class="col-grow q-mb-xs"
@@ -106,8 +127,10 @@ const expanded = ref(false)
           >
             <template #header>
               <div class="q-pl-sm col-grow items-center row no-wrap">
-                <q-item-label class="text-bold">Transactions</q-item-label>
-                <q-space/>
+                <q-item-label class="text-bold">
+                  Transactions
+                </q-item-label>
+                <q-space />
                 <template v-if="store.hasFilters()">
                   <q-chip
                     class="q-ma-none"
@@ -145,8 +168,16 @@ const expanded = ref(false)
       </div>
     </template>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="mdi-cash-plus" color="secondary" to="/finance/transactions/new"/>
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 18]"
+    >
+      <q-btn
+        fab
+        icon="mdi-cash-plus"
+        color="secondary"
+        to="/finance/transactions/new"
+      />
     </q-page-sticky>
   </q-page>
 </template>

@@ -1,10 +1,14 @@
 <script setup>
 import { computed } from 'vue'
+
 import { useCategories } from 'src/composables/categories'
 
 const emit = defineEmits(['update:category'])
 defineProps({
-  category: String
+  category: {
+    type: String,
+    required: true
+  }
 })
 const { categories } = useCategories()
 const categoryOptions = computed(() => categories.value ? Object.entries(categories.value).map(([k, v]) => v.name) : [])
@@ -20,7 +24,9 @@ const categoryOptions = computed(() => categories.value ? Object.entries(categor
     :options="categoryOptions"
     @update:model-value="val => emit('update:category', val)"
   >
-    <template #prepend><q-icon name="mdi-tag"/></template>
+    <template #prepend>
+      <q-icon name="mdi-tag" />
+    </template>
     <template #selected-item="{opt}">
       <div v-if="opt">
         <q-icon
@@ -45,7 +51,9 @@ const categoryOptions = computed(() => categories.value ? Object.entries(categor
           />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-capitalize">{{ opt }}</q-item-label>
+          <q-item-label class="text-capitalize">
+            {{ opt }}
+          </q-item-label>
         </q-item-section>
       </q-item>
     </template>
