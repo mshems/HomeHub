@@ -7,7 +7,7 @@ const emit = defineEmits(['update:user'])
 defineProps({
   user: {
     type: String,
-    required: true
+    default: ''
   }
 })
 

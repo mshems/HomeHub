@@ -7,7 +7,7 @@ import { formatBalance } from 'src/balance'
 const emit = defineEmits(['delete', 'view'])
 const props = defineProps({
   item: {
-    type: Object,
+    type: [Object, null],
     required: true
   },
   category: {

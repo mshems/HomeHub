@@ -16,17 +16,17 @@ import { useUserStore } from 'src/stores/user'
 
 const props = defineProps({
   m: {
-    type: Number,
+    type: [String, Number],
     default: DateTime.local().month
   },
   y: {
-    type: Number,
+    type: [String, Number],
     default: DateTime.local().year
   }
 })
 
-const month = ref(props.m)
-const year = ref(props.y)
+const month = ref(Number.parseInt(props.m))
+const year = ref(Number.parseInt(props.y))
 const date = computed(() => DateTime.fromObject({ month: month.value, year: year.value }))
 watch(() => ({ ...props }), (p) => {
   month.value = p.m
@@ -84,7 +84,11 @@ const { categories } = useCategories(monthlyTx)
           v-for="u in users"
           :key="u.id"
         >
-          <user-balance-card :user="u" />
+          <user-balance-card
+            :class="`cursor-pointer hoverable`"
+            :user="u"
+            @click="router.push(`/finance/users/${u.id}`)"
+          />
         </template>
       </div>
 

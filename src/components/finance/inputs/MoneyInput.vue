@@ -5,7 +5,7 @@ const emit = defineEmits(['update:amount', 'update:credit', 'credit', 'debit'])
 const props = defineProps({
   amount: {
     type: Number,
-    required: true
+    default: 0
   },
   label: {
     type: String,

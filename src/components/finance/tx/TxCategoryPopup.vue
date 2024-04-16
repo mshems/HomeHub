@@ -7,7 +7,7 @@ const emit = defineEmits(['save', 'cancel'])
 const props = defineProps({
   category: {
     type: String,
-    required: true
+    default: 'other'
   }
 })
 

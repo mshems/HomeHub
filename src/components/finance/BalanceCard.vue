@@ -4,13 +4,16 @@ import { color, formatBalance, textColor } from 'src/balance'
 defineProps({
   balance: {
     type: Number,
-    required: true
+    default: 0
   },
   bordered: {
     type: Boolean,
     default: false
   },
-  loading: Boolean,
+  loading: {
+    type: Boolean,
+    default: false
+  },
   caption: {
     type: String,
     default: ''

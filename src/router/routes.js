@@ -21,7 +21,7 @@ const routes = [
     path: '/finance',
     component: () => import('layouts/FinanceLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/finance/FinanceHome.vue') }
+      { path: '', props: true, component: () => import('src/pages/finance/FinanceHome.vue') }
     ]
   },
   {
@@ -69,8 +69,8 @@ const routes = [
         path: ':id',
         props: route => ({
           id: route.params.id,
-          m: route.query.m ? Number.parseInt(route.query.m) : now.month,
-          y: route.query.y ? Number.parseInt(route.query.y) : now.year
+          m: route.query.m ? Number.parseInt(route.query.m) || now.month : now.month,
+          y: route.query.y ? Number.parseInt(route.query.y) || now.year : now.year
         }),
         component: () => import('src/pages/finance/UserView.vue')
       }
@@ -81,7 +81,13 @@ const routes = [
     path: '/mealprep',
     component: () => import('layouts/RecipesLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/recipes/MealPrepView.vue') }
+      {
+        path: '',
+        props: route => ({
+          d: route.query.d || now.startOf('week').toISODate()
+        }),
+        component: () => import('src/pages/recipes/MealPrepView.vue')
+      }
     ]
   },
 
