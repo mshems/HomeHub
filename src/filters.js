@@ -71,32 +71,38 @@ const byName = (transactions, name) => {
   return useArrayFilter(transactions, t => t.name.toLowerCase().startsWith(unref(name.toLowerCase())))
 }
 
+const byField = (collection, field, str) => {
+  if (!unref(str)) return collection
+  return useArrayFilter(collection, x => x[field].toLowerCase().startsWith(unref(str.toLowerCase())))
+}
+
 const total = (transactions) => {
   return useArrayReduce(unref(transactions), (acc, t) => acc + t.amount, 0).value
 }
 
-const filter = (transactions, { userId, category, categoryType, month, year, type, before, after, name }) => {
+const filter = (transactions, { userId, category, categoryType, month, year, type, before, after, name, field, str }) => {
   return computed(
-    () => byName(
-      byYear(
-        byMonth(
-          byUser(
-            byCategory(
-              byCategoryType(
-                byType(
-                  beforeDate(
-                    afterDate(
-                      unref(transactions),
-                      after),
-                    before),
-                  type),
-                categoryType),
-              category),
-            userId),
-          month, year),
-        year),
-      name
-    )
+    () => byField(
+      byName(
+        byYear(
+          byMonth(
+            byUser(
+              byCategory(
+                byCategoryType(
+                  byType(
+                    beforeDate(
+                      afterDate(
+                        unref(transactions),
+                        after),
+                      before),
+                    type),
+                  categoryType),
+                category),
+              userId),
+            month, year),
+          year),
+        name),
+      field, str)
   )
 }
 

@@ -76,13 +76,17 @@ const routes = [
       }
     ]
   },
-
   {
-    path: '/mealprep',
+    path: '/recipes',
     component: () => import('layouts/RecipesLayout.vue'),
     children: [
       {
         path: '',
+        component: () => import('src/pages/recipes/RecipesView.vue')
+      },
+      { path: ':id', props: true, component: () => import('src/pages/recipes/RecipeView.vue') },
+      {
+        path: 'schedule',
         props: route => ({
           d: route.query.d || now.startOf('week').toISODate()
         }),

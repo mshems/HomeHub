@@ -11,10 +11,10 @@ const router = useRouter()
   >
     <div class="column q-gutter-sm">
       <q-card
-        class="hoverable cursor-pointer bg-credit-bg"
+        class="hoverable cursor-pointer"
         @click="router.push('/finance')"
       >
-        <q-card-section class="row no-wrap items-baseline card-title text-on-credit">
+        <q-card-section class="row no-wrap items-baseline title">
           <q-icon
             name="mdi-piggy-bank"
             class="col-2"
@@ -24,7 +24,6 @@ const router = useRouter()
             Finance
           </div>
         </q-card-section>
-        <q-card-section />
       </q-card>
       <a
         href="https://recipes.mshems.dev"
@@ -32,24 +31,23 @@ const router = useRouter()
         style="text-decoration: none;"
       >
         <q-card
-          class="hoverable cursor-pointer bg-recipes-bg"
+          class="hoverable cursor-pointer text-default"
         >
-          <q-card-section class="row no-wrap items-baseline card-title text-on-recipes">
+          <q-card-section class="row no-wrap items-baseline title">
             <q-icon
               name="mdi-pot-steam"
               class="col-2"
-              size="lg"
+              size="md"
             />
             <div class="col-auto">Recipes</div>
           </q-card-section>
-          <q-card-section />
         </q-card>
       </a>
       <q-card
-        class="hoverable cursor-pointer bg-recipes-bg"
-        @click="router.push('/mealprep')"
+        class="hoverable cursor-pointer"
+        @click="router.push('/recipes/schedule')"
       >
-        <q-card-section class="row no-wrap items-baseline card-title text-on-recipes">
+        <q-card-section class="row no-wrap items-baseline title">
           <q-icon
             name="mdi-food"
             class="col-2"
@@ -59,7 +57,6 @@ const router = useRouter()
             Meal Prep
           </div>
         </q-card-section>
-        <q-card-section />
       </q-card>
     </div>
   </q-page>
