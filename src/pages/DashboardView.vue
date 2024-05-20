@@ -25,24 +25,21 @@ const router = useRouter()
           </div>
         </q-card-section>
       </q-card>
-      <a
-        href="https://recipes.mshems.dev"
-        target="recipes.mshems.dev"
-        style="text-decoration: none;"
+      <q-card
+        class="hoverable cursor-pointer"
+        @click="router.push('/recipes')"
       >
-        <q-card
-          class="hoverable cursor-pointer text-default"
-        >
-          <q-card-section class="row no-wrap items-baseline title">
-            <q-icon
-              name="mdi-pot-steam"
-              class="col-2"
-              size="md"
-            />
-            <div class="col-auto">Recipes</div>
-          </q-card-section>
-        </q-card>
-      </a>
+        <q-card-section class="row no-wrap items-baseline title">
+          <q-icon
+            name="mdi-pot-steam"
+            class="col-2"
+            size="md"
+          />
+          <div class="col-auto">
+            Recipes
+          </div>
+        </q-card-section>
+      </q-card>
       <q-card
         class="hoverable cursor-pointer"
         @click="router.push('/recipes/schedule')"

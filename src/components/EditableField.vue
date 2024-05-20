@@ -1,5 +1,5 @@
 <script setup>
-import TxPopupEdit from './TxPopupEdit.vue'
+import PopupEdit from './PopupEdit.vue'
 
 const emit = defineEmits(['update:field', 'save'])
 
@@ -22,12 +22,17 @@ defineProps({
   },
   icon: {
     type: String,
-    required: true
+    default: ''
   },
   popupProps: {
     type: Object,
     default: () => ({})
+  },
+  labelClasses: {
+    type: String,
+    default: ''
   }
+
 })
 </script>
 
@@ -38,8 +43,9 @@ defineProps({
   >
     <slot name="content">
       <q-item-section>
-        <q-item-label>
+        <q-item-label :class="labelClasses">
           <q-icon
+            v-if="icon"
             :name="icon"
             class="q-mr-sm"
           />
@@ -61,7 +67,7 @@ defineProps({
       </q-item-section>
     </slot>
     <slot>
-      <tx-popup-edit
+      <popup-edit
         v-bind="popupProps"
         :display="display"
         :icon="icon"
@@ -72,3 +78,4 @@ defineProps({
     </slot>
   </q-item>
 </template>
+./PopupEdit.vue

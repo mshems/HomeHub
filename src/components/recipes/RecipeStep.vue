@@ -3,18 +3,16 @@ defineProps({
   step: {
     type: Object,
     default: () => ({})
+  },
+  stepNumber: {
+    type: Number,
+    default: 1
   }
-  // ingredients: {
-  //   type: Object,
-  //   default: () => ({})
-  // },
-  // scale: {
-  //   type: Number,
-  //   default: 1
-  // }
 })
 </script>
 
 <template>
-  <div>{{ step.text }}</div>
+  <div class="text-capitalize q-my-xs">
+    {{ step.text }}
+  </div>
 </template>

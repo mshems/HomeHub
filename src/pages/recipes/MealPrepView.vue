@@ -28,16 +28,16 @@ const dates = computed(() => {
 
 const prev = () => {
   const prev = DateTime.fromISO(props.d).minus({ weeks: 1 }).toISODate()
-  router.replace(`/mealprep?d=${prev}`)
+  router.replace(`/recipes/schedule?d=${prev}`)
 }
 
 const next = () => {
   const next = DateTime.fromISO(props.d).plus({ weeks: 1 }).toISODate()
-  router.replace(`/mealprep?d=${next}`)
+  router.replace(`/recipes/schedule?d=${next}`)
 }
 
 const thisWeek = () => {
-  router.replace(`/mealprep?d=${DateTime.now().startOf('week').toISODate()}`)
+  router.replace(`/recipes/schedule?d=${DateTime.now().startOf('week').toISODate()}`)
 }
 
 </script>

@@ -85,6 +85,7 @@ const routes = [
         component: () => import('src/pages/recipes/RecipesView.vue')
       },
       { path: ':id', props: true, component: () => import('src/pages/recipes/RecipeView.vue') },
+      { path: ':id/edit', props: true, component: () => import('src/pages/recipes/EditRecipeView.vue') },
       {
         path: 'schedule',
         props: route => ({

@@ -15,9 +15,7 @@ defineProps({
 
 <template>
   <div>
-    <div>
-      <span class="text-accent text-bold">{{ pluralize(ingredient.unit, ingredient.quantity * scale, true) }}</span>
-      <span>{{ ' ' + (!!ingredient.unit ? ingredient.name : pluralize(ingredient.name, ingredient.quantity * scale)) }}</span>
-    </div>
+    <span class="text-accent text-bold">{{ pluralize(ingredient.unit, ingredient.quantity * scale, true) }}</span>
+    <span>{{ ' ' + (!!ingredient.unit ? ingredient.name : pluralize(ingredient.name, ingredient.quantity * scale)) }}</span>
   </div>
 </template>

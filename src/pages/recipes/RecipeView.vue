@@ -2,17 +2,14 @@
 import NavChip from 'src/components/NavChip.vue'
 import RecipeContent from 'src/components/recipes/RecipeContent.vue'
 import RecipesHeader from 'src/components/recipes/RecipesHeader.vue'
-import { useCollection } from 'src/composables/collection'
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true
   }
 })
 
-const { get, pending } = useCollection('data/recipes')
-const recipe = get(props.id)
 </script>
 
 <template>
@@ -28,8 +25,7 @@ const recipe = get(props.id)
     class="container"
   >
     <recipe-content
-      :recipe="recipe"
-      :pending="pending"
+      :id="id"
     />
   </q-page>
 </template>
