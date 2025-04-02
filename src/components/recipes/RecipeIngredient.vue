@@ -1,21 +1,25 @@
-<script setup>
+<script setup lang="ts">
+import { numericQuantity } from 'numeric-quantity'
 import pluralize from 'pluralize'
 
-defineProps({
-  ingredient: {
-    type: Object,
-    default: () => ({})
-  },
-  scale: {
-    type: Number,
-    default: 1
-  }
-})
+import { type IIngredient } from '@/lib/models'
+
+defineProps<{ ingredient: IIngredient }>()
 </script>
 
 <template>
-  <div>
-    <span class="text-accent text-bold">{{ pluralize(ingredient.unit, ingredient.quantity * scale, true) }}</span>
-    <span>{{ ' ' + (!!ingredient.unit ? ingredient.name : pluralize(ingredient.name, ingredient.quantity * scale)) }}</span>
+  <div class="text-sm leading-relaxed">
+    <span class="text-bold text-accent-typography" v-if="ingredient.quantity">
+      {{ ingredient.quantity }}
+      {{ pluralize(ingredient.unit || '', numericQuantity(ingredient.quantity || 0)) }}
+    </span>
+    <span>
+      {{
+        ' ' +
+        (!!ingredient.unit || !ingredient.quantity
+          ? ingredient.name
+          : pluralize(ingredient.name, numericQuantity(ingredient.quantity || 0)))
+      }}
+    </span>
   </div>
 </template>

@@ -1,99 +1,60 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import MealPrepDialog from './MealPrepDialog.vue'
+import { Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 
-import { useCollection } from 'src/composables/collection'
-
-import MealCard from './MealCard.vue'
-import MealPrepDialog from './MealPrepDialog.vue'
+import MealPrepMeal from '@/components/mealprep/MealPrepMeal.vue'
+import { Button } from '@/components/ui/button'
+import { useCollection } from '@/composables/collections'
+import type { IMeal } from '@/lib/models'
 
 const props = defineProps({
-  date: {
+  day: {
     type: String,
-    default: DateTime.now().toISODate()
+    required: true
   }
 })
-
-const { get } = useCollection('data/mealprep')
-const { pending } = get(props.date)
-const { collection: meals, create, remove } = useCollection(`data/mealprep/${props.date}/meals`)
-const showDialog = ref(false)
-
-const onSave = (data) => {
-  create(data)
-  showDialog.value = false
+const date = DateTime.fromISO(props.day)
+const { collection: meals, remove } = useCollection(`data/mealprep/${props.day}/meals`)
+const addMeal = (mealData: Omit<IMeal, 'id'>, timestamp: number) => {
+  const isoDate = DateTime.fromSeconds(timestamp).toISODate()
+  const { create } = useCollection(`data/mealprep/${isoDate}/meals`)
+  create(mealData)
+}
+const updateMeal = (id: string, mealData: Omit<IMeal, 'id'>, timestamp: number) => {
+  const isoDate = DateTime.fromSeconds(timestamp).toISODate()
+  const { remove } = useCollection(`data/mealprep/${date.toISODate()}/meals`)
+  remove(id)
+  const { create } = useCollection(`data/mealprep/${isoDate}/meals`)
+  create(mealData)
 }
 </script>
 
 <template>
-  <div
-    v-if="!!date"
-    class="q-px-md q-py-xs"
-  >
-    <div class="q-mb-sm">
-      <div
-        class="card-title"
-        style="font-size: 1rem;"
-      >
-        {{ DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('EEEE') }}
+  <div class="flex flex-col gap-3">
+    <h3 class="flex items-center justify-between">
+      <div class="font-title font-medium">
+        <div>{{ date.toFormat('cccc') }}</div>
+        <div class="text-sm text-muted-foreground">
+          {{ date.toFormat('MMM d') }}
+        </div>
       </div>
-      <div
-        class="card-subtitle"
-        style="font-size: 0.8rem;"
-      >
-        {{ DateTime.fromFormat(date, 'yyyy-MM-dd').toFormat('LLLL d') }}
-      </div>
-    </div>
-
-    <div
-      v-if="pending"
-      class="q-mb-sm"
-    >
-      <q-skeleton />
-    </div>
-
-    <div
-      v-else-if="meals.length > 0"
-      class="q-mb-sm"
-    >
-      <div class="row q-gutter-xs">
-        <template
-          v-for="meal in meals"
-          :key="meal.id"
+      <MealPrepDialog @save="addMeal" :timestamp="date.toSeconds()">
+        <Button variant="accent" size="iconsm">
+          <Plus />
+        </Button>
+      </MealPrepDialog>
+    </h3>
+    <div class="flex flex-wrap gap-3">
+      <template v-for="meal in meals" :key="meal.id">
+        <MealPrepDialog
+          :meal="meal as IMeal"
+          :timestamp="date.toSeconds()"
+          @save="(m, timestamp) => updateMeal(meal.id, m, timestamp)"
         >
-          <meal-card
-            :meal="meal"
-            class="col-auto"
-            @delete="remove"
-          />
-        </template>
-        <q-btn
-          flat
-          no-caps
-          color="muted"
-          icon="mdi-plus"
-          @click="showDialog = true"
-        />
-      </div>
-    </div>
-
-    <div
-      v-if="!pending && !meals.length"
-      class="row items-center text-muted"
-    >
-      <q-btn
-        flat
-        no-caps
-        color="muted"
-        @click="showDialog = true"
-        label="Add Meal"
-        icon="mdi-plus"
-      />
+          <MealPrepMeal :meal="meal as IMeal" @remove="() => remove(meal.id)" />
+        </MealPrepDialog>
+      </template>
     </div>
   </div>
-  <meal-prep-dialog
-    :date="date"
-    v-model="showDialog"
-    @save="(data) => onSave(data)"
-  />
 </template>

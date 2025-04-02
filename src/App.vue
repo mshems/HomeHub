@@ -1,14 +1,10 @@
-<script setup>
-import { useUserStore } from 'src/stores/user'
-
-import { useSettingsStore } from './stores/settings'
-
-const store = useUserStore()
-const settings = useSettingsStore()
-store.initialize()
-settings.initialize()
+<script setup lang="ts">
+import GlobalHeader from './components/header/GlobalHeader.vue'
 </script>
 
 <template>
-  <router-view />
+  <header>
+    <GlobalHeader />
+  </header>
+  <RouterView />
 </template>
