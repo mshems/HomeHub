@@ -124,7 +124,7 @@ if (updating.value) {
             <div className="flex items-center  sm:gap-3 sm:flex-nowrap flex-wrap">
               <MoneyInput
                 v-model:amount="data.amount"
-                :class="`mb-3 flex-shrink sm:mb-0 ${credit ? 'text-positive-typography' : 'text-negative-typography'}`"
+                :class="`mb-3 shrink sm:mb-0 ${credit ? 'text-positive-typography' : 'text-negative-typography'}`"
               />
               <div class="flex w-full gap-3 sm:w-auto">
                 <Button

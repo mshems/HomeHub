@@ -1,5 +1,6 @@
 import App from './App.vue'
 import './assets/main.css'
+import { FIREBASE_API_KEY } from './credentials'
 import router from './router'
 import { initializeApp } from 'firebase/app'
 import { createPinia } from 'pinia'
@@ -7,7 +8,7 @@ import { createApp } from 'vue'
 import { VueFire, VueFireAuth } from 'vuefire'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyABgoAbmQ4jtBjz-ggA9be-YSbNKmsqmao',
+  apiKey: FIREBASE_API_KEY,
   authDomain: 'homebase-c96a6.firebaseapp.com',
   projectId: 'homebase-c96a6',
   storageBucket: 'homebase-c96a6.appspot.com',

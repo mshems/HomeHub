@@ -90,7 +90,7 @@ const editor = useEditor({
 
         <a :href="recipe.link" target="_blank" rel="noopener noreferrer">
           <div
-            class="overflow-hidden overflow-ellipsis text-nowrap font-serif text-sm text-muted-foreground hover:text-accent-typography"
+            class="overflow-hidden text-ellipsis text-nowrap font-serif text-sm text-muted-foreground hover:text-accent-typography"
           >
             {{ recipe.link }}
           </div>

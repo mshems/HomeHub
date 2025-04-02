@@ -5,9 +5,9 @@ export type BalanceVariantProps = VariantProps<typeof balanceVariants>
 export const balanceVariants = cva('', {
   variants: {
     variant: {
-      credit: '!bg-positive text-positive-foreground',
-      debit: '!bg-negative text-negative-foreground',
-      neutral: '!bg-secondary text-secondary-foreground'
+      credit: 'bg-positive! text-positive-foreground',
+      debit: 'bg-negative! text-negative-foreground',
+      neutral: 'bg-secondary! text-secondary-foreground'
     }
   }
 })
