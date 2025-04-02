@@ -39,7 +39,7 @@ const onLogOut = () => {
               <div>
                 {{ user?.name }}
               </div>
-              <div class="text-sm text-muted-foreground">
+              <div class="text-muted-foreground text-sm">
                 {{ user?.email }}
               </div>
             </div>

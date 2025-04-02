@@ -11,7 +11,7 @@ const router = useRouter()
 <template>
   <div class="flex flex-row items-center justify-between px-8 pt-5">
     <h1
-      class="cursor-pointer font-title text-2xl font-semibold text-primary"
+      class="font-title text-primary cursor-pointer text-2xl font-semibold"
       @click="router.push('/')"
     >
       HomeHub
