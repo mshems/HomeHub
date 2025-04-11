@@ -112,7 +112,7 @@ if (updating.value) {
     <AutoBreadcrumbs :page="updating ? 'Edit' : 'New'" :items="breadcrumbs" no-dashboard />
     <Card>
       <CardHeader>
-        <h2 class="flex items-center gap-3 font-title text-2xl font-semibold">
+        <h2 class="font-title flex items-center gap-3 text-2xl font-semibold">
           <Wallet class="h-8 w-8" />
           {{ updating ? 'Edit' : 'New' }} Transaction
         </h2>
@@ -157,7 +157,7 @@ if (updating.value) {
               <TagIcon class="h-4 w-4" />
             </InputWithIcon>
           </div>
-          <div>
+          <div class="flex flex-col space-y-1">
             <Label for="category">Category</Label>
             <Select id="category" v-model="data.category" required>
               <SelectTrigger>
@@ -169,7 +169,7 @@ if (updating.value) {
                 </template>
                 <span class="text-muted-foreground" v-else>Select a category</span>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent position="popper">
                 <SelectItem v-for="c in categories" :key="c.id" :value="c.id">
                   <div class="flex items-center gap-5">
                     <CategoryIcon :category="c.id" class="size-5" />
@@ -179,7 +179,7 @@ if (updating.value) {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div class="flex flex-col space-y-1">
             <Label for="paid_by">User</Label>
             <Select id="paid_by" v-model="data.paid_by">
               <SelectTrigger>
@@ -190,7 +190,7 @@ if (updating.value) {
                 </template>
                 <span class="text-muted-foreground" v-else>Select a User</span>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent position="popper">
                 <SelectItem v-for="u in users" :key="u.id" :value="u.id">
                   <div class="flex items-center gap-5">
                     <span>{{ u.name }}</span>

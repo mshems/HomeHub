@@ -1,7 +1,5 @@
 credentials.ts
 
-.firebase
-.firebase/hosting*
 # Logs
 logs
 *.log
