@@ -47,6 +47,9 @@ export const filterFns: StringToFn = {
   byCategory: (tx: ITransaction, { categories }: ByCategoryProps) => {
     return unref(categories).includes(tx.category)
   },
+  byNotCategory: (tx: ITransaction, { categories }: ByCategoryProps) => {
+    return !unref(categories).includes(tx.category)
+  },
   byType: (tx: ITransaction, { type }: ByTypeProps) => {
     const category = getCategory(tx.category)
     return category.value?.type === unref(type)
@@ -61,6 +64,7 @@ export interface Filters extends StringToObj {
   byYear?: ByYearProps
   byUser?: ByUserProps
   byCategory?: ByCategoryProps
+  byNotCategory?: ByCategoryProps
   byType?: ByTypeProps
   byCredit?: ByCreditProps
 }

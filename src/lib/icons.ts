@@ -1,5 +1,6 @@
 import type { StringToFn } from './types'
 import {
+  ArrowLeftRight,
   Banknote,
   Bike,
   ChefHat,
@@ -32,7 +33,8 @@ export const categoryIcons: StringToFn = {
   transportation: Fuel,
   travel: Plane,
   utilities: Wallet,
-  wedding: PartyPopper
+  wedding: PartyPopper,
+  transfer: ArrowLeftRight
 }
 
 export const categoryColors: Record<string, string> = {
@@ -47,7 +49,8 @@ export const categoryColors: Record<string, string> = {
   transportation: 'text-slate-500',
   travel: 'text-sky-500',
   utilities: 'text-red-500',
-  wedding: 'text-foreground'
+  wedding: 'text-foreground',
+  transfer: 'text-foreground'
 }
 
 export const mealIcons: StringToFn = {
