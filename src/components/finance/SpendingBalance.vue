@@ -42,8 +42,8 @@ const user_owed = computed(() => {
 const { total: total_transfer } = useFilteredTransactions(
   props.tx,
   useFilters({
-    byUser: { user_id: user_owed.value },
-    byCategory: { categories: ['transfer'] }
+    byCategory: { categories: ['transfer'] },
+    byCredit: { credit: true }
   }).filters
 )
 
@@ -54,6 +54,10 @@ const transfer_amount = computed(() => {
 
 <template>
   <div>
+    <!-- {{ spending_diff }}
+    {{ user_owed }}
+    {{ total_transfer }}
+    {{ transfer_amount }} -->
     <Card class="bg-accent text-accent-foreground w-fit">
       <div class="flex flex-row items-center gap-3 px-5 py-3">
         <span class="font-regular">

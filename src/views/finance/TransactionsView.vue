@@ -92,7 +92,7 @@ const toggleCategory = (id: string) => {
       </template>
       <Card
         class="bg-secondary text-secondary-foreground hover:bg-secondary-focus"
-        @click="router.push('/finance/transactions/metrics')"
+        @click="router.push('/finance/transactions/metrics?m=' + month + '&y=' + year)"
       >
         <div class="flex flex-row items-center gap-3 px-5 py-3">
           <ChartLine />
@@ -109,14 +109,14 @@ const toggleCategory = (id: string) => {
     </div>
 
     <Card>
-      <CardHeader class="pb-2 font-title text-xl font-semibold">
+      <CardHeader class="font-title pb-2 text-xl font-semibold">
         <CardTitle>Transactions</CardTitle>
       </CardHeader>
       <CardContent class="flex flex-col gap-2 px-2">
         <Accordion type="single" collapsible>
           <AccordionItem value="categories">
             <AccordionTrigger>
-              <div class="flex w-full items-center justify-between pl-1 pr-3">
+              <div class="flex w-full items-center justify-between pr-3 pl-1">
                 <div class="py-2">Filters</div>
                 <Button
                   v-if="hasFilter('byCategory') || hasFilter('byUser')"
@@ -169,9 +169,9 @@ const toggleCategory = (id: string) => {
         </template>
         <template v-if="displayedTx.length === 0">
           <div
-            class="mx-auto flex w-fit items-center justify-center rounded-md px-3 py-5 text-muted-foreground"
+            class="text-muted-foreground mx-auto flex w-fit items-center justify-center rounded-md px-3 py-5"
           >
-            <CircleAlert :size="18" class="mr-2 text-warning-typography" />
+            <CircleAlert :size="18" class="text-warning-typography mr-2" />
             No transactions found
           </div>
         </template>
