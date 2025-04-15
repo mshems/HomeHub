@@ -54,7 +54,7 @@ const calendarOpen = ref(false)
         variant="outline"
         :class="
           cn(
-            'w-full justify-start bg-background text-left text-base font-normal',
+            'bg-background hover:bg-background w-full justify-start text-left text-base font-normal',
             !inner && 'text-muted-foreground'
           )
         "

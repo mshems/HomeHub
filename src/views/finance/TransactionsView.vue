@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSorted } from '@vueuse/core'
-import { ChartLine, CircleAlert, FilterX, PiggyBank, Plus } from 'lucide-vue-next'
+import { ChartLine, CircleAlert, FilterX, LoaderCircle, PiggyBank, Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, ref, unref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -22,6 +22,7 @@ import { CardTitle } from '@/components/ui/card'
 import Card from '@/components/ui/card/Card.vue'
 import CardContent from '@/components/ui/card/CardContent.vue'
 import CardHeader from '@/components/ui/card/CardHeader.vue'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getCategoriesList } from '@/composables/categories'
 import { useDateProps } from '@/composables/dateProps'
 import { useFilters } from '@/composables/filters'
@@ -43,7 +44,7 @@ const props = defineProps({
 
 const { month, year, date } = useDateProps(props)
 const users = getUsersList()
-const transactions = getTransactionsList()
+const { data: transactions, pending } = getTransactionsList()
 const categories = getCategoriesList()
 
 const { transactions: monthTx, total } = useFilteredTransactions(
@@ -158,6 +159,7 @@ const toggleCategory = (id: string) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
         <template
           v-for="t of useSorted(displayedTx, (a, b) => b.timestamp - a.timestamp).value"
           :key="t.id"
@@ -167,7 +169,15 @@ const toggleCategory = (id: string) => {
             @click="router.push(`/finance/transactions/${t.id}`)"
           />
         </template>
-        <template v-if="displayedTx.length === 0">
+        <template v-if="pending">
+          <div
+            class="text-muted-foreground mx-auto flex w-fit items-center justify-center rounded-md px-3 py-5"
+          >
+            <LoaderCircle :size="24" class="text-muted-foreground mr-2 animate-spin" />
+            Loading transactions...
+          </div>
+        </template>
+        <template v-else-if="displayedTx.length === 0">
           <div
             class="text-muted-foreground mx-auto flex w-fit items-center justify-center rounded-md px-3 py-5"
           >

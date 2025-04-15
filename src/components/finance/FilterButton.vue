@@ -16,7 +16,8 @@ const props = defineProps<{
 const { total } = useFilteredTransactions(props.transactions, useFilters({}).filters)
 const variant = computed(() => {
   if (total.value < 0) return props.active ? 'negative' : 'negativeoutline'
-  else return props.active ? 'positive' : 'positiveoutline'
+  if (total.value > 0) return props.active ? 'positive' : 'positiveoutline'
+  else return props.active ? 'secondary' : 'secondaryoutline'
 })
 </script>
 
