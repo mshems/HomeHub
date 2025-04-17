@@ -13,15 +13,16 @@ export const buttonVariants = cva(
         positive: 'bg-positive text-positive-foreground hover:bg-positive-focus',
         warning: 'bg-warning text-warning-foreground hover:bg-warning-focus',
         positiveoutline:
-          'border border-positive-typography/50 bg-positive/15 hover:bg-positive-focus text-positive-typography',
+          'border-2 border-positive-typography/50 bg-positive/15 hover:bg-positive-focus text-positive-typography',
         negative: 'bg-negative text-negative-foreground hover:bg-negative-focus',
         negativeoutline:
-          'border border-negative-typography/50 bg-negative/15 hover:bg-negative-focus text-negative-typography',
+          'border-2 border-negative-typography/50 bg-negative/15 hover:bg-negative-focus text-negative-typography',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive-focus',
-        outline: 'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
+        outline:
+          'border-2 border-border bg-transparent hover:bg-muted hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary-focus',
         secondaryoutline:
-          'border border-secondary bg-transparent hover:bg-secondary text-muted-foreground hover:text-secondary-foreground',
+          'border-2 border-secondary bg-transparent hover:bg-secondary text-secondary-foreground hover:text-secondary-foreground',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         ghostaccent: 'text-accent-typography hover:bg-accent hover:text-accent-foreground',
         ghostdestructive:

@@ -19,6 +19,7 @@ const onDelete = () => {
 }
 
 const onCook = (meal: IMeal, timestamp: number) => {
+  console.log('onCook', meal, timestamp)
   const isoDate = DateTime.fromSeconds(timestamp).toISODate()
   const { create } = useCollection(`data/mealprep/${isoDate}/meals`)
   create(meal)
@@ -33,10 +34,10 @@ const onCook = (meal: IMeal, timestamp: number) => {
       no-dashboard
     />
     <RecipeDetails
-      :recipe="recipe as IRecipe"
       @edit="() => router.push(`/recipes/edit?id=${props.id}`)"
       @delete="onDelete"
       @cook="onCook"
+      :recipe="recipe as IRecipe"
     />
   </div>
 </template>

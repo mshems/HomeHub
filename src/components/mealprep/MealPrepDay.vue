@@ -35,7 +35,7 @@ const updateMeal = (id: string, mealData: Omit<IMeal, 'id'>, timestamp: number) 
     <h3 class="flex items-center justify-between">
       <div class="font-title font-medium">
         <div>{{ date.toFormat('cccc') }}</div>
-        <div class="text-sm text-muted-foreground">
+        <div class="text-muted-foreground text-sm">
           {{ date.toFormat('MMM d') }}
         </div>
       </div>
@@ -52,7 +52,7 @@ const updateMeal = (id: string, mealData: Omit<IMeal, 'id'>, timestamp: number) 
           :timestamp="date.toSeconds()"
           @save="(m, timestamp) => updateMeal(meal.id, m, timestamp)"
         >
-          <MealPrepMeal :meal="meal as IMeal" @remove="() => remove(meal.id)" />
+          <MealPrepMeal :meal="meal as IMeal" :removable="true" @remove="() => remove(meal.id)" />
         </MealPrepDialog>
       </template>
     </div>

@@ -119,7 +119,7 @@ if (updating.value) {
       </CardHeader>
       <CardContent>
         <form @submit.prevent="onSave" class="space-y-5">
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="amount">Amount</Label>
             <div className="flex items-center  sm:gap-3 sm:flex-nowrap flex-wrap">
               <MoneyInput
@@ -151,13 +151,13 @@ if (updating.value) {
               </div>
             </div>
           </div>
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="name">Label</Label>
             <InputWithIcon id="name" v-model="data.name" required>
               <TagIcon class="h-4 w-4" />
             </InputWithIcon>
           </div>
-          <div class="flex flex-col space-y-1">
+          <div class="flex flex-col space-y-2">
             <Label for="category">Category</Label>
             <Select id="category" v-model="data.category" required>
               <SelectTrigger>
@@ -179,7 +179,7 @@ if (updating.value) {
               </SelectContent>
             </Select>
           </div>
-          <div class="flex flex-col space-y-1">
+          <div class="flex flex-col space-y-2">
             <Label for="paid_by">User</Label>
             <Select id="paid_by" v-model="data.paid_by">
               <SelectTrigger>
@@ -199,11 +199,11 @@ if (updating.value) {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label>Date</Label>
             <DatePicker v-model:timestamp="data.timestamp" />
           </div>
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
             <Textarea id="notes" v-model="data.notes" type="text" />
           </div>

@@ -6,6 +6,7 @@ import CardContent from '@/components/ui/card/CardContent.vue'
 import CardHeader from '@/components/ui/card/CardHeader.vue'
 import CardTitle from '@/components/ui/card/CardTitle.vue'
 import FinanceWidget from '@/components/widgets/FinanceWidget.vue'
+import MealPrepWidget from '@/components/widgets/MealPrepWidget.vue'
 
 const router = useRouter()
 </script>
@@ -15,15 +16,12 @@ const router = useRouter()
     <div class="col-span-12 flex gap-5">
       <FinanceWidget />
     </div>
-    <Card class="col-span-6" @click="router.push('/recipes')" :hoverable="true">
+    <div class="col-span-12 sm:col-span-6">
+      <MealPrepWidget />
+    </div>
+    <Card class="col-span-12 sm:col-span-6" @click="router.push('/recipes')" :hoverable="true">
       <CardHeader>
         <CardTitle>Recipes</CardTitle>
-      </CardHeader>
-      <CardContent></CardContent>
-    </Card>
-    <Card class="col-span-6" @click="router.push('/mealprep')" :hoverable="true">
-      <CardHeader>
-        <CardTitle>Meal Prep</CardTitle>
       </CardHeader>
       <CardContent></CardContent>
     </Card>

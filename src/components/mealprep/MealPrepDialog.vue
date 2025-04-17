@@ -35,7 +35,7 @@ const DEFAULTS = {
   notes: props.meal?.notes || ''
 }
 const date = ref<number>(props.timestamp || DateTime.now().toSeconds())
-const data = ref<Omit<IMeal, 'id'>>({
+const data = ref<any>({
   ...DEFAULTS
 })
 
@@ -55,22 +55,22 @@ const onSave = () => {
           </Button>
         </slot>
       </DialogTrigger>
-      <DialogContent class="max-w-[350px] rounded-md bg-card">
+      <DialogContent class="bg-card max-w-[350px] rounded-md">
         <DialogHeader>
           <DialogTitle> Plan Meal </DialogTitle>
         </DialogHeader>
-        <form @submit.prevent="onSave" class="space-y-5">
-          <div>
+        <form @submit.prevent="onSave" class="space-y-5 pt-3">
+          <div class="flex flex-col space-y-2">
             <Label for="mealName">Recipe</Label>
             <Input :autofocus="false" id="mealName" type="text" v-model="data.label" label="Meal" />
           </div>
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="meal">Meal</Label>
             <Select id="meal" v-model="data.meal" required>
               <SelectTrigger>
                 <template v-if="data.meal">
                   <div class="flex items-center gap-5">
-                    <MealIcon :meal="data.meal" class="size-5" />
+                    <MealIcon :meal="data.meal" class="text-foreground size-5" />
                     <span class="capitalize">{{ data.meal }}</span>
                   </div>
                 </template>
@@ -78,20 +78,20 @@ const onSave = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="m in Object.keys(mealIcons)" :key="m" :value="m">
-                  <div class="flex items-center gap-5">
-                    <MealIcon :meal="m" class="size-5" />
+                  <div class="text-foreground flex items-center gap-5">
+                    <MealIcon :meal="m" class="text-foreground size-5" />
                     <span class="capitalize">{{ m }}</span>
                   </div>
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label>Date</Label>
             <DatePicker v-model:timestamp="date" />
           </div>
 
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
             <Textarea id="notes" class="text-xs" v-model="data.notes" />
           </div>

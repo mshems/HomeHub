@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CalendarDate, type DateValue } from '@internationalized/date'
+import { vOnClickOutside } from '@vueuse/components'
 import { CalendarIcon } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, ref } from 'vue'
@@ -54,12 +55,12 @@ const calendarOpen = ref(false)
         variant="outline"
         :class="
           cn(
-            'bg-background hover:bg-background w-full justify-start text-left text-base font-normal',
+            'bg-input hover:bg-input hover:text-foreground w-full justify-start pl-3 text-left text-base font-normal',
             !inner && 'text-muted-foreground'
           )
         "
       >
-        <CalendarIcon class="mr-4 h-4 w-4" />
+        <CalendarIcon class="mr-5 size-5" />
         {{ inner ? toDT(inner).toFormat('MMM. d, yyyy') : 'Pick a date' }}
       </Button>
     </PopoverTrigger>
@@ -69,6 +70,7 @@ const calendarOpen = ref(false)
         @update:model-value="() => (calendarOpen = false)"
         initial-focus
         @keydown.escape="calendarOpen = false"
+        v-on-click-outside="() => (calendarOpen = false)"
       />
     </PopoverContent>
   </Popover>
