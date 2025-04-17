@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import MealPrepDialog from '../mealprep/MealPrepDialog.vue'
+import RecipeTextEditor from './editor/RecipeTextEditor.vue'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
-import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
 import { useTimeAgo } from '@vueuse/core'
 import { Calendar, Link, Pencil } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
+import { ref, watch } from 'vue'
 
 import DeleteDialog from '@/components/generic/DeleteDialog.vue'
 import RecipeIngredient from '@/components/recipes/RecipeIngredient.vue'
@@ -24,16 +26,14 @@ import type { IMeal, IRecipe } from '@/lib/models'
 const props = defineProps<{ recipe: IRecipe | undefined }>()
 const emit = defineEmits(['cook', 'edit', 'delete'])
 
-const editor = useEditor({
-  extensions: [StarterKit, Highlight, Typography],
-  editable: false,
-  editorProps: {
-    attributes: {
-      class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl'
-    }
+const body = ref<string | undefined>(props.recipe?.body || '')
+watch(
+  () => props.recipe?.body,
+  (newValue) => {
+    body.value = newValue
   },
-  content: `${props.recipe?.body}`
-})
+  { immediate: true }
+)
 const now = DateTime.now().toSeconds()
 </script>
 <template>
@@ -45,7 +45,7 @@ const now = DateTime.now().toSeconds()
       <CardTitle>{{ recipe.title }}</CardTitle>
       <CardDescription>Updated {{ useTimeAgo(recipe.lastUpdated * 1000) }}</CardDescription>
     </CardHeader>
-    <CardContent class="space-y-5">
+    <CardContent>
       <div class="flex flex-wrap gap-2">
         <MealPrepDialog
           :meal="{ meal: 'dinner', label: recipe.title, recipe: recipe.id } as IMeal"
@@ -75,7 +75,7 @@ const now = DateTime.now().toSeconds()
       <!-- class="overflow-hidden text-ellipsis text-nowrap font-serif text-sm text-muted-foreground hover:text-accent-typography" -->
 
       <div v-if="recipe.body">
-        <editor-content :editor="editor" />
+        <RecipeTextEditor v-model="body" :readonly="true" />
       </div>
 
       <div v-if="recipe.ingredients">
@@ -94,7 +94,7 @@ const now = DateTime.now().toSeconds()
         </ol>
       </div>
 
-      <div v-if="recipe.notes">
+      <div v-if="recipe.notes" class="bg-muted mt-3 rounded-md border-2 p-4">
         <div class="font-title pb-1 font-semibold">Notes</div>
         <p class="text-muted-foreground font-serif text-sm">{{ recipe.notes }}</p>
       </div>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import IngredientsEditor from './IngredientsEditor.vue'
-import StepsEditor from './StepsEditor.vue'
 import { CookingPot, ImageIcon, Link2Icon, TagIcon } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, ref } from 'vue'
@@ -10,14 +8,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { Card, CardHeader, CardContent } from '@/components/ui/card/'
 import { InputWithIcon } from '@/components/ui/input'
 import Label from '@/components/ui/label/Label.vue'
-import {
-  TagsInput,
-  TagsInputInput,
-  TagsInputItem,
-  TagsInputItemDelete,
-  TagsInputItemText
-} from '@/components/ui/tags-input'
-import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { Textarea } from '@/components/ui/textarea'
 import { getRecipe } from '@/composables/recipes'
 import type { IIngredient, IRecipe, IStep } from '@/lib/models'
 
@@ -83,7 +74,7 @@ const emitRecipe = (recipe: IRecipe) => {
   <div class="flex flex-col gap-5">
     <Card class="">
       <CardHeader>
-        <h2 class="flex items-center gap-3 font-title text-2xl font-semibold">
+        <h2 class="font-title flex items-center gap-3 text-2xl font-semibold">
           <CookingPot class="h-8 w-8" />
           {{ updating ? 'Edit' : 'New' }} Recipe
         </h2>
@@ -111,28 +102,15 @@ const emitRecipe = (recipe: IRecipe) => {
             </InputWithIcon>
           </div>
 
-          <!-- <IngredientsEditor v-model:ingredients="data.ingredients" />
-          <StepsEditor v-model:steps="data.steps" /> -->
-          <div>
-            {{ data.body }}
+          <div class="flex w-full flex-col gap-2">
             <RecipeTextEditor v-model="data.body" />
           </div>
 
-          <!-- <div class="pl-11 pr-12">
+          <div class="">
             <Label for="notes">Notes</Label>
             <Textarea id="notes" v-model="data.notes" />
           </div>
-          <div class="pl-11 pr-12">
-            <Label for="tags">Tags</Label>
-            <TagsInput v-model="data.tags">
-              <TagsInputItem v-for="item in data.tags" :key="item" :value="item">
-                <TagsInputItemText />
-                <TagsInputItemDelete />
-              </TagsInputItem>
 
-              <TagsInputInput />
-            </TagsInput>
-          </div> -->
           <div class="flex justify-between gap-3 pt-5">
             <Button type="button" variant="ghost" @click="() => emit('cancel')">Cancel</Button>
             <Button type="submit" variant="primary">Save</Button>
