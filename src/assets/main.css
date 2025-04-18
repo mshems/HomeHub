@@ -20,6 +20,7 @@
 
   --secondary: hsl(0 0 80);
   --secondary-foreground: hsl(20 14.3 4.1);
+  --secondary-typography: hsl(0 0 50);
   --secondary-focus: hsl(0 0 85);
 
   --muted: hsl(0 0 95);
@@ -87,6 +88,7 @@
   --primary-foreground: hsl(24 9.8 10);
 
   --secondary: hsl(231 8 35);
+  --secondary-typography: hsl(231 6 60);
   --secondary-foreground: hsl(60 9 98);
   --secondary-focus: hsl(230 8 40);
 
@@ -154,6 +156,7 @@
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-typography: var(--secondary-typography);
   --color-secondary-focus: var(--secondary-focus);
 
   --color-muted: var(--muted);

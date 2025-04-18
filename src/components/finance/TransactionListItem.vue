@@ -35,9 +35,9 @@ const type = balanceType(props.transaction.amount)
           <div>
             {{ transaction.name }}
           </div>
-          <div class="flex items-center font-serif text-sm text-muted-foreground">
+          <div class="text-muted-foreground flex items-center font-serif text-sm">
             {{ DateTime.fromSeconds(transaction.timestamp).toLocaleString() }}
-            <StickyNote v-if="transaction.notes" class="ml-2 text-muted-foreground" :size="14" />
+            <StickyNote v-if="transaction.notes" class="text-muted-foreground ml-2" :size="14" />
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@ const type = balanceType(props.transaction.amount)
         <div :class="cn(balanceTextVariants({ variant: type }), 'font-medium')">
           {{ formatBalance(transaction.amount, true) }}
         </div>
-        <div class="ellipsis font-serif text-sm text-muted-foreground">
+        <div class="ellipsis text-muted-foreground font-serif text-sm">
           {{ user?.name }}
         </div>
       </div>

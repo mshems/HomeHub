@@ -22,7 +22,7 @@ export const buttonVariants = cva(
           'border-2 border-border bg-transparent hover:bg-muted hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary-focus',
         secondaryoutline:
-          'border-2 border-secondary bg-transparent hover:bg-secondary text-secondary-foreground hover:text-secondary-foreground',
+          'border-2 border-secondary bg-transparent hover:bg-secondary text-secondary-typography hover:text-secondary-foreground',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         ghostaccent: 'text-accent-typography hover:bg-accent hover:text-accent-foreground',
         ghostdestructive:
