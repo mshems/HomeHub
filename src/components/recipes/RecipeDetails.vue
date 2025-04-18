@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import MealPrepDialog from '../mealprep/MealPrepDialog.vue'
 import RecipeTextEditor from './editor/RecipeTextEditor.vue'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import StarterKit from '@tiptap/starter-kit'
-import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
 import { useTimeAgo } from '@vueuse/core'
 import { Calendar, Link, Pencil } from 'lucide-vue-next'
 import { DateTime } from 'luxon'

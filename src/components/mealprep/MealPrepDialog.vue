@@ -13,14 +13,28 @@ import {
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Plus } from 'lucide-vue-next'
+import { Check, ChevronsUpDown, Search } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref } from 'vue'
 
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemIndicator,
+  ComboboxList,
+  ComboboxTrigger
+} from '@/components/ui/combobox'
 import MealIcon from '@/components/ui/icon/MealIcon.vue'
 import { Input } from '@/components/ui/input'
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select'
+import { getRecipesList } from '@/composables/recipes'
 import { mealIcons } from '@/lib/icons'
-import type { IMeal } from '@/lib/models'
+import type { IMeal, IRecipe, IRecipeBrief } from '@/lib/models'
+import { cn } from '@/lib/utils'
 
 const emit = defineEmits(['save'])
 const props = defineProps<{
@@ -28,10 +42,12 @@ const props = defineProps<{
   meal?: IMeal
 }>()
 
+const recipes = getRecipesList()
+
 const DEFAULTS = {
   meal: props.meal?.meal || ('dinner' as IMeal['meal']),
   label: props.meal?.label || '',
-  recipe: props.meal?.recipe || '',
+  recipe: props.meal?.recipe || undefined,
   notes: props.meal?.notes || ''
 }
 const date = ref<number>(props.timestamp || DateTime.now().toSeconds())
@@ -40,8 +56,15 @@ const data = ref<any>({
 })
 
 const onSave = () => {
+  data.value.recipe = data.value.recipe || ''
   emit('save', data.value, date.value)
   data.value = { ...DEFAULTS }
+}
+
+const selectedRecipe = ref<IRecipeBrief | undefined>(props.meal?.recipe || undefined)
+const selectRecipe = (recipe: IRecipeBrief) => {
+  data.value.label = recipe.title
+  data.value.recipe = { id: recipe.id, title: recipe.title }
 }
 </script>
 
@@ -62,7 +85,40 @@ const onSave = () => {
         <form @submit.prevent="onSave" class="space-y-5 pt-3">
           <div class="flex flex-col space-y-2">
             <Label for="mealName">Recipe</Label>
-            <Input :autofocus="false" id="mealName" type="text" v-model="data.label" label="Meal" />
+            <!-- <Input :autofocus="false" id="mealName" type="text" v-model="data.label" label="Meal" /> -->
+
+            <!-- {{ selectedRecipe }} -->
+            <Combobox v-model="selectedRecipe" cla>
+              <ComboboxAnchor class="w-full">
+                <div class="relative w-full items-center">
+                  <ComboboxInput
+                    auto-focus
+                    v-model:model-value="data.label"
+                    :display-value="() => data.label"
+                    placeholder="Select recipe..."
+                  />
+                </div>
+              </ComboboxAnchor>
+
+              <ComboboxList>
+                <ComboboxEmpty> No framework found. </ComboboxEmpty>
+
+                <ComboboxGroup>
+                  <ComboboxItem
+                    v-for="recipe in recipes"
+                    :key="recipe.title"
+                    :value="{ id: recipe.id, title: recipe.title }"
+                    @select="() => selectRecipe(recipe)"
+                  >
+                    {{ recipe.title }}
+
+                    <ComboboxItemIndicator>
+                      <Check :class="cn('ml-auto h-4 w-4')" />
+                    </ComboboxItemIndicator>
+                  </ComboboxItem>
+                </ComboboxGroup>
+              </ComboboxList>
+            </Combobox>
           </div>
           <div class="flex flex-col space-y-2">
             <Label for="meal">Meal</Label>

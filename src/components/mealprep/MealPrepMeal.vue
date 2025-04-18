@@ -14,16 +14,12 @@ const emit = defineEmits(['remove'])
 const props = defineProps<{ meal: IMeal; removable?: Boolean }>()
 let recipe: any = undefined
 if (props.meal.recipe) {
-  recipe = getRecipe(props.meal.recipe)
+  recipe = getRecipe(props.meal.recipe.id)
 }
 </script>
 
 <template>
-  <Card
-    :hoverable="true"
-    class="relative w-full sm:w-64"
-    @click="() => !!recipe && router.push(`/recipes/${recipe.id}`)"
-  >
+  <Card :hoverable="true" class="relative w-full sm:w-64">
     <Button
       v-if="props.removable"
       variant="secondary"
@@ -51,6 +47,14 @@ if (props.meal.recipe) {
         <MealIcon :meal="meal.meal" class="mr-2" :size="16" />
         {{ meal.meal }}
       </Badge>
+      <Button
+        v-if="recipe"
+        variant="link"
+        class="text-muted-foreground hover:text-primary mt-2 p-0 text-sm"
+        @click.prevent="() => router.push('recipes/' + recipe.id)"
+      >
+        {{ recipe ? 'View Recipe' : 'Add Recipe' }}
+      </Button>
     </CardContent>
   </Card>
 </template>

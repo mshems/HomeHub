@@ -50,10 +50,15 @@ export interface IRecipe {
   lastUpdated: number
 }
 
+export interface IRecipeBrief {
+  id: string
+  title: string
+}
+
 export interface IMeal {
   id: string
   label: string
   meal: 'breakfast' | 'lunch' | 'dinner' | 'prep' | 'other'
-  recipe: string | undefined
+  recipe: IRecipeBrief | undefined
   notes: string | undefined
 }
