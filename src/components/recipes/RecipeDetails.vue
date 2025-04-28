@@ -44,7 +44,13 @@ const now = DateTime.now().toSeconds()
     <CardContent>
       <div class="flex flex-wrap gap-2">
         <MealPrepDialog
-          :meal="{ meal: 'dinner', label: recipe.title, recipe: recipe.id } as IMeal"
+          :meal="
+            {
+              meal: 'dinner',
+              label: recipe.title,
+              recipe: { id: recipe.id, title: recipe.title }
+            } as IMeal
+          "
           :timestamp="now"
           @save="(meal, timestamp) => emit('cook', meal, timestamp)"
         >

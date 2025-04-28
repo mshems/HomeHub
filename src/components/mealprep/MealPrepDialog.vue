@@ -13,7 +13,7 @@ import {
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Plus } from 'lucide-vue-next'
-import { Check, ChevronsUpDown, Search } from 'lucide-vue-next'
+import { Check } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref } from 'vue'
 
@@ -26,14 +26,13 @@ import {
   ComboboxItem,
   ComboboxItemIndicator,
   ComboboxList,
-  ComboboxTrigger
+  ComboboxViewport
 } from '@/components/ui/combobox'
 import MealIcon from '@/components/ui/icon/MealIcon.vue'
-import { Input } from '@/components/ui/input'
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select'
 import { getRecipesList } from '@/composables/recipes'
 import { mealIcons } from '@/lib/icons'
-import type { IMeal, IRecipe, IRecipeBrief } from '@/lib/models'
+import type { IMeal, IRecipeBrief } from '@/lib/models'
 import { cn } from '@/lib/utils'
 
 const emit = defineEmits(['save'])
@@ -88,7 +87,7 @@ const selectRecipe = (recipe: IRecipeBrief) => {
             <!-- <Input :autofocus="false" id="mealName" type="text" v-model="data.label" label="Meal" /> -->
 
             <!-- {{ selectedRecipe }} -->
-            <Combobox v-model="selectedRecipe" cla>
+            <Combobox id="mealName" v-model="selectedRecipe" class="mt-1 w-full">
               <ComboboxAnchor class="w-full">
                 <div class="relative w-full items-center">
                   <ComboboxInput
@@ -99,31 +98,30 @@ const selectRecipe = (recipe: IRecipeBrief) => {
                   />
                 </div>
               </ComboboxAnchor>
+              <ComboboxList class="w-full" align="start">
+                <ComboboxViewport>
+                  <ComboboxGroup>
+                    <ComboboxItem
+                      v-for="recipe in recipes"
+                      :key="recipe.title"
+                      :value="{ id: recipe.id, title: recipe.title }"
+                      @select="() => selectRecipe(recipe)"
+                    >
+                      {{ recipe.title }}
 
-              <ComboboxList>
-                <ComboboxEmpty> No framework found. </ComboboxEmpty>
-
-                <ComboboxGroup>
-                  <ComboboxItem
-                    v-for="recipe in recipes"
-                    :key="recipe.title"
-                    :value="{ id: recipe.id, title: recipe.title }"
-                    @select="() => selectRecipe(recipe)"
-                  >
-                    {{ recipe.title }}
-
-                    <ComboboxItemIndicator>
-                      <Check :class="cn('ml-auto h-4 w-4')" />
-                    </ComboboxItemIndicator>
-                  </ComboboxItem>
-                </ComboboxGroup>
+                      <ComboboxItemIndicator>
+                        <Check :class="cn('ml-auto h-4 w-4')" />
+                      </ComboboxItemIndicator>
+                    </ComboboxItem>
+                  </ComboboxGroup>
+                </ComboboxViewport>
               </ComboboxList>
             </Combobox>
           </div>
           <div class="flex flex-col space-y-2">
             <Label for="meal">Meal</Label>
             <Select id="meal" v-model="data.meal" required>
-              <SelectTrigger>
+              <SelectTrigger class="mb-0">
                 <template v-if="data.meal">
                   <div class="flex items-center gap-5">
                     <MealIcon :meal="data.meal" class="text-foreground size-5" />

@@ -81,32 +81,33 @@ const emitRecipe = (recipe: IRecipe) => {
       </CardHeader>
       <CardContent>
         <form @submit.prevent="onSave" class="space-y-5">
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="name">Title</Label>
             <InputWithIcon id="name" v-model="data.title" required>
               <TagIcon class="h-4 w-4" />
             </InputWithIcon>
           </div>
 
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="link">Link</Label>
             <InputWithIcon id="link" v-model="data.link">
               <Link2Icon class="h-4 w-4" />
             </InputWithIcon>
           </div>
 
-          <div>
+          <div class="flex flex-col space-y-2">
             <Label for="image">Image</Label>
             <InputWithIcon id="image" v-model="data.image">
               <ImageIcon class="h-4 w-4" />
             </InputWithIcon>
           </div>
 
-          <div class="flex w-full flex-col gap-2">
-            <RecipeTextEditor v-model="data.body" />
+          <div class="flex w-full flex-col space-y-2">
+            <Label for="recipe">Recipe</Label>
+            <RecipeTextEditor id="recipe" v-model="data.body" />
           </div>
 
-          <div class="">
+          <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
             <Textarea id="notes" v-model="data.notes" />
           </div>
