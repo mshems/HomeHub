@@ -16,8 +16,8 @@ const useRtdb = () => {
     return dbRef(db, path)
   }
 
-  const getList = (path: string) => {
-    return useDatabaseList(dbRef(db, path))
+  const getList = <T>(path: string) => {
+    return useDatabaseList<T>(dbRef(db, path))
   }
 
   const getObject = (path: string) => {

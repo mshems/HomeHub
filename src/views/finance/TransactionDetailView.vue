@@ -2,7 +2,6 @@
 import { Calendar, Pencil, StickyNote, Tag, User } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 
-import DeleteDialog from '@/components/generic/DeleteDialog.vue'
 import AutoBreadcrumbs from '@/components/ui/breadcrumb/AutoBreadcrumbs.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +12,7 @@ import {
   CardDescription,
   CardTitle
 } from '@/components/ui/card'
+import DeleteDialog from '@/components/ui/dialog/DeleteDialog.vue'
 import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
 import { useTransactionDetails, useTransactions } from '@/composables/transactions'
 import { formatBalance } from '@/lib/balance'
@@ -43,7 +43,7 @@ const onDelete = () => {
 
     <Card
       :class="
-        cn(balanceVariants({ variant: type }), 'rounded-lg p-8 font-title text-4xl font-semibold')
+        cn(balanceVariants({ variant: type }), 'font-title rounded-lg p-8 text-4xl font-semibold')
       "
     >
       <div class="flex items-center justify-between">
@@ -81,7 +81,7 @@ const onDelete = () => {
             <StickyNote filled :size="20" />
             Notes
           </div>
-          <div class="ml-8 font-serif text-base text-muted-foreground">
+          <div class="text-muted-foreground ml-8 font-serif text-base">
             {{ tx.notes || '' }}
           </div>
         </div>

@@ -1,7 +1,5 @@
 import { getCategory } from './categories'
 import { useCollection } from './collections'
-import { filterTransactions } from './filters'
-import type { Filters } from './filters'
 import { getUser } from './users'
 import { useArrayReduce } from '@vueuse/core'
 import { ref as dbRef } from 'firebase/database'
@@ -10,6 +8,7 @@ import { computed, type Ref } from 'vue'
 import { useDatabase, useDatabaseList, useDatabaseObject } from 'vuefire'
 
 import { balanceType } from '@/lib/balance'
+import { filterTransactions, type Filters } from '@/lib/filters'
 import type { ITransaction } from '@/lib/models'
 
 export const getTransaction = (id: string) => {
@@ -37,7 +36,7 @@ export const getTransactionsList = () => {
   return tx
 }
 
-export const useTransactions = () => useCollection('data/finance/transactions')
+export const useTransactions = () => useCollection<ITransaction>('data/finance/transactions')
 
 export const useFilteredTransactions = (
   transactions: Ref<ITransaction[]>,

@@ -16,4 +16,4 @@ export const getRecipe = (id: string) => {
   return recipe
 }
 
-export const useRecipes = () => useCollection('data/recipes')
+export const useRecipes = () => useCollection<IRecipe>('data/recipes')

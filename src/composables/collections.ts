@@ -1,9 +1,9 @@
 import { useRtdb } from './rtdb'
 import { unref } from 'vue'
 
-const useCollection = (path: string) => {
+const useCollection = <T>(path: string) => {
   const { getList, getObject, add, write, getRef, remove: dbRemove } = useRtdb()
-  const collection = getList(path)
+  const collection = getList<T>(path)
 
   const get = (id: string) => {
     return getObject(`${path}/${id}`)

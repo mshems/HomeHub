@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronLeft } from 'lucide-vue-next'
+import { ChevronLeft, Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 
@@ -38,6 +38,14 @@ const { month, year, date } = useDateProps(props)
         <div class="flex flex-row items-center gap-3 py-3 pr-5 pl-3">
           <ChevronLeft />
           Transactions
+        </div>
+      </Card>
+      <Card
+        class="bg-accent text-accent-foreground hover:bg-accent-focus"
+        @click="router.push('/finance/transactions/edit')"
+      >
+        <div class="flex flex-row items-center gap-3 px-5 py-3">
+          <Plus />
         </div>
       </Card>
     </div>

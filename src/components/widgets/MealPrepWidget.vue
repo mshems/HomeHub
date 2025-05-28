@@ -13,7 +13,9 @@ import { useCollection } from '@/composables/collections'
 import type { IMeal } from '@/lib/models'
 
 const router = useRouter()
-const { collection: meals } = useCollection(`data/mealprep/${DateTime.local().toISODate()}/meals`)
+const { collection: meals } = useCollection<IMeal>(
+  `data/mealprep/${DateTime.local().toISODate()}/meals`
+)
 </script>
 
 <template>
@@ -23,13 +25,9 @@ const { collection: meals } = useCollection(`data/mealprep/${DateTime.local().to
     </CardHeader>
     <CardContent class="flex flex-col gap-3">
       <div v-if="meals.length" class="font-title font-medium">Today's Meals</div>
-      <div>
+      <div class="flex flex-wrap gap-3">
         <template v-for="meal in meals" :key="meal.id">
-          <MealPrepMeal
-            class="bg-muted hover:bg-card-focus w-full!"
-            :meal="meal as IMeal"
-            @click.stop
-          />
+          <MealPrepMeal class="bg-muted hover:bg-card-focus sm:w-full" :meal="meal" />
         </template>
       </div>
       <div class="pt-3">

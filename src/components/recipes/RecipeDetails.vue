@@ -6,7 +6,6 @@ import { Calendar, Link, Pencil } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref, watch } from 'vue'
 
-import DeleteDialog from '@/components/generic/DeleteDialog.vue'
 import RecipeIngredient from '@/components/recipes/RecipeIngredient.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,6 +16,7 @@ import {
   CardFooter,
   CardDescription
 } from '@/components/ui/card'
+import DeleteDialog from '@/components/ui/dialog/DeleteDialog.vue'
 import type { IMeal, IRecipe } from '@/lib/models'
 
 const props = defineProps<{ recipe: IRecipe | undefined }>()
