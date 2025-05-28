@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import Card from '../ui/card/Card.vue'
-import CardContent from '../ui/card/CardContent.vue'
-import CategoryIcon from '../ui/icon/CategoryIcon.vue'
 import { StickyNote } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 
+import Card from '@/components/ui/card/Card.vue'
+import CardContent from '@/components/ui/card/CardContent.vue'
+import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
 import { getCategory } from '@/composables/categories'
 import { getUser } from '@/composables/users'
-import { formatBalance } from '@/lib/balance'
-import { balanceType } from '@/lib/balance'
+import { formatBalance, balanceType } from '@/lib/balance'
 import type { ITransaction } from '@/lib/models'
 import { cn } from '@/lib/utils'
 import { balanceTextVariants } from '@/lib/variants'

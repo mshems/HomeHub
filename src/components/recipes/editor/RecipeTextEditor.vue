@@ -17,7 +17,6 @@ const editor = useEditor({
     attributes: {
       class: `${!props.readonly ? 'border-2 border-border bg-input' : ''} content rounded-md font-sans p-4 max-w-full text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]`
     }
-    // prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl
   },
   content: model.value
 })
@@ -34,9 +33,7 @@ watch(
 </script>
 
 <template>
-  <div class="w-full">
-    <editor-content :editor="editor" class="max-w-full!" />
-  </div>
+  <editor-content :editor="editor" class="max-w-full!" />
 </template>
 
 <style lang="scss">
@@ -86,5 +83,9 @@ watch(
     list-style: decimal;
     margin-left: 2ch;
   }
+}
+
+.ProseMirror:focus {
+  outline: none;
 }
 </style>

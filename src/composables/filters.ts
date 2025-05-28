@@ -1,9 +1,18 @@
 import _ from 'lodash'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 
 import type { Filters } from '@/lib/filters'
 
-export const useFilters = (initial: Filters = {}) => {
+export type FilterContext = {
+  filters: Ref<Filters>
+  setFilter: (key: string, value: any) => void
+  deleteFilter: (key: string) => void
+  hasFilter: (key: string) => boolean
+  clearFilters: () => void
+  swoggleFilter: (key: string, value: any) => void
+}
+
+export const useFilters = (initial: Filters = {}): FilterContext => {
   const filters = ref<Filters>({ ...initial } as Filters)
   const setFilter = (key: string, value: any) => {
     filters.value[key] = value
