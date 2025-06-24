@@ -36,14 +36,17 @@ const { total: monthly } = useFilteredTransactions(
       <BalanceMiniCard :balance="monthly">
         <span class="font-medium">{{ DateTime.now().monthLong }}</span>
       </BalanceMiniCard>
-      <Card
+      <Button variant="accent" size="lg" @click.stop="router.push('/finance/transactions/edit')">
+        <Plus class="mr-2" /> Add Transaction
+      </Button>
+      <!-- <Card
         class="bg-accent text-accent-foreground hover:bg-accent-focus"
         @click.stop="router.push('/finance/transactions/edit')"
       >
         <div class="flex flex-row items-center gap-3 px-5 py-3">
           <Plus class="mr-2" /> Add Transaction
         </div>
-      </Card>
+      </Card> -->
     </CardContent>
   </Card>
 </template>

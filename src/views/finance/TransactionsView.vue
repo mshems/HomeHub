@@ -10,6 +10,7 @@ import MonthHeader from '@/components/finance/MonthHeader.vue'
 import UserBalanceMiniCard from '@/components/finance/UserBalanceMiniCard.vue'
 import TransactionFilters from '@/components/finance/tx/TransactionFilters.vue'
 import TransactionList from '@/components/finance/tx/TransactionList.vue'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getCategoriesList } from '@/composables/categories'
 import { useDateProps } from '@/composables/dateProps'
@@ -60,22 +61,18 @@ const sortedTransactions = useSorted(displayedTx, (a, b) => b.timestamp - a.time
       <template v-for="u of users" :key="u.id">
         <UserBalanceMiniCard :balance="useUserTransactions(u.id, ref(monthTx)).total" :user="u" />
       </template>
-      <Card
-        class="bg-secondary text-secondary-foreground hover:bg-secondary-focus"
+
+      <Button
+        variant="secondary"
+        size="iconxl"
         @click="router.push('/finance/transactions/metrics?m=' + month + '&y=' + year)"
       >
-        <div class="flex flex-row items-center gap-3 px-5 py-3">
-          <ChartLine />
-        </div>
-      </Card>
-      <Card
-        class="bg-accent text-accent-foreground hover:bg-accent-focus"
-        @click="router.push('/finance/transactions/edit')"
-      >
-        <div class="flex flex-row items-center gap-3 px-5 py-3">
-          <Plus />
-        </div>
-      </Card>
+        <ChartLine />
+      </Button>
+
+      <Button variant="accent" size="iconxl" @click="router.push('/finance/transactions/edit')">
+        <Plus />
+      </Button>
     </div>
 
     <Card>

@@ -27,7 +27,6 @@ const { filters, hasFilter, clearFilters, setFilter, deleteFilter, swoggleFilter
 const toggleCategory = (id: string) => {
   if (hasFilter('byCategory')) {
     const selectedCategories = unref(filters.value.byCategory!!.categories)
-
     if (selectedCategories.includes(id)) {
       setFilter('byCategory', {
         categories: selectedCategories.filter((c) => c !== id)

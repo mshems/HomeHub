@@ -14,7 +14,7 @@ defineProps<{
 <template>
   <BalanceMiniCard :balance="balance">
     <Avatar size="sm" class="bg-primary">
-      <AvatarFallback class="font-title font-semibold text-primary-foreground">{{
+      <AvatarFallback class="font-title text-primary-foreground font-semibold">{{
         unref(user).name[0]
       }}</AvatarFallback>
     </Avatar>

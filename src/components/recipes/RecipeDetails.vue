@@ -74,26 +74,8 @@ const now = DateTime.now().toSeconds()
         </Button>
       </div>
 
-      <!-- class="overflow-hidden text-ellipsis text-nowrap font-serif text-sm text-muted-foreground hover:text-accent-typography" -->
-
-      <div v-if="recipe.body">
+      <div v-if="body">
         <RecipeTextEditor v-model="body" :readonly="true" />
-      </div>
-
-      <div v-if="recipe.ingredients">
-        <div class="font-title pb-1 font-semibold">Ingredients</div>
-        <template v-for="(ingredient, i) in recipe.ingredients" :key="i">
-          <RecipeIngredient :ingredient="ingredient" />
-        </template>
-      </div>
-
-      <div v-if="recipe.steps">
-        <div class="font-title pb-1 font-semibold">Recipe</div>
-        <ol>
-          <li class="pb-5" v-for="(step, i) in recipe.steps" :key="i">
-            <p class="text-sm leading-relaxed">{{ step.text }}</p>
-          </li>
-        </ol>
       </div>
 
       <div v-if="recipe.notes" class="bg-muted mt-3 rounded-md border-2 p-4">

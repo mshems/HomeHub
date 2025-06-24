@@ -100,7 +100,7 @@
   --accent-focus: hsl(199 32 42);
   --accent-typography: hsl(199 100 73);
 
-  --destructive: hsl(0 62.8 30.6);
+  --destructive: hsl(0, 71%, 37%);
   --destructive-foreground: hsl(60 9 98);
   --destructive-focus: hsl(0 72 42);
   --destructive-typography: hsl(0 90 60);

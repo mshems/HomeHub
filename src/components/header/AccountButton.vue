@@ -32,8 +32,10 @@ const onLogOut = () => {
       <PopoverContent class="mx-8 border-none">
         <div class="flex flex-col gap-3">
           <div class="flex items-center gap-3">
-            <Avatar size="base">
-              <AvatarFallback><User /></AvatarFallback>
+            <Avatar size="base" class="bg-primary">
+              <AvatarFallback>
+                <User class="text-primary-foreground" />
+              </AvatarFallback>
             </Avatar>
             <div>
               <div>

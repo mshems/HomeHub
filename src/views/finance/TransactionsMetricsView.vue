@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 
 import MetricsPanel from '@/components/finance/MetricsPanel.vue'
 import MonthHeader from '@/components/finance/MonthHeader.vue'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useDateProps } from '@/composables/dateProps'
 
@@ -40,14 +41,9 @@ const { month, year, date } = useDateProps(props)
           Transactions
         </div>
       </Card>
-      <Card
-        class="bg-accent text-accent-foreground hover:bg-accent-focus"
-        @click="router.push('/finance/transactions/edit')"
-      >
-        <div class="flex flex-row items-center gap-3 px-5 py-3">
-          <Plus />
-        </div>
-      </Card>
+      <Button variant="accent" size="iconxl" @click="router.push('/finance/transactions/edit')">
+        <Plus />
+      </Button>
     </div>
 
     <Card>

@@ -22,11 +22,7 @@ const variant = computed(() => {
 </script>
 
 <template>
-  <Button
-    :variant="variant as ButtonVariants['variant']"
-    @click="emit('toggle', value)"
-    class="h-8 px-3 py-2"
-  >
+  <Button :variant="variant as ButtonVariants['variant']" @click="emit('toggle', value)" size="sm">
     <div class="flex w-full items-center justify-between text-sm">
       <slot />
       <div>{{ formatBalance(total, true) }}</div>

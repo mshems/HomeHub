@@ -6,19 +6,20 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/LogInView.vue')
+    },
+    {
       path: '/',
       name: 'dashboard',
       component: () => import('@/views/DashboardView.vue'),
       meta: { requiresAuth: true }
     },
     {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/LogInView.vue')
-    },
-    {
       path: '/mealprep',
       name: 'meal-prep',
+      meta: { requiresAuth: true },
       component: () => import('@/views/mealprep/MealPrepView.vue'),
       props: (route) => ({
         d: route.query.d || DateTime.now().startOf('week').toISODate()
@@ -37,7 +38,6 @@ const router = createRouter({
         {
           path: 'edit',
           name: 'recipe-edit',
-          meta: { requiresAuth: true },
           props: (route) => ({
             id: route.query.id
           }),
@@ -68,7 +68,6 @@ const router = createRouter({
         {
           path: 'edit',
           name: 'transaction-edit',
-          meta: { requiresAuth: true },
           props: (route) => ({
             id: route.query.id
           }),
@@ -77,7 +76,6 @@ const router = createRouter({
         {
           path: 'metrics',
           name: 'transaction-metrics',
-          meta: { requiresAuth: true },
           props: (route) => ({
             m: route.query.m ? Number.parseInt(route.query.m.toString()) : DateTime.now().month,
             y: route.query.y ? Number.parseInt(route.query.y.toString()) : DateTime.now().year
