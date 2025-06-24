@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TagIcon, Wallet } from 'lucide-vue-next'
+import { TagIcon, Wallet, LoaderCircle } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -23,7 +23,7 @@ const route = useRoute()
 const router = useRouter()
 
 const updating = computed(() => !!route.query.id)
-
+const pending = ref(false)
 const categories = getCategoriesList()
 const categoryData = computed(() => Object.fromEntries(categories.value.map((c) => [c.id, c])))
 
@@ -72,9 +72,23 @@ const payload = computed(() => {
 })
 
 const addTransaction = async () => {
+  pending.value = true
   create(payload.value)
     .then(() => router.push('/finance/transactions'))
     .catch(() => console.log('error'))
+    .finally(() => {
+      pending.value = false
+    })
+}
+
+const updateTransaction = async () => {
+  pending.value = true
+  update(route.query.id as string, payload.value)
+    .then(() => router.push('/finance/transactions/' + route.query.id))
+    .catch(() => console.log('error'))
+    .finally(() => {
+      pending.value = false
+    })
 }
 
 const onBack = () => {
@@ -87,9 +101,7 @@ const onBack = () => {
 
 const onSave = () => {
   if (updating.value) {
-    update(route.query.id as string, payload.value)
-      .then(() => router.push('/finance/transactions/' + route.query.id))
-      .catch(() => console.log('error'))
+    updateTransaction()
   } else {
     addTransaction()
   }
@@ -210,7 +222,12 @@ if (updating.value) {
 
           <div class="flex justify-between gap-3 pt-5">
             <Button type="button" variant="ghost" @click="onBack">Cancel</Button>
-            <Button type="submit" variant="primary">Save</Button>
+            <Button :disabled="pending" type="submit" variant="primary">
+              <template v-if="pending">
+                <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+              </template>
+              Save
+            </Button>
           </div>
         </form>
       </CardContent>
