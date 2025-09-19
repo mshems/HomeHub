@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FilterX } from 'lucide-vue-next'
-import { type Ref, unref, computed } from 'vue'
+import { unref, computed } from 'vue'
 
 import CategoryFilterButton from '@/components/finance/CategoryFilterButton.vue'
 import UserFilterButton from '@/components/finance/UserFilterButton.vue'
@@ -26,10 +26,11 @@ const { filters, hasFilter, clearFilters, setFilter, deleteFilter, swoggleFilter
 
 const toggleCategory = (id: string) => {
   if (hasFilter('byCategory')) {
-    const selectedCategories = unref(filters.value.byCategory!!.categories)
+    let selectedCategories = unref(filters.value.byCategory!!.categories)
     if (selectedCategories.includes(id)) {
+      selectedCategories = selectedCategories.filter((c) => c !== id)
       setFilter('byCategory', {
-        categories: selectedCategories.filter((c) => c !== id)
+        categories: selectedCategories
       })
       if (selectedCategories.length === 0) {
         deleteFilter('byCategory')
@@ -61,14 +62,14 @@ const toggleCategory = (id: string) => {
           </Button>
         </div>
       </AccordionTrigger>
-      <AccordionContent class="space-y-2 pb-0">
+      <AccordionContent class="bg-muted mt-2 space-y-2 rounded-lg p-2 pb-2">
         <div class="flex flex-wrap gap-2">
           <template v-for="u in users" :key="u.id">
             <UserFilterButton
               :active="!hasFilter('byUser') || unref(filters.byUser?.user_id) === u.id || false"
               :user="u"
               :transactions="computed(() => tx)"
-              @toggle="(v) => swoggleFilter('byUser', { user_id: v })"
+              @toggle="(v: string) => swoggleFilter('byUser', { user_id: v })"
             />
           </template>
         </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSorted } from '@vueuse/core'
-import { ChartLine, PiggyBank, Plus } from 'lucide-vue-next'
+import { BanknoteArrowUp, BanknoteArrowDown, ChartLine, Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -43,7 +43,10 @@ const { transactions: monthTx, total } = useFilteredTransactions(
 )
 
 const filterContext = useFilters({})
-const { transactions: displayedTx } = useFilteredTransactions(monthTx, filterContext.filters)
+const { transactions: displayedTx, total: displayedTotal } = useFilteredTransactions(
+  monthTx,
+  filterContext.filters
+)
 const sortedTransactions = useSorted(displayedTx, (a, b) => b.timestamp - a.timestamp)
 </script>
 
@@ -56,7 +59,12 @@ const sortedTransactions = useSorted(displayedTx, (a, b) => b.timestamp - a.time
 
     <div class="mt-3 flex flex-row flex-wrap gap-3">
       <BalanceMiniCard :balance="total">
-        <PiggyBank />
+        <template v-if="total >= 0">
+          <BanknoteArrowUp />
+        </template>
+        <template v-else>
+          <BanknoteArrowDown />
+        </template>
       </BalanceMiniCard>
       <template v-for="u of users" :key="u.id">
         <UserBalanceMiniCard :balance="useUserTransactions(u.id, ref(monthTx)).total" :user="u" />
@@ -86,6 +94,22 @@ const sortedTransactions = useSorted(displayedTx, (a, b) => b.timestamp - a.time
           :categories="categories"
           :filterContext="filterContext"
         />
+        <div v-if="filterContext.hasFilters()" class="flex flex-row items-center gap-2">
+          <Card class="bg-accent text-accent-foreground grow">
+            <CardContent class="flex flex-row items-center justify-between gap-2 p-3">
+              <div>{{ displayedTx.length }} transactions</div>
+            </CardContent>
+          </Card>
+          <BalanceMiniCard :balance="displayedTotal">
+            <template v-if="displayedTotal >= 0">
+              <BanknoteArrowUp />
+            </template>
+            <template v-else>
+              <BanknoteArrowDown />
+            </template>
+          </BalanceMiniCard>
+        </div>
+
         <TransactionList :transactions="sortedTransactions" :loading="pending" />
       </CardContent>
     </Card>

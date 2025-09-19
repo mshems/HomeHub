@@ -8,6 +8,7 @@ export type FilterContext = {
   setFilter: (key: string, value: any) => void
   deleteFilter: (key: string) => void
   hasFilter: (key: string) => boolean
+  hasFilters: () => boolean
   clearFilters: () => void
   swoggleFilter: (key: string, value: any) => void
 }
@@ -22,6 +23,9 @@ export const useFilters = (initial: Filters = {}): FilterContext => {
   }
   const hasFilter = (key: string) => {
     return key in filters.value
+  }
+  const hasFilters = () => {
+    return Object.keys(filters.value).length > 0
   }
   const clearFilters = () => {
     for (const key in filters.value) {
@@ -43,6 +47,7 @@ export const useFilters = (initial: Filters = {}): FilterContext => {
     setFilter,
     deleteFilter,
     hasFilter,
+    hasFilters,
     clearFilters,
     swoggleFilter
   }

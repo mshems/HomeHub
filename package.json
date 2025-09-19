@@ -27,7 +27,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^10.12.5",
-    "lucide-vue-next": "^0.424.0",
+    "lucide-vue-next": "^0.544.0",
     "luxon": "^3.5.0",
     "maska": "^3.0.3",
     "numeric-quantity": "^2.0.1",

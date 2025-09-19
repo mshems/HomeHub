@@ -6,7 +6,6 @@ import { Calendar, Link, Pencil } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref, watch } from 'vue'
 
-import RecipeIngredient from '@/components/recipes/RecipeIngredient.vue'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -62,7 +61,7 @@ const now = DateTime.now().toSeconds()
         <Button variant="warning" @click="emit('edit')">
           <Pencil :size="20" class="mr-2" /> Edit
         </Button>
-        <Button variant="secondary">
+        <Button variant="secondary" v-if="recipe.link">
           <a
             :href="recipe.link"
             target="_blank"
