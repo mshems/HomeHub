@@ -61,4 +61,5 @@ export interface IMeal {
   meal: 'breakfast' | 'lunch' | 'dinner' | 'prep' | 'other'
   recipe: IRecipeBrief | undefined
   notes: string | undefined
+  link: string | undefined
 }

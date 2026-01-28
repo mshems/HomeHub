@@ -19,7 +19,8 @@ import {
   ShoppingCart,
   Soup,
   Utensils,
-  Wallet
+  Wallet,
+  Repeat2
 } from 'lucide-vue-next'
 
 export const categoryIcons: StringToFn = {
@@ -36,7 +37,8 @@ export const categoryIcons: StringToFn = {
   travel: Plane,
   utilities: Wallet,
   wedding: PartyPopper,
-  transfer: ArrowLeftRight
+  transfer: ArrowLeftRight,
+  subscriptions: Repeat2
 }
 
 export const categoryColors: Record<string, string> = {
@@ -53,7 +55,8 @@ export const categoryColors: Record<string, string> = {
   travel: 'text-sky-500',
   utilities: 'text-red-500',
   wedding: 'text-foreground',
-  transfer: 'text-foreground'
+  transfer: 'text-foreground',
+  subscriptions: 'text-foreground'
 }
 
 export const mealIcons: StringToFn = {

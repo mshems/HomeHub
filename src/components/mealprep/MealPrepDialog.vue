@@ -10,6 +10,7 @@ import {
   DialogFooter,
   DialogClose
 } from '../ui/dialog'
+import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Plus } from 'lucide-vue-next'
@@ -20,7 +21,6 @@ import { ref } from 'vue'
 import {
   Combobox,
   ComboboxAnchor,
-  ComboboxEmpty,
   ComboboxGroup,
   ComboboxInput,
   ComboboxItem,
@@ -47,6 +47,7 @@ const DEFAULTS = {
   meal: props.meal?.meal || ('dinner' as IMeal['meal']),
   label: props.meal?.label || '',
   recipe: props.meal?.recipe || undefined,
+  link: props.meal?.link || '',
   notes: props.meal?.notes || ''
 }
 const date = ref<number>(props.timestamp || DateTime.now().toSeconds())
@@ -146,8 +147,13 @@ const selectRecipe = (recipe: IRecipeBrief) => {
           </div>
 
           <div class="flex flex-col space-y-2">
+            <Label for="link">Link</Label>
+            <Input id="link" v-model="data.link" :disabled="!!selectedRecipe" />
+          </div>
+
+          <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
-            <Textarea id="notes" class="text-xs" v-model="data.notes" />
+            <Textarea id="notes" class="text-sm" v-model="data.notes" />
           </div>
 
           <DialogFooter class="gap-3">

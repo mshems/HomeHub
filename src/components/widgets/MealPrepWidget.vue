@@ -27,7 +27,11 @@ const { collection: meals } = useCollection<IMeal>(
       <div v-if="meals.length" class="font-title font-medium">Today's Meals</div>
       <div class="flex flex-wrap gap-3">
         <template v-for="meal in meals" :key="meal.id">
-          <MealPrepMeal class="bg-muted hover:bg-card-focus sm:w-full" :meal="meal" />
+          <MealPrepMeal
+            class="bg-muted hover:bg-card-focus sm:w-full"
+            :meal="meal"
+            :overview="true"
+          />
         </template>
       </div>
       <div class="pt-3">
