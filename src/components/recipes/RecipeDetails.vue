@@ -6,6 +6,7 @@ import { Calendar, Link, Pencil } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { ref, watch } from 'vue'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -73,13 +74,19 @@ const now = DateTime.now().toSeconds()
         </Button>
       </div>
 
-      <div v-if="body">
+      <div v-if="body && body !== '<p></p>'">
         <RecipeTextEditor v-model="body" :readonly="true" />
       </div>
 
-      <div v-if="recipe.notes" class="bg-muted mt-3 rounded-md border-2 p-4">
+      <div v-if="recipe.notes" class="bg-muted mt-4 rounded-md border-2 p-4">
         <div class="font-title pb-1 font-semibold">Notes</div>
         <p class="text-muted-foreground font-serif text-sm">{{ recipe.notes }}</p>
+      </div>
+
+      <div v-if="recipe.tags && recipe.tags.length" class="mt-4">
+        <div class="flex flex-wrap gap-2">
+          <Badge v-for="tag in recipe.tags" :key="tag" variant="secondary">{{ tag }}</Badge>
+        </div>
       </div>
     </CardContent>
     <CardFooter class="flex justify-center">

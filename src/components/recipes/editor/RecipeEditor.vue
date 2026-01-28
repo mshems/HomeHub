@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CookingPot, ImageIcon, Link2Icon, TagIcon } from 'lucide-vue-next'
+import { CookingPot, ImageIcon, Link2Icon, Tag } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, ref } from 'vue'
 
@@ -8,9 +8,16 @@ import Button from '@/components/ui/button/Button.vue'
 import { Card, CardHeader, CardContent } from '@/components/ui/card/'
 import { InputWithIcon } from '@/components/ui/input'
 import Label from '@/components/ui/label/Label.vue'
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputItemDelete,
+  TagsInputItemText
+} from '@/components/ui/tags-input'
 import { Textarea } from '@/components/ui/textarea'
 import { getRecipe } from '@/composables/recipes'
-import type { IIngredient, IRecipe, IStep } from '@/lib/models'
+import type { IRecipe } from '@/lib/models'
 
 const emit = defineEmits(['cancel', 'save'])
 const props = defineProps({
@@ -25,8 +32,6 @@ const data = ref({
   image: '',
   link: '',
   favorite: false,
-  ingredients: [{ quantity: undefined, unit: undefined, name: '' }] as IIngredient[],
-  steps: [{ text: '' }] as IStep[],
   body: '',
   notes: '',
   tags: [] as string[]
@@ -38,31 +43,12 @@ if (updating.value) {
   recipe.promise.value.then((res) => {
     if (res) {
       data.value = { ...res }
-      if (data.value.ingredients) {
-        data.value.ingredients.map((i) => {
-          if (!i.quantity) i.quantity = undefined
-          if (!i.unit) i.unit = undefined
-        })
-      }
     }
-    data.value.ingredients = data.value.ingredients || [
-      { quantity: undefined, unit: undefined, name: '' }
-    ]
-    data.value.steps = data.value.steps || [{ text: '' }]
   })
 }
 
 const onSave = () => {
   data.value.lastUpdated = DateTime.now().toSeconds()
-  data.value.ingredients = data.value.ingredients.filter((i) => i.name || i.quantity || i.unit)
-  data.value.ingredients.map((i) => {
-    if (!i.quantity) i.quantity = ''
-    if (!i.unit) i.unit = ''
-  })
-  data.value.steps = data.value.steps.filter((s) => s.text)
-
-  data.value.ingredients = []
-  data.value.steps = []
   emitRecipe(data.value)
 }
 
@@ -84,7 +70,7 @@ const emitRecipe = (recipe: IRecipe) => {
           <div class="flex flex-col space-y-2">
             <Label for="name">Title</Label>
             <InputWithIcon id="name" v-model="data.title" required>
-              <TagIcon class="h-4 w-4" />
+              <Tag class="h-4 w-4" />
             </InputWithIcon>
           </div>
 
@@ -110,6 +96,17 @@ const emitRecipe = (recipe: IRecipe) => {
           <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
             <Textarea id="notes" v-model="data.notes" />
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <Label for="tags">Tags</Label>
+            <TagsInput id="tags" v-model="data.tags">
+              <TagsInputItem v-for="item in data.tags" :key="item" :value="item">
+                <TagsInputItemText />
+                <TagsInputItemDelete />
+              </TagsInputItem>
+              <TagsInputInput placeholder="Add a tag..." />
+            </TagsInput>
           </div>
 
           <div class="flex justify-between gap-3 pt-5">

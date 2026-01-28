@@ -14,8 +14,8 @@ defineProps<{ recipe: IRecipe }>()
       <img :src="recipe.image" class="h-48 w-full rounded-t-md object-cover" />
     </template>
     <template v-else>
-      <div class="h-48 rounded-t-md bg-secondary">
-        <Soup class="h-full w-full p-8 text-muted-foreground" />
+      <div class="bg-secondary h-48 rounded-t-md">
+        <Soup class="text-muted-foreground h-full w-full p-8" />
       </div>
     </template>
     <CardHeader>
@@ -24,7 +24,7 @@ defineProps<{ recipe: IRecipe }>()
     <CardFooter>
       <div class="space-y-2">
         <div class="flex flex-wrap gap-2 overflow-hidden text-ellipsis">
-          <Badge v-for="tag in recipe.tags" :key="tag">{{ tag }}</Badge>
+          <Badge v-for="tag in recipe.tags" :key="tag" variant="secondary">{{ tag }}</Badge>
         </div>
       </div>
     </CardFooter>
