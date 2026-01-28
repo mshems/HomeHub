@@ -92,7 +92,6 @@ const selectRecipe = (recipe: IRecipeBrief) => {
               <ComboboxAnchor class="w-full">
                 <div class="relative w-full items-center">
                   <ComboboxInput
-                    auto-focus
                     v-model:model-value="data.label"
                     :display-value="() => data.label"
                     placeholder="Select recipe..."
@@ -153,7 +152,7 @@ const selectRecipe = (recipe: IRecipeBrief) => {
 
           <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
-            <Textarea id="notes" class="text-sm" v-model="data.notes" />
+            <Textarea id="notes" v-model="data.notes" />
           </div>
 
           <DialogFooter class="gap-3">

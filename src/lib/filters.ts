@@ -6,6 +6,11 @@ import { getCategory } from '@/composables/categories'
 import type { ITransaction } from '@/lib/models'
 import type { StringToFn, StringToObj } from '@/lib/types'
 
+interface ByDateRangeProps {
+  start: MaybeRef<DateTime>
+  end: MaybeRef<DateTime>
+}
+
 interface ByMonthProps {
   month: MaybeRef<number>
   year: MaybeRef<number>
@@ -32,6 +37,10 @@ interface ByCreditProps {
 }
 
 export const filterFns: StringToFn = {
+  byDateRange: (tx: ITransaction, { start, end }: ByDateRangeProps) => {
+    const date = DateTime.fromSeconds(tx.timestamp)
+    return date >= unref(start) && date <= unref(end)
+  },
   byMonth: (tx: ITransaction, { month, year }: ByMonthProps) => {
     const date = DateTime.fromSeconds(tx.timestamp)
     return date.month === unref(month) && date.year === unref(year)
@@ -59,6 +68,7 @@ export const filterFns: StringToFn = {
 }
 
 export interface Filters extends StringToObj {
+  byDateRange?: ByDateRangeProps
   byMonth?: ByMonthProps
   byYear?: ByYearProps
   byUser?: ByUserProps

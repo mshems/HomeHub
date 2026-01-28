@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '../ui/button'
-import { X, CookingPot, Link2 } from 'lucide-vue-next'
+import { X, Link, ChefHat } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 
 import { Badge } from '@/components/ui/badge'
@@ -37,20 +37,20 @@ const newTab = (url: string) => {
     "
   >
     <Button
-      v-if="props.removable"
+      v-if="props.removable && !overview"
       variant="secondary"
-      class="absolute top-2 right-2 h-5 w-5 p-0"
+      class="absolute top-3 right-3 h-5 w-5 p-0"
       @click.stop="() => emit('remove')"
     >
       <X />
     </Button>
 
-    <Link2
+    <Link
       v-if="!recipe && meal.link && overview"
-      class="text-muted-foreground absolute top-2 right-2 h-5 w-5 p-0"
+      class="text-primary absolute top-3 right-3 h-5 w-5 p-0"
     />
 
-    <Badge class="dark absolute top-2 left-3 z-10 flex w-fit items-center text-xs capitalize">
+    <Badge class="dark absolute top-3 left-3 z-10 flex w-fit items-center text-xs capitalize">
       <MealIcon :meal="meal.meal" class="mr-2" :size="16" />
       {{ meal.meal }}
     </Badge>
@@ -70,29 +70,27 @@ const newTab = (url: string) => {
       </CardTitle>
     </CardHeader>
     <CardContent class="space-y-3 px-3 pb-5">
-      <div>
-        <Button
-          v-if="recipe && !overview"
-          size="sm"
-          variant="accent"
-          @click.stop="() => router.push('recipes/' + recipe.id)"
-        >
-          <CookingPot class="mr-2" :size="18" />
-          View Recipe
-        </Button>
-        <Button
-          v-if="!recipe && meal.link && !overview"
-          size="sm"
-          variant="secondary"
-          :as="'a'"
-          :href="meal.link"
-          target="_blank"
-          @click.stop
-        >
-          <Link2 class="mr-2" :size="18" />
-          View Link
-        </Button>
-      </div>
+      <Button
+        v-if="recipe && !overview"
+        size="sm"
+        variant="accent"
+        @click.stop="() => router.push('recipes/' + recipe.id)"
+      >
+        <ChefHat class="mr-2" :size="18" />
+        View Recipe
+      </Button>
+      <Button
+        v-if="!recipe && meal.link && !overview"
+        size="sm"
+        variant="secondary"
+        :as="'a'"
+        :href="meal.link"
+        target="_blank"
+        @click.stop
+      >
+        <Link class="mr-2" :size="18" />
+        View Link
+      </Button>
       <div v-if="meal.notes" class="text-muted-foreground text-sm">
         {{ meal.notes }}
       </div>

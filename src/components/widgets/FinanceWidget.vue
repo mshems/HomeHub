@@ -16,6 +16,17 @@ const { total: YTD } = useFilteredTransactions(
     byYear: { year: DateTime.now().year }
   }).filters
 )
+
+const { total: Last12Mo } = useFilteredTransactions(
+  getTransactionsList(),
+  useFilters({
+    byDateRange: {
+      start: DateTime.now().minus({ months: 6 }),
+      end: DateTime.now()
+    }
+  }).filters
+)
+
 const { total: monthly } = useFilteredTransactions(
   getTransactionsList(),
   useFilters({
@@ -32,6 +43,9 @@ const { total: monthly } = useFilteredTransactions(
     <CardContent class="flex flex-row flex-wrap items-center gap-3">
       <BalanceMiniCard :balance="YTD">
         <span class="font-medium">YTD</span>
+      </BalanceMiniCard>
+      <BalanceMiniCard :balance="Last12Mo">
+        <span class="font-medium">Last 6 Months</span>
       </BalanceMiniCard>
       <BalanceMiniCard :balance="monthly">
         <span class="font-medium">{{ DateTime.now().monthLong }}</span>
