@@ -82,7 +82,7 @@ const newTab = (url: string) => {
       <Button
         v-if="!recipe && meal.link && !overview"
         size="sm"
-        variant="secondary"
+        variant="accent"
         :as="'a'"
         :href="meal.link"
         target="_blank"

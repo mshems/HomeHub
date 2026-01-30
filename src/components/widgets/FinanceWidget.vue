@@ -2,7 +2,7 @@
 import BalanceMiniCard from '../finance/BalanceMiniCard.vue'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Plus } from 'lucide-vue-next'
+import { PiggyBank, Plus, Wallet, Wallet2 } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 
@@ -50,6 +50,9 @@ const { total: monthly } = useFilteredTransactions(
       <BalanceMiniCard :balance="monthly">
         <span class="font-medium">{{ DateTime.now().monthLong }}</span>
       </BalanceMiniCard>
+      <Button variant="secondary" size="lg" @click.stop="router.push('/finance/transactions')">
+        <Wallet class="mr-2" /> View Transactions
+      </Button>
       <Button variant="accent" size="lg" @click.stop="router.push('/finance/transactions/edit')">
         <Plus class="mr-2" /> Add Transaction
       </Button>

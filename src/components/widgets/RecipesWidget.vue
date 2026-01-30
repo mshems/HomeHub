@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Plus, Soup, CookingPot } from 'lucide-vue-next'
+import { Plus, Soup, ChefHat } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -45,8 +45,9 @@ const navigateToRecipe = (recipeId: string) => {
       <!-- Featured Recipe -->
       <div v-if="featuredRecipe" class="space-y-3">
         <h4 class="font-title font-medium">Recipe of the Day</h4>
-        <div
-          class="hover:bg-card-focus bg-muted cursor-pointer rounded-lg p-3 transition-colors"
+        <Card
+          :hoverable="true"
+          class="hover:bg-card-focus bg-muted cursor-pointer rounded-lg p-3"
           @click.stop="navigateToRecipe(featuredRecipe.id)"
         >
           <div class="flex gap-3">
@@ -84,7 +85,7 @@ const navigateToRecipe = (recipeId: string) => {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
 
       <!-- No Recipes State -->
@@ -95,8 +96,8 @@ const navigateToRecipe = (recipeId: string) => {
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap gap-3">
-        <Button variant="warning" @click.stop="router.push('/recipes')">
-          <CookingPot class="mr-2" />
+        <Button variant="secondary" @click.stop="router.push('/recipes')">
+          <ChefHat class="mr-2" />
           View Recipes
         </Button>
         <Button variant="accent" @click.stop="router.push('/recipes/edit')">
