@@ -83,9 +83,9 @@ const now = DateTime.now().toSeconds()
         <p class="text-muted-foreground font-serif text-sm">{{ recipe.notes }}</p>
       </div>
 
-      <div v-if="recipe.tags && recipe.tags.length" class="mt-4">
-        <div class="flex flex-wrap gap-2">
-          <Badge v-for="tag in recipe.tags" :key="tag" variant="secondary">{{ tag }}</Badge>
+      <div v-if="recipe.tags && recipe.tags.length" class="mt-8">
+        <div class="flex flex-wrap justify-center gap-2">
+          <Badge v-for="tag in recipe.tags" :key="tag" variant="accent">{{ tag }}</Badge>
         </div>
       </div>
     </CardContent>

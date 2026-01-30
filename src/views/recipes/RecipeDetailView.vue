@@ -30,7 +30,9 @@ const onCook = (meal: IMeal, timestamp: number) => {
   <div class="container flex max-w-[800px] flex-col gap-5 py-8">
     <AutoBreadcrumbs
       :page="recipe?.title || 'Recipe'"
-      :items="{ Recipes: '/recipes' }"
+      :items="{
+        Recipes: '/recipes'
+      }"
       no-dashboard
     />
     <RecipeDetails

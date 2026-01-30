@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Plus } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { Plus, Search } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import RecipeCard from '@/components/recipes/RecipeCard.vue'
 import { Button } from '@/components/ui/button'
+import { InputWithIcon } from '@/components/ui/input'
 import { getRecipesList } from '@/composables/recipes'
 
 const router = useRouter()
@@ -16,8 +17,23 @@ const cmpRecipe = (a: { lastUpdated: number }, b: { lastUpdated: number }) => {
   return 0
 }
 
+const searchTerm = ref('')
+
+const filteredRecipes = computed(() => {
+  if (!searchTerm.value) {
+    return recipes.value
+  }
+  const term = searchTerm.value.toLowerCase()
+  return recipes.value.filter((recipe) => {
+    return (
+      recipe.title.toLowerCase().includes(term) ||
+      (recipe.tags && recipe.tags.some((tag) => tag.toLowerCase().includes(term)))
+    )
+  })
+})
+
 const sortedRecipes = computed(() => {
-  return [...recipes.value].sort(cmpRecipe)
+  return [...filteredRecipes.value].sort(cmpRecipe)
 })
 </script>
 <template>
@@ -29,6 +45,15 @@ const sortedRecipes = computed(() => {
         Add Recipe
       </Button>
     </h1>
+    <div class="mb-2">
+      <InputWithIcon
+        v-model="searchTerm"
+        placeholder="Search by name or tag..."
+        class="bg-card rounded-md border-none shadow-none"
+      >
+        <Search class="text-muted-foreground" :size="16" />
+      </InputWithIcon>
+    </div>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <template v-for="recipe in sortedRecipes" :key="recipe.id">
         <RecipeCard

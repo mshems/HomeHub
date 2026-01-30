@@ -24,7 +24,7 @@ const { collection: meals } = useCollection<IMeal>(
       <CardTitle>Meal Prep</CardTitle>
     </CardHeader>
     <CardContent class="flex flex-col gap-3">
-      <div v-if="meals.length" class="font-title font-medium">Today's Meals</div>
+      <h4 v-if="meals.length" class="font-title font-medium">Today's Meals</h4>
       <div class="flex flex-wrap gap-3">
         <template v-for="meal in meals" :key="meal.id">
           <MealPrepMeal

@@ -96,7 +96,8 @@
   --muted-foreground: hsl(232 8 64);
 
   --accent: hsl(199 32 38);
-  --accent-foreground: hsl(60 9 98);
+  --accent-foreground: hsl(198, 100%, 92%);
+  /* --accent-foreground: hsl(60 9 98); */
   --accent-focus: hsl(199 32 42);
   --accent-typography: hsl(199 100 73);
 
