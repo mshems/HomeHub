@@ -50,6 +50,9 @@ export interface IRecipe {
   lastUpdated: number
 }
 
+export type RecipeSortType = 'alphabetical' | 'lastUpdated'
+export type RecipeSortDirection = 'asc' | 'desc'
+
 export interface IRecipeBrief {
   id: string
   title: string
