@@ -10,6 +10,7 @@ import MonthHeader from '@/components/finance/MonthHeader.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useDateProps } from '@/composables/dateProps'
+import { useSwipeNavigation } from '@/composables/swipeNavigation'
 
 const router = useRouter()
 const props = defineProps({
@@ -27,17 +28,23 @@ const { month, year, date } = useDateProps(props)
 
 // Swipe gesture handling
 const containerEl = ref<HTMLElement>()
+const contentEl = ref<HTMLElement>()
+const { animateAndNavigate } = useSwipeNavigation(contentEl)
 
-const { direction } = useSwipe(containerEl, {
+useSwipe(containerEl, {
   onSwipeEnd(e, direction) {
     if (direction === 'right') {
       // Swipe right - go to previous month
       const previousMonth = date.value.minus({ months: 1 })
-      router.push({ query: { m: previousMonth.month, y: previousMonth.year } })
+      animateAndNavigate('right', () => {
+        router.push({ query: { m: previousMonth.month, y: previousMonth.year } })
+      })
     } else if (direction === 'left') {
       // Swipe left - go to next month
       const nextMonth = date.value.plus({ months: 1 })
-      router.push({ query: { m: nextMonth.month, y: nextMonth.year } })
+      animateAndNavigate('left', () => {
+        router.push({ query: { m: nextMonth.month, y: nextMonth.year } })
+      })
     }
   }
 })
@@ -50,28 +57,30 @@ const { direction } = useSwipe(containerEl, {
       @onChange="(date) => router.push({ query: { m: date.month, y: date.year } })"
     />
 
-    <div class="mt-3 flex flex-row flex-wrap gap-3">
-      <Card
-        class="bg-secondary text-secondary-foreground hover:bg-secondary-focus"
-        @click="router.push('/finance/transactions?m=' + month + '&y=' + year)"
-      >
-        <div class="flex flex-row items-center gap-3 py-3 pr-5 pl-3">
-          <ChevronLeft />
-          Transactions
-        </div>
-      </Card>
-      <Button variant="accent" size="iconxl" @click="router.push('/finance/transactions/edit')">
-        <Plus />
-      </Button>
-    </div>
+    <div ref="contentEl" class="flex flex-col gap-3 overflow-hidden">
+      <div class="mt-3 flex flex-row flex-wrap gap-3">
+        <Card
+          class="bg-secondary text-secondary-foreground hover:bg-secondary-focus"
+          @click="router.push('/finance/transactions?m=' + month + '&y=' + year)"
+        >
+          <div class="flex flex-row items-center gap-3 py-3 pr-5 pl-3">
+            <ChevronLeft />
+            Transactions
+          </div>
+        </Card>
+        <Button variant="accent" size="iconxl" @click="router.push('/finance/transactions/edit')">
+          <Plus />
+        </Button>
+      </div>
 
-    <Card>
-      <CardHeader class="font-title pb-2 text-xl font-semibold">
-        <CardTitle>Metrics</CardTitle>
-      </CardHeader>
-      <CardContent class="space-y-3 pt-3">
-        <MetricsPanel :m="month" :y="year" />
-      </CardContent>
-    </Card>
+      <Card>
+        <CardHeader class="font-title pb-2 text-xl font-semibold">
+          <CardTitle>Metrics</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-3 pt-3">
+          <MetricsPanel :m="month" :y="year" />
+        </CardContent>
+      </Card>
+    </div>
   </div>
 </template>

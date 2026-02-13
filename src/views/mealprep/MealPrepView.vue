@@ -6,6 +6,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import WeeksHeader from '@/components/mealprep/WeekHeader.vue'
+import { useSwipeNavigation } from '@/composables/swipeNavigation'
 
 const router = useRouter()
 const props = defineProps({
@@ -28,18 +29,24 @@ const dates = computed(() => {
 
 // Swipe gesture handling
 const containerEl = ref<HTMLElement>()
+const contentEl = ref<HTMLElement>()
+const { animateAndNavigate } = useSwipeNavigation(contentEl)
 
-const { direction } = useSwipe(containerEl, {
+useSwipe(containerEl, {
   onSwipeEnd(e, direction) {
     const currentDate = DateTime.fromISO(props.d)
     if (direction === 'right') {
       // Swipe right - go to previous week
       const previousWeek = currentDate.minus({ weeks: 1 })
-      router.push({ query: { d: previousWeek.toISODate() } })
+      animateAndNavigate('right', () => {
+        router.push({ query: { d: previousWeek.toISODate() } })
+      })
     } else if (direction === 'left') {
       // Swipe left - go to next week
       const nextWeek = currentDate.plus({ weeks: 1 })
-      router.push({ query: { d: nextWeek.toISODate() } })
+      animateAndNavigate('left', () => {
+        router.push({ query: { d: nextWeek.toISODate() } })
+      })
     }
   }
 })
@@ -58,8 +65,10 @@ const { direction } = useSwipe(containerEl, {
         </h2>
       </div>
     </WeeksHeader>
-    <template v-for="day in dates" :key="day">
-      <MealPrepDay v-if="day" :day="day" />
-    </template>
+    <div ref="contentEl" class="flex flex-col gap-5 overflow-hidden">
+      <template v-for="day in dates" :key="day">
+        <MealPrepDay v-if="day" :day="day" />
+      </template>
+    </div>
   </div>
 </template>
