@@ -4,12 +4,19 @@ import { useRoute, useRouter } from 'vue-router'
 
 import RecipeEditor from '@/components/recipes/editor/RecipeEditor.vue'
 import AutoBreadcrumbs from '@/components/ui/breadcrumb/AutoBreadcrumbs.vue'
-import { getRecipe, useRecipes } from '@/composables/recipes'
+import { getRecipe, getRecipesList, useRecipes } from '@/composables/recipes'
 import type { IRecipe } from '@/lib/models'
 
 const route = useRoute()
 const router = useRouter()
 const updating = computed(() => !!route.query.id)
+
+// Get all recipes and extract unique tags
+const recipes = getRecipesList()
+const knownTags = computed(() => {
+  const allTags = recipes.value.flatMap((recipe) => recipe.tags || [])
+  return [...new Set(allTags)].sort()
+})
 
 const { create, update } = useRecipes()
 const onSave = (recipe: IRecipe) => {
@@ -49,6 +56,7 @@ if (updating.value) {
 
     <RecipeEditor
       :recipeId="route.query.id as string as optString"
+      :knownTags="knownTags"
       @cancel="onBack"
       @save="(recipe) => onSave(recipe)"
     />

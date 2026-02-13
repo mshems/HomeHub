@@ -2,7 +2,7 @@
 import BalanceMiniCard from '../finance/BalanceMiniCard.vue'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { PiggyBank, Plus, Wallet, Wallet2 } from 'lucide-vue-next'
+import { Plus, Wallet } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { useRouter } from 'vue-router'
 

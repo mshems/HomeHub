@@ -8,13 +8,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { Card, CardHeader, CardContent } from '@/components/ui/card/'
 import { InputWithIcon } from '@/components/ui/input'
 import Label from '@/components/ui/label/Label.vue'
-import {
-  TagsInput,
-  TagsInputInput,
-  TagsInputItem,
-  TagsInputItemDelete,
-  TagsInputItemText
-} from '@/components/ui/tags-input'
+import { TagSelect } from '@/components/ui/tag-select'
 import { Textarea } from '@/components/ui/textarea'
 import { getRecipe } from '@/composables/recipes'
 import type { IRecipe } from '@/lib/models'
@@ -24,6 +18,11 @@ const props = defineProps({
   recipeId: {
     type: String,
     required: false
+  },
+  knownTags: {
+    type: Array as () => string[],
+    required: false,
+    default: () => []
   }
 })
 
@@ -100,13 +99,7 @@ const emitRecipe = (recipe: IRecipe) => {
 
           <div class="flex flex-col space-y-2">
             <Label for="tags">Tags</Label>
-            <TagsInput id="tags" v-model="data.tags">
-              <TagsInputItem v-for="item in data.tags" :key="item" :value="item">
-                <TagsInputItemText />
-                <TagsInputItemDelete />
-              </TagsInputItem>
-              <TagsInputInput placeholder="Add a tag..." />
-            </TagsInput>
+            <TagSelect v-model="data.tags" :suggestions="knownTags" placeholder="Add a tag..." />
           </div>
 
           <div class="flex justify-between gap-3 pt-5">

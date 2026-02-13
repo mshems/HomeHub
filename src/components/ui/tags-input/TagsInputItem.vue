@@ -18,7 +18,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     v-bind="forwardedProps"
     :class="
       cn(
-        'bg-accent text-accent-foreground data-[state=active]:ring-ring ring-offset-background flex h-5 items-center rounded-sm px-1 data-[state=active]:ring-2 data-[state=active]:ring-offset-2',
+        'bg-accent text-accent-foreground data-[state=active]:ring-ring ring-offset-background flex h-7 items-center rounded-sm px-1 data-[state=active]:ring-2 data-[state=active]:ring-offset-2',
         props.class
       )
     "
