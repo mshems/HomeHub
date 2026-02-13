@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useSwipe } from '@vueuse/core'
 import { ChevronLeft, Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import MetricsPanel from '@/components/finance/MetricsPanel.vue'
@@ -22,10 +24,27 @@ const props = defineProps({
 })
 
 const { month, year, date } = useDateProps(props)
+
+// Swipe gesture handling
+const containerEl = ref<HTMLElement>()
+
+const { direction } = useSwipe(containerEl, {
+  onSwipeEnd(e, direction) {
+    if (direction === 'right') {
+      // Swipe right - go to previous month
+      const previousMonth = date.value.minus({ months: 1 })
+      router.push({ query: { m: previousMonth.month, y: previousMonth.year } })
+    } else if (direction === 'left') {
+      // Swipe left - go to next month
+      const nextMonth = date.value.plus({ months: 1 })
+      router.push({ query: { m: nextMonth.month, y: nextMonth.year } })
+    }
+  }
+})
 </script>
 
 <template>
-  <div class="container flex max-w-[800px] flex-col gap-3 py-8">
+  <div ref="containerEl" class="container flex max-w-[800px] flex-col gap-3 py-8">
     <MonthHeader
       :date="date"
       @onChange="(date) => router.push({ query: { m: date.month, y: date.year } })"

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import MealPrepDay from '../../components/mealprep/MealPrepDay.vue'
+import { useSwipe } from '@vueuse/core'
 import { DateTime } from 'luxon'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import WeeksHeader from '@/components/mealprep/WeekHeader.vue'
@@ -24,16 +25,34 @@ const dates = computed(() => {
   }
   return dates
 })
+
+// Swipe gesture handling
+const containerEl = ref<HTMLElement>()
+
+const { direction } = useSwipe(containerEl, {
+  onSwipeEnd(e, direction) {
+    const currentDate = DateTime.fromISO(props.d)
+    if (direction === 'right') {
+      // Swipe right - go to previous week
+      const previousWeek = currentDate.minus({ weeks: 1 })
+      router.push({ query: { d: previousWeek.toISODate() } })
+    } else if (direction === 'left') {
+      // Swipe left - go to next week
+      const nextWeek = currentDate.plus({ weeks: 1 })
+      router.push({ query: { d: nextWeek.toISODate() } })
+    }
+  }
+})
 </script>
 <template>
-  <div class="container flex max-w-[800px] flex-col gap-5 py-8">
+  <div ref="containerEl" class="container flex max-w-[800px] flex-col gap-5 py-8">
     <WeeksHeader
       :date="DateTime.fromISO(d)"
       @onChange="(date) => router.push({ query: { d: date.toISODate() } })"
     >
       <div>
-        <h1 class="flex flex-row items-center font-title text-4xl font-semibold">Meal Prep</h1>
-        <h2 class="font-title text-lg font-semibold text-muted-foreground">
+        <h1 class="font-title flex flex-row items-center text-4xl font-semibold">Meal Prep</h1>
+        <h2 class="font-title text-muted-foreground text-lg font-semibold">
           {{ DateTime.fromISO(d).toFormat('MMM d') }} -
           {{ DateTime.fromISO(d).plus({ weeks: 1, days: -1 }).toFormat('MMM d') }}
         </h2>
