@@ -41,7 +41,10 @@ if (updating.value) {
   const recipe = getRecipe(props.recipeId as string)
   recipe.promise.value.then((res) => {
     if (res) {
-      data.value = { ...res }
+      data.value = {
+        ...res,
+        tags: res.tags || []
+      }
     }
   })
 }
@@ -94,7 +97,7 @@ const emitRecipe = (recipe: IRecipe) => {
 
           <div class="flex flex-col space-y-2">
             <Label for="notes">Notes</Label>
-            <Textarea id="notes" v-model="data.notes" />
+            <Textarea id="notes" v-model="data.notes" class="font-mono" />
           </div>
 
           <div class="flex flex-col space-y-2">
