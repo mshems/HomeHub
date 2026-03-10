@@ -8,6 +8,7 @@ import { useBalanceVariants } from '@/lib/variants'
 
 defineProps<{
   balance: MaybeRef<number>
+  showNegative?: boolean
 }>()
 </script>
 
@@ -15,7 +16,9 @@ defineProps<{
   <Card :class="cn(useBalanceVariants({ amount: unref(balance), text: true, bg: true }))">
     <CardContent class="flex flex-row items-center gap-3 px-5 py-3">
       <slot></slot>
-      <div class="text-right font-medium">{{ formatBalance(unref(balance), true) }}</div>
+      <div class="text-right font-medium">
+        {{ formatBalance(unref(balance), !showNegative) }}<slot name="append"></slot>
+      </div>
     </CardContent>
   </Card>
 </template>
