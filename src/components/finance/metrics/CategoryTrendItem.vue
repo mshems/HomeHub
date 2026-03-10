@@ -17,6 +17,7 @@ const props = defineProps<{
   activeMonthTotal: Ref<number>
   transactions: Ref<ITransaction[]>
   months: number
+  inverted?: boolean
 }>()
 
 const monthlyTotals = computed(() => {
@@ -61,11 +62,20 @@ const balanceVariant = () => {
       <div>
         <ItemTitle class="font-title capitalize">{{ category.name }}</ItemTitle>
         <ItemDescription :class="balanceVariant()">
-          <ChevronUp
-            v-if="unref(props.activeMonthTotal) > unref(averageMonthlyTotal)"
-            class="mb-1 inline size-4"
-          />
-          <ChevronDown v-else class="mb-1 inline size-4" />
+          <template v-if="!props.inverted">
+            <ChevronDown
+              v-if="unref(props.activeMonthTotal) > unref(averageMonthlyTotal)"
+              class="mb-1 inline size-4"
+            />
+            <ChevronUp v-else class="mb-1 inline size-4" />
+          </template>
+          <template v-else>
+            <ChevronUp
+              v-if="unref(props.activeMonthTotal) > unref(averageMonthlyTotal)"
+              class="mb-1 inline size-4"
+            />
+            <ChevronDown v-else class="mb-1 inline size-4" />
+          </template>
           {{ formatBalance(unref(props.activeMonthTotal), true) }}
         </ItemDescription>
         <ItemDescription>
@@ -76,7 +86,7 @@ const balanceVariant = () => {
       <div class="my-auto ml-auto">
         <SparklineChart
           v-if="monthlyTotals.length > 1"
-          :invert-colors="category.id === 'income'"
+          :invert-colors="props.inverted"
           :use-gradient="false"
           :height="60"
           :show-average="true"

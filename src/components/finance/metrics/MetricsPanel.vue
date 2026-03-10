@@ -64,9 +64,9 @@ const activeMonthTotal = (category: ICategory) => {
   <div class="space-y-3">
     <Tabs :model-value="selectedUser" class="w-full">
       <TabsList class="grid w-full grid-cols-3">
+        <TabsTrigger value="all" @click="() => (selectedUser = 'all')"> Total </TabsTrigger>
         <TabsTrigger value="cstone" @click="() => (selectedUser = 'cstone')"> Colleen </TabsTrigger>
         <TabsTrigger value="mshems" @click="() => (selectedUser = 'mshems')"> Matt </TabsTrigger>
-        <TabsTrigger value="all" @click="() => (selectedUser = 'all')"> Total </TabsTrigger>
       </TabsList>
     </Tabs>
     <ItemGroup class="grid grid-cols-1 gap-2 lg:grid-cols-2">
@@ -80,6 +80,7 @@ const activeMonthTotal = (category: ICategory) => {
           :months="windowSize"
           :active-month="computed(() => date)"
           :active-month-total="activeMonthTotal(category)"
+          :inverted="category.id === 'income'"
         />
       </template>
     </ItemGroup>
