@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ItemGroup } from '../ui/item'
 import CategoryTrendItem from './CategoryTrendItem.vue'
-import { ref, unref, watchEffect } from 'vue'
+import { ref, unref } from 'vue'
 import { computed } from 'vue'
 
+import { ItemGroup } from '@/components/ui/item'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAuth } from '@/composables/auth'
 import { getCategoriesList } from '@/composables/categories'
 import { useDateProps } from '@/composables/dateProps'
 import { useFilters } from '@/composables/filters'
@@ -15,18 +14,15 @@ import type { ICategory } from '@/lib/models'
 const props = defineProps<{
   m: number
   y: number
+  windowSize?: number
 }>()
 
-const { user } = useAuth()
-const selectedUser = ref<string | undefined>(user.value?.id || 'cstone')
-watchEffect(() => {
-  selectedUser.value = user.value?.id || 'cstone'
-})
+const selectedUser = ref<string | undefined>('all')
 
 const { data: categories } = getCategoriesList()
 const { month, year, date } = useDateProps(props)
 
-const windowSize = ref(18)
+const windowSize = computed(() => props.windowSize ?? 18)
 const { transactions: inWindowTx } = useFilteredTransactions(
   getTransactionsList(),
   useFilters({

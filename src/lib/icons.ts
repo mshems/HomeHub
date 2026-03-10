@@ -50,7 +50,7 @@ export const categoryColors: Record<string, string> = {
   income: 'text-positive-typography',
   other: 'text-amber-500',
   pets: 'text-yellow-800',
-  restaurants: 'text-slate-300',
+  restaurants: 'text-slate-400',
   transportation: 'text-slate-500',
   travel: 'text-sky-500',
   utilities: 'text-red-500',

@@ -7,8 +7,13 @@ interface RecipeSortSettings {
   sortDirection: RecipeSortDirection
 }
 
+interface MetricsSettings {
+  windowSize: number
+}
+
 interface SettingsState {
   recipeSort: RecipeSortSettings
+  metrics: MetricsSettings
 }
 
 const STORAGE_KEY = 'homehub-settings'
@@ -17,6 +22,9 @@ const defaultSettings: SettingsState = {
   recipeSort: {
     sortType: 'lastUpdated',
     sortDirection: 'desc'
+  },
+  metrics: {
+    windowSize: 18
   }
 }
 
@@ -61,6 +69,11 @@ export const useSettingsStore = defineStore('settings', {
     setRecipeSort(sortType: RecipeSortType, sortDirection: RecipeSortDirection) {
       this.recipeSort.sortType = sortType
       this.recipeSort.sortDirection = sortDirection
+      saveToStorage(this.$state)
+    },
+
+    setMetricsWindow(size: number) {
+      this.metrics.windowSize = size
       saveToStorage(this.$state)
     }
   }

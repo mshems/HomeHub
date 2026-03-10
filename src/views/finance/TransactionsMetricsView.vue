@@ -5,17 +5,30 @@ import { DateTime } from 'luxon'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import MetricsPanel from '@/components/finance/MetricsPanel.vue'
 import MonthHeader from '@/components/finance/MonthHeader.vue'
-import SpendingBalance from '@/components/finance/SpendingBalance.vue'
+import MetricsPanel from '@/components/finance/metrics/MetricsPanel.vue'
+import SpendingBalance from '@/components/finance/metrics/SpendingBalance.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { useDateProps } from '@/composables/dateProps'
 import { useFilters } from '@/composables/filters'
 import { useSwipeNavigation } from '@/composables/swipeNavigation'
 import { getTransactionsList, useFilteredTransactions } from '@/composables/transactions'
+import { useSettingsStore } from '@/stores/settings'
 
 const router = useRouter()
+const settings = useSettingsStore()
+const windowSize = computed({
+  get: () => String(settings.metrics.windowSize),
+  set: (v: string) => settings.setMetricsWindow(Number(v))
+})
 const props = defineProps({
   m: {
     type: [Number],
@@ -28,6 +41,13 @@ const props = defineProps({
 })
 
 const { month, year, date } = useDateProps(props)
+const windowSizeOptions = [
+  { label: '6 months', value: '6' },
+  { label: '12 months', value: '12' },
+  { label: '18 months', value: '18' },
+  { label: '24 months', value: '24' },
+  { label: '36 months', value: '36' }
+]
 const { transactions: tx } = useFilteredTransactions(
   getTransactionsList(),
   useFilters({
@@ -83,11 +103,21 @@ useSwipe(containerEl, {
       </div>
 
       <Card>
-        <CardHeader class="font-title pb-2 text-xl font-semibold">
-          <CardTitle>Metrics</CardTitle>
+        <CardHeader class="flex flex-row items-center justify-between pb-2">
+          <CardTitle class="font-title text-xl font-semibold">Metrics</CardTitle>
+          <Select v-model="windowSize">
+            <SelectTrigger class="w-auto">
+              <SelectValue placeholder="Window" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="opt in windowSizeOptions" :key="opt.value" :value="opt.value">
+                {{ opt.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </CardHeader>
         <CardContent class="space-y-3 pt-3">
-          <MetricsPanel :m="month" :y="year" />
+          <MetricsPanel :m="month" :y="year" :window-size="Number(windowSize)" />
         </CardContent>
       </Card>
     </div>

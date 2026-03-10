@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Avatar from '../ui/avatar/Avatar.vue'
-import AvatarFallback from '../ui/avatar/AvatarFallback.vue'
-import { Card } from '../ui/card'
 import { MoveRight } from 'lucide-vue-next'
 import type { Ref } from 'vue'
 import { computed } from 'vue'
 
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import { Card } from '@/components/ui/card'
 import { useFilters } from '@/composables/filters'
 import { useFilteredTransactions } from '@/composables/transactions'
 import { formatBalance } from '@/lib/balance'

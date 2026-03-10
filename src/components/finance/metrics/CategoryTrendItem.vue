@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import CategoryIcon from '../ui/icon/CategoryIcon.vue'
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '../ui/item'
 import { ChevronDown, ChevronUp, TrendingUp } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
 import { computed, unref, type Ref } from 'vue'
 
 import SparklineChart from '@/components/charts/SparklineChart.vue'
+import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { formatBalance } from '@/lib/balance'
 import { categoryColors } from '@/lib/icons'
 import type { ICategory, ITransaction } from '@/lib/models'
@@ -54,8 +54,8 @@ const balanceVariant = () => {
 
 <template>
   <Item variant="muted">
-    <ItemMedia variant="icon" class="border-none">
-      <CategoryIcon :category="category.id" class="mr-2 size-5" />
+    <ItemMedia variant="icon" class="my-auto border-none">
+      <CategoryIcon :category="category.id" class="my-auto mr-2 size-6" />
     </ItemMedia>
     <ItemContent class="flex flex-row">
       <div>
@@ -76,7 +76,9 @@ const balanceVariant = () => {
       <div class="my-auto ml-auto">
         <SparklineChart
           v-if="monthlyTotals.length > 1"
-          :height="48"
+          :invert-colors="category.id === 'income'"
+          :use-gradient="false"
+          :height="60"
           :show-average="true"
           :data="monthlyTotals.map((total) => Math.abs(total))"
           :class="categoryColors[category.id]"
