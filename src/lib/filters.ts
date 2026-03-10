@@ -21,7 +21,7 @@ interface ByYearProps {
 }
 
 interface ByUserProps {
-  user_id: MaybeRef<string>
+  user_id: MaybeRef<string | undefined>
 }
 
 interface ByCategoryProps {
@@ -50,6 +50,8 @@ export const filterFns: StringToFn = {
     return date.year === unref(year)
   },
   byUser: (tx: ITransaction, { user_id }: ByUserProps) => {
+    if (unref(user_id) === 'all') return true
+    if (unref(user_id) === undefined) return true
     return tx.paid_by === unref(user_id)
   },
   byCategory: (tx: ITransaction, { categories }: ByCategoryProps) => {

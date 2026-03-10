@@ -2,15 +2,18 @@
 import { useSwipe } from '@vueuse/core'
 import { ChevronLeft, Plus } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import MetricsPanel from '@/components/finance/MetricsPanel.vue'
 import MonthHeader from '@/components/finance/MonthHeader.vue'
+import SpendingBalance from '@/components/finance/SpendingBalance.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useDateProps } from '@/composables/dateProps'
+import { useFilters } from '@/composables/filters'
 import { useSwipeNavigation } from '@/composables/swipeNavigation'
+import { getTransactionsList, useFilteredTransactions } from '@/composables/transactions'
 
 const router = useRouter()
 const props = defineProps({
@@ -25,7 +28,12 @@ const props = defineProps({
 })
 
 const { month, year, date } = useDateProps(props)
-
+const { transactions: tx } = useFilteredTransactions(
+  getTransactionsList(),
+  useFilters({
+    byMonth: { month, year }
+  }).filters
+)
 // Swipe gesture handling
 const containerEl = ref<HTMLElement>()
 const contentEl = ref<HTMLElement>()
@@ -68,6 +76,7 @@ useSwipe(containerEl, {
             Transactions
           </div>
         </Card>
+        <SpendingBalance :tx="computed(() => tx)" />
         <Button variant="accent" size="iconxl" @click="router.push('/finance/transactions/edit')">
           <Plus />
         </Button>

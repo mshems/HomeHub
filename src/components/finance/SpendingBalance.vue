@@ -57,7 +57,7 @@ const transfer_amount = computed(() => {
     <Card class="bg-accent text-accent-foreground w-fit">
       <div class="flex flex-row items-center gap-3 px-5 py-3">
         <span class="font-medium">
-          {{ formatBalance(transfer_amount, true) }}
+          {{ formatBalance(transfer_amount, true, 0) }}
         </span>
         <MoveRight />
         <Avatar size="sm" class="bg-primary">

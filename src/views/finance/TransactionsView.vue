@@ -94,7 +94,6 @@ useSwipe(containerEl, {
         <template v-for="u of users" :key="u.id">
           <UserBalanceMiniCard :balance="useUserTransactions(u.id, ref(monthTx)).total" :user="u" />
         </template>
-
         <Button
           variant="secondary"
           size="iconxl"

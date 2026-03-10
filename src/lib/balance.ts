@@ -6,10 +6,16 @@ export const balanceType = (balance: number | Ref<number> | undefined) => {
   return unref(balance) >= 0 ? 'credit' : 'debit'
 }
 
-export const formatBalance = (balance: number | Ref<number>, absolute: boolean = false) => {
+export const formatBalance = (
+  balance: number | Ref<number>,
+  absolute: boolean = false,
+  precision: number = 2
+) => {
   const amt = absolute ? Math.abs(unref(balance)) : unref(balance)
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'USD',
+    minimumFractionDigits: precision,
+    maximumFractionDigits: precision
   }).format(amt)
 }
