@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronUp, TrendingUp } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
-import { computed, unref, type Ref } from 'vue'
+import { unref, type Ref } from 'vue'
 
 import SparklineChart from '@/components/charts/SparklineChart.vue'
 import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import { useMonthlyTotals } from '@/composables/metrics'
 import { formatBalance } from '@/lib/balance'
 import { categoryColors } from '@/lib/icons'
 import type { ICategory, ITransaction } from '@/lib/models'
@@ -20,31 +21,11 @@ const props = defineProps<{
   inverted?: boolean
 }>()
 
-const monthlyTotals = computed(() => {
-  const end = props.activeMonth.value.startOf('month')
-  const totals: number[] = []
-
-  for (let i = props.months - 1; i >= 0; i--) {
-    const monthStart = end.minus({ months: i })
-    const m = monthStart.month
-    const y = monthStart.year
-    const total = props.transactions.value
-      .filter((t) => {
-        const d = DateTime.fromSeconds(t.timestamp)
-        return d.month === m && d.year === y
-      })
-      .reduce((sum, t) => sum + t.amount, 0)
-    totals.push(total)
-  }
-
-  return totals
-})
-
-const averageMonthlyTotal = computed(() => {
-  if (monthlyTotals.value.length === 0) return 0
-  const sum = monthlyTotals.value.reduce((a, b) => a + b, 0)
-  return sum / monthlyTotals.value.length
-})
+const { totals: monthlyTotals, average: averageMonthlyTotal } = useMonthlyTotals(
+  props.transactions,
+  props.activeMonth,
+  props.months
+)
 
 const balanceVariant = () => {
   if (unref(props.activeMonthTotal) > unref(averageMonthlyTotal))

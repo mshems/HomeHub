@@ -4,14 +4,7 @@ import { useRouter } from 'vue-router'
 
 import AutoBreadcrumbs from '@/components/ui/breadcrumb/AutoBreadcrumbs.vue'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardDescription,
-  CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import DeleteDialog from '@/components/ui/dialog/DeleteDialog.vue'
 import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
 import { useTransactionDetails, useTransactions } from '@/composables/transactions'

@@ -10,6 +10,7 @@ import { getCategoriesList } from '@/composables/categories'
 import { useDateProps } from '@/composables/dateProps'
 import { useFilters } from '@/composables/filters'
 import { getTransactionsList, useFilteredTransactions } from '@/composables/transactions'
+import { useWNS } from '@/composables/wns'
 import type { ICategory } from '@/lib/models'
 
 const props = defineProps<{
@@ -42,39 +43,8 @@ const { transactions: monthTransactions } = useFilteredTransactions(
   }).filters
 )
 
-const { total: savedTotal } = useFilteredTransactions(
-  monthTransactions,
-  useFilters({
-    byType: { type: 'save' }
-  }).filters
-)
-
-const { total: wantsTotal } = useFilteredTransactions(
-  monthTransactions,
-  useFilters({
-    byType: { type: 'want' }
-  }).filters
-)
-
-const { total: needsTotal } = useFilteredTransactions(
-  monthTransactions,
-  useFilters({
-    byType: { type: 'need' }
-  }).filters
-)
-
-const wantsPercentage = computed(() =>
-  unref(savedTotal) ? (-unref(wantsTotal) / unref(savedTotal)) * 100 : 0
-)
-const needsPercentage = computed(() =>
-  unref(savedTotal) ? (-unref(needsTotal) / unref(savedTotal)) * 100 : 0
-)
-const savedRemaining = computed(() =>
-  Math.max(0, unref(savedTotal) + unref(wantsTotal) + unref(needsTotal))
-)
-const savedRemainingPercentage = computed(() =>
-  unref(savedTotal) ? (unref(savedRemaining) / unref(savedTotal)) * 100 : 0
-)
+const { wantsTotal, wantsPercentage, needsTotal, needsPercentage, savedTotal, savedPercentage } =
+  useWNS(monthTransactions)
 
 const inWindowTxByCategory = (category: ICategory) =>
   useFilteredTransactions(
@@ -104,7 +74,7 @@ const activeMonthTotal = (category: ICategory) => {
         <TabsTrigger value="mshems" @click="() => (selectedUser = 'mshems')"> Matt </TabsTrigger>
       </TabsList>
     </Tabs>
-    <div class="flex flex-row gap-3">
+    <div class="flex flex-row flex-wrap gap-3">
       <BalanceMiniCard :balance="needsTotal">
         Needs
         <template #append> ({{ needsPercentage.toFixed(2) }}%) </template>
@@ -115,9 +85,9 @@ const activeMonthTotal = (category: ICategory) => {
         <template #append> ({{ wantsPercentage.toFixed(2) }}%) </template>
       </BalanceMiniCard>
 
-      <BalanceMiniCard show-negative :balance="savedRemaining">
+      <BalanceMiniCard show-negative :balance="savedTotal">
         Saved
-        <template #append> ({{ savedRemainingPercentage.toFixed(2) }}%) </template>
+        <template #append> ({{ savedPercentage.toFixed(2) }}%) </template>
       </BalanceMiniCard>
     </div>
     <!-- {{ formatBalance(unref(needsTotal), true) }} needs ({{ needsPercentage.toFixed(2) }}) /
