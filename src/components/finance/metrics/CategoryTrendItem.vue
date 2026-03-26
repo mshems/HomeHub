@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronUp, TrendingUp } from 'lucide-vue-next'
 import { DateTime } from 'luxon'
-import { unref, type Ref } from 'vue'
+import { toRef, unref, type Ref } from 'vue'
 
 import SparklineChart from '@/components/charts/SparklineChart.vue'
 import CategoryIcon from '@/components/ui/icon/CategoryIcon.vue'
@@ -24,7 +24,7 @@ const props = defineProps<{
 const { totals: monthlyTotals, average: averageMonthlyTotal } = useMonthlyTotals(
   props.transactions,
   props.activeMonth,
-  props.months
+  toRef(props, 'months')
 )
 
 const balanceVariant = () => {

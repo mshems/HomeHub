@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BalanceMiniCard from '../BalanceMiniCard.vue'
+import CategoryMetricsChart from './CategoryMetricsChart.vue'
 import CategoryTrendItem from './CategoryTrendItem.vue'
 import { ref, unref } from 'vue'
 import { computed } from 'vue'
@@ -10,7 +10,6 @@ import { getCategoriesList } from '@/composables/categories'
 import { useDateProps } from '@/composables/dateProps'
 import { useFilters } from '@/composables/filters'
 import { getTransactionsList, useFilteredTransactions } from '@/composables/transactions'
-import { useWNS } from '@/composables/wns'
 import type { ICategory } from '@/lib/models'
 
 const props = defineProps<{
@@ -43,9 +42,6 @@ const { transactions: monthTransactions } = useFilteredTransactions(
   }).filters
 )
 
-const { wantsTotal, wantsPercentage, needsTotal, needsPercentage, savedTotal, savedPercentage } =
-  useWNS(monthTransactions)
-
 const inWindowTxByCategory = (category: ICategory) =>
   useFilteredTransactions(
     inWindowTx,
@@ -74,27 +70,9 @@ const activeMonthTotal = (category: ICategory) => {
         <TabsTrigger value="mshems" @click="() => (selectedUser = 'mshems')"> Matt </TabsTrigger>
       </TabsList>
     </Tabs>
-    <div class="flex flex-row flex-wrap gap-3">
-      <BalanceMiniCard :balance="needsTotal">
-        Needs
-        <template #append> ({{ needsPercentage.toFixed(2) }}%) </template>
-      </BalanceMiniCard>
-
-      <BalanceMiniCard :balance="wantsTotal">
-        Wants
-        <template #append> ({{ wantsPercentage.toFixed(2) }}%) </template>
-      </BalanceMiniCard>
-
-      <BalanceMiniCard show-negative :balance="savedTotal">
-        Saved
-        <template #append> ({{ savedPercentage.toFixed(2) }}%) </template>
-      </BalanceMiniCard>
+    <div class="bg-muted rounded-md p-3">
+      <CategoryMetricsChart :transactions="inWindowTx" :months="windowSize" />
     </div>
-    <!-- {{ formatBalance(unref(needsTotal), true) }} needs ({{ needsPercentage.toFixed(2) }}) /
-    {{ formatBalance(unref(wantsTotal), true) }} wants ({{ wantsPercentage.toFixed(2) }}) /
-    {{ formatBalance(unref(savesRemaining), true) }} saves ({{
-      savesRemainingPercentage.toFixed(2)
-    }}) -->
     <ItemGroup class="grid grid-cols-1 gap-2 lg:grid-cols-2">
       <template
         v-for="category in categories.filter((category) => category.id != 'transfer')"

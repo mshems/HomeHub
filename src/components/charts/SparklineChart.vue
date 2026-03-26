@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { CategoryScale, Chart as ChartJS, LinearScale, LineElement, PointElement } from 'chart.js'
 import type { Plugin } from 'chart.js'
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { Line } from 'vue-chartjs'
+
+import { useThemeColors } from '@/composables/themeColors'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
 
@@ -31,40 +33,13 @@ const props = withDefaults(
 )
 
 const wrapper = useTemplateRef<HTMLDivElement>('wrapper')
-const resolvedColor = ref('currentColor')
-const redColor = ref('rgb(239, 68, 68)')
-const greenColor = ref('rgb(34, 197, 94)')
-const mutedColor = ref('rgb(163, 163, 163)')
-const averageColor = ref('rgb(202, 138, 4)')
-
-function readThemeColors() {
-  if (!wrapper.value) return
-  const styles = getComputedStyle(wrapper.value)
-  resolvedColor.value = styles.color || resolvedColor.value
-  redColor.value = styles.getPropertyValue('--color-negative-typography').trim() || redColor.value
-  greenColor.value =
-    styles.getPropertyValue('--color-positive-typography').trim() || greenColor.value
-  mutedColor.value = styles.getPropertyValue('--color-muted-foreground').trim() || mutedColor.value
-  averageColor.value =
-    styles.getPropertyValue('--color-warning-foreground').trim() || averageColor.value
-}
-
-let themeObserver: MutationObserver | null = null
-
-onMounted(() => {
-  readThemeColors()
-  themeObserver = new MutationObserver(() => {
-    readThemeColors()
-  })
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class']
-  })
-})
-
-onUnmounted(() => {
-  themeObserver?.disconnect()
-})
+const {
+  resolvedColor,
+  negativeColor: redColor,
+  positiveColor: greenColor,
+  mutedColor,
+  warningColor: averageColor
+} = useThemeColors(wrapper)
 
 const minValue = computed(() => (props.data.length ? Math.min(...props.data) : 0))
 const maxValue = computed(() => (props.data.length ? Math.max(...props.data) : 0))
