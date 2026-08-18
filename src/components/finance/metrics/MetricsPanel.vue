@@ -71,7 +71,7 @@ const activeMonthTotal = (category: ICategory) => {
       </TabsList>
     </Tabs>
     <div class="bg-muted rounded-md p-3">
-      <CategoryMetricsChart :transactions="inWindowTx" :months="windowSize" />
+      <CategoryMetricsChart :transactions="inWindowTx" :months="windowSize" :active-month="date" />
     </div>
     <ItemGroup class="grid grid-cols-1 gap-2 lg:grid-cols-2">
       <template

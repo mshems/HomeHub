@@ -9,7 +9,7 @@ import {
   Tooltip
 } from 'chart.js'
 import { DateTime } from 'luxon'
-import { computed, useTemplateRef } from 'vue'
+import { computed, useTemplateRef, unref } from 'vue'
 import { Bar } from 'vue-chartjs'
 
 import { useThemeColors } from '@/composables/themeColors'
@@ -22,15 +22,16 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineEleme
 const props = defineProps<{
   transactions: any[]
   months: number
+  activeMonth?: any
 }>()
 
 const wrapper = useTemplateRef<HTMLDivElement>('wrapper')
 const { positiveColor, negativeColor, warningColor, mutedColor } = useThemeColors(wrapper)
 
-const now = DateTime.now()
+const nowRef = computed(() => unref(props.activeMonth) ?? DateTime.now())
 const monthlyWNS = computed(() =>
-  Array.from({ length: props.months }, (_, i) => {
-    const monthStart = now.startOf('month').minus({ months: props.months - 1 - i })
+  Array.from({ length: unref(props.months) }, (_, i) => {
+    const monthStart = nowRef.value.startOf('month').minus({ months: unref(props.months) - 1 - i })
     const m = monthStart.month
     const y = monthStart.year
     const label = monthStart.toFormat('MMM yy')
