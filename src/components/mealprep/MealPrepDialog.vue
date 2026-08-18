@@ -3,7 +3,7 @@ import { Button } from '../ui/button'
 import DatePicker from '../ui/date-picker/DatePicker.vue'
 import {
   Dialog,
-  DialogContent,
+  DialogScrollContent,
   DialogTrigger,
   DialogTitle,
   DialogHeader,
@@ -78,7 +78,7 @@ const selectRecipe = (recipe: IRecipeBrief) => {
           </Button>
         </slot>
       </DialogTrigger>
-      <DialogContent class="bg-card max-w-[350px] rounded-md">
+      <DialogScrollContent class="bg-card max-w-[350px] rounded-md">
         <DialogHeader>
           <DialogTitle> Plan Meal </DialogTitle>
         </DialogHeader>
@@ -164,7 +164,7 @@ const selectRecipe = (recipe: IRecipeBrief) => {
             </DialogClose>
           </DialogFooter>
         </form>
-      </DialogContent>
+      </DialogScrollContent>
     </Dialog>
   </Dialog>
 </template>
