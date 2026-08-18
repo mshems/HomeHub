@@ -79,7 +79,7 @@ const selectRecipe = (recipe: IRecipeBrief) => {
         </slot>
       </DialogTrigger>
       <DialogContent
-        class="bg-card top-4 max-h-[calc(100dvh-2rem)] translate-y-0 overflow-y-auto max-w-[350px] rounded-md sm:top-[50%] sm:translate-y-[-50%]"
+        class="bg-card top-4 max-h-[calc(100dvh-2rem)] max-w-[350px] translate-y-0 overflow-y-auto rounded-md sm:top-[50%] sm:translate-y-[-50%]"
       >
         <DialogHeader>
           <DialogTitle> Plan Meal </DialogTitle>
