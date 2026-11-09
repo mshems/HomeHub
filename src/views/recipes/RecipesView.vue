@@ -7,11 +7,13 @@ import RecipeCard from '@/components/recipes/RecipeCard.vue'
 import { Button } from '@/components/ui/button'
 import { InputWithIcon } from '@/components/ui/input'
 import { SortButton } from '@/components/ui/sort-button'
+import { useAuth } from '@/composables/auth'
 import { getRecipesList } from '@/composables/recipes'
 import type { RecipeSortType } from '@/lib/models'
 import { useSettingsStore } from '@/stores/settings'
 
 const router = useRouter()
+const { authorized } = useAuth()
 const recipes = getRecipesList()
 const settingsStore = useSettingsStore()
 
@@ -83,7 +85,12 @@ const sortedRecipes = computed(() => {
   <div class="container flex max-w-[1200px] flex-col gap-3 py-8">
     <h1 class="font-title flex flex-row items-center pb-3 text-4xl font-semibold">
       Recipes
-      <Button variant="accent" @click="router.push('/recipes/edit')" class="ml-auto font-sans">
+      <Button
+        v-if="authorized"
+        variant="accent"
+        @click="router.push('/recipes/edit')"
+        class="ml-auto font-sans"
+      >
         <Plus :size="20" class="mr-2" />
         Add Recipe
       </Button>

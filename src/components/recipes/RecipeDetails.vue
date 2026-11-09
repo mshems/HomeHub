@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/card'
 import DeleteDialog from '@/components/ui/dialog/DeleteDialog.vue'
 import { TagSelect } from '@/components/ui/tag-select'
+import { useAuth } from '@/composables/auth'
 import { getRecipesList, useRecipes } from '@/composables/recipes'
 import type { IMeal, IRecipe } from '@/lib/models'
 
@@ -46,6 +47,7 @@ const knownTags = computed(() => {
 })
 
 const { update } = useRecipes()
+const { authorized } = useAuth()
 
 const startEditingTags = () => {
   editingTags.value = [...(props.recipe?.tags || [])]
@@ -80,6 +82,7 @@ const saveTags = async () => {
     <CardContent>
       <div class="flex flex-wrap gap-2">
         <MealPrepDialog
+          v-if="authorized"
           :meal="
             {
               meal: 'dinner',
@@ -95,7 +98,7 @@ const saveTags = async () => {
             Prep
           </Button>
         </MealPrepDialog>
-        <Button variant="warning" @click="emit('edit')">
+        <Button v-if="authorized" variant="warning" @click="emit('edit')">
           <Pencil :size="20" class="mr-2" /> Edit
         </Button>
         <Button variant="secondary" v-if="recipe.link">
@@ -120,18 +123,18 @@ const saveTags = async () => {
       </div>
 
       <div class="mt-8">
-        <div v-if="!isEditingTags" class="flex flex-wrap justify-center gap-2">
+        <div v-if="!isEditingTags || !authorized" class="flex flex-wrap justify-center gap-2">
           <Badge
             v-for="tag in recipe.tags"
             :key="tag"
             variant="accent"
-            class="hover:bg-accent/80 cursor-pointer transition-colors"
-            @click="startEditingTags"
+            :class="authorized && 'hover:bg-accent/80 cursor-pointer transition-colors'"
+            @click="authorized && startEditingTags()"
           >
             {{ tag }}
           </Badge>
           <Button
-            v-if="!recipe.tags || recipe.tags.length === 0"
+            v-if="authorized && (!recipe.tags || recipe.tags.length === 0)"
             variant="outline"
             size="sm"
             @click="startEditingTags"
@@ -159,6 +162,7 @@ const saveTags = async () => {
     </CardContent>
     <CardFooter class="flex justify-center">
       <DeleteDialog
+        v-if="authorized"
         title="Delete Recipe"
         message="Are you sure you want to delete this recipe? This cannot be undone."
         @delete="emit('delete')"

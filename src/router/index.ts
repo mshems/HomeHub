@@ -28,7 +28,6 @@ const router = createRouter({
     {
       path: '/recipes',
       name: 'recipes',
-      meta: { requiresAuth: true },
       children: [
         {
           path: '',
@@ -38,6 +37,7 @@ const router = createRouter({
         {
           path: 'edit',
           name: 'recipe-edit',
+          meta: { requiresAuth: true },
           props: (route) => ({
             id: route.query.id
           }),
@@ -45,6 +45,7 @@ const router = createRouter({
         },
         {
           path: ':id',
+          alias: '/recipe/:id',
           name: 'recipe-detail',
           props: true,
           component: () => import('@/views/recipes/RecipeDetailView.vue')
